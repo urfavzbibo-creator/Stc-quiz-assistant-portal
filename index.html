@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stc AI Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #0A0E23; /* Dark Luxury Background */
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .bg-stc-purple { background-color: #4F008C !important; }
+        .text-stc-purple { color: #4F008C !important; }
+        .border-stc-purple { border-color: #4F008C !important; }
+        
+        /* Chat Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1a2e; }
+        ::-webkit-scrollbar-thumb { background: #4F008C; border-radius: 10px; }
+
+        .chat-container {
+            height: calc(100vh - 160px);
+        }
+        
+        .message {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+    <header class="bg-white shadow-lg p-4 flex justify-between items-center border-b-4 border-stc-purple">
+        <div class="flex items-center gap-3">
+            <img src="https://img.logokit.com/stc.com.kw" alt="stc Kuwait Logo" class="h-10">
+            <div>
+                <h1 id="app-title" class="text-xl font-bold text-stc-purple">stc Smart Assistant</h1>
+                <p id="app-subtitle" class="text-xs text-gray-500 font-bold">Admin Panel Ready</p>
+            </div>
+        </div>
+        <button onclick="toggleLanguage()" id="lang-btn" class="bg-stc-purple text-white px-4 py-2 rounded-lg font-bold hover:bg-purple-800 transition">
+            عربي
+        </button>
+    </header>
+
+    <main class="flex-grow flex justify-center p-4">
+        <div class="w-full max-w-4xl bg-gray-900 rounded-2xl shadow-2xl border border-gray-800 flex flex-col overflow-hidden">
+            
+            <div id="chat-box" class="chat-container p-6 overflow-y-auto flex flex-col gap-4">
+                <div class="message bg-stc-purple text-white p-4 rounded-2xl rounded-tl-sm self-start max-w-[80%] shadow-md">
+                    <p id="welcome-msg">Welcome! I am trained on the AG Quizlet. Ask me about BSS, Device Care, or Trade In.</p>
+                </div>
+            </div>
+
+            <div class="p-4 bg-gray-800 border-t border-gray-700 flex gap-2">
+                <input type="text" id="user-input" class="flex-grow bg-gray-900 text-white border border-gray-600 rounded-xl px-4 py-3 focus:outline-none focus:border-stc-purple transition" placeholder="Ask a question...">
+                <button onclick="handleSend()" id="send-btn" class="bg-stc-purple text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-800 transition">
+                    Send
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Extracting your exact questions from your file to act as the "Bot's Brain"
+        const botKnowledge = [
+            { keywords: ["in progress", "bss", "حالة"], answer: "المعاملة جارية" },
+            { keywords: ["خليك on", "سعة", "انترنت"], answer: "يتم تقليل السرعة إلى 256 كيلوبت" },
+            { keywords: ["الغاء", "الاشتراك", "دفع مسبق", "إلغاء"], answer: "إرسال ( D ) إلى (510)" },
+            { keywords: ["تاريخ المعاملات", "requests", "مشاهدة"], answer: "عن طريق خانة (Requests)" },
+            { keywords: ["دفع", "يستطيع العميل"], answer: "Cash / Debit / Credit" },
+            { keywords: ["16", "دقيقة", "صوتية"], answer: "المحلية" },
+            { keywords: ["device care", "مطالبة", "متطلبات"], answer: "كل ما سبق (مدنية + عقد)" },
+            { keywords: ["trade in", "علبة", "شاحن", "تقييم"], answer: "الحاجة إلى علبة وشاحن" },
+            { keywords: ["budget control", "إلغاء", "الرمز"], answer: "#550#" },
+            { keywords: ["قطاف", "نقاط"], answer: "30 نقطة (الصلاحية 12 شهر)" }
+        ];
+
+        let currentLang = 'en';
+        const uiText = {
+            en: {
+                title: "stc Smart Assistant",
+                subtitle: "Admin Panel Ready",
+                langBtn: "عربي",
+                welcome: "Welcome! I am trained on the AG Quizlet. Ask me about BSS, Device Care, or Trade In.",
+                placeholder: "Ask a question...",
+                send: "Send",
+                notFound: "I couldn't find an exact answer in the database. Please try rephrasing your question."
+            },
+            ar: {
+                title: "المساعد الذكي stc",
+                subtitle: "لوحة التحكم جاهزة",
+                langBtn: "English",
+                welcome: "مرحباً! لقد تم تدريبي على ملف AG Quizlet. اسألني عن BSS، أو Device Care، أو Trade In.",
+                placeholder: "اكتب سؤالك هنا...",
+                send: "إرسال",
+                notFound: "عذراً، لم أتمكن من العثور على إجابة دقيقة في قاعدة البيانات. يرجى إعادة صياغة السؤال."
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = currentLang;
+            
+            document.getElementById('app-title').innerText = uiText[currentLang].title;
+            document.getElementById('app-subtitle').innerText = uiText[currentLang].subtitle;
+            document.getElementById('lang-btn').innerText = uiText[currentLang].langBtn;
+            document.getElementById('welcome-msg').innerText = uiText[currentLang].welcome;
+            document.getElementById('user-input').placeholder = uiText[currentLang].placeholder;
+            document.getElementById('send-btn').innerText = uiText[currentLang].send;
+        }
+
+        function addMessage(text, isUser) {
+            const chatBox = document.getElementById('chat-box');
+            const msgDiv = document.createElement('div');
+            
+            if(isUser) {
+                msgDiv.className = "message bg-gray-700 text-white p-4 rounded-2xl rounded-tr-sm self-end max-w-[80%] shadow-md";
+            } else {
+                msgDiv.className = "message bg-stc-purple text-white p-4 rounded-2xl rounded-tl-sm self-start max-w-[80%] shadow-md";
+            }
+            
+            msgDiv.innerHTML = `<p>${text}</p>`;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function findAnswer(query) {
+            query = query.toLowerCase();
+            for (let item of botKnowledge) {
+                // Check if any keyword matches the user's input
+                if (item.keywords.some(kw => query.includes(kw))) {
+                    return item.answer;
+                }
+            }
+            return uiText[currentLang].notFound;
+        }
+
+        function handleSend() {
+            const inputField = document.getElementById('user-input');
+            const text = inputField.value.trim();
+            if(!text) return;
+
+            addMessage(text, true);
+            inputField.value = '';
+
+            // Simulate Bot Thinking
+            setTimeout(() => {
+                const answer = findAnswer(text);
+                addMessage(answer, false);
+            }, 600);
+        }
+
+        // Allow pressing Enter to send
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleSend();
+        });
+    </script>
+</body>
+</html>
