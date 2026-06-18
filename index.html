@@ -340,7 +340,7 @@
         const uiText = {
             ar: {
                 greeting: "🔥 هلا وغلا في STC Quiz Assistance!<br><br>الرجاء اختيار الاختبار الذي ترغب في إجرائه:",
-                flowSelected: "🔥 هلا والله!<br><br>اسأل أي سؤال بخاطرك أو اضغط على 🎓 وخلّنا نبلش تدريب الكويزات الجاية.<br><br>جاهز تجيب Full Marks؟",
+                flowSelected: "🔥 هلا والله!<br><br>اسأل أي سؤال بخاطرك أو اكتب <strong>(اختبار)</strong> وخلّنا نبلش تدريب الكويزات الجاية.<br><br>جاهز تجيب Full Marks؟",
                 comingSoon: "🚧 قريباً... مسار الفايبر (Fiber) سيكون متاحاً قريباً! 🚀",
                 placeholder: "اكتب سؤالك أو كلمة مفتاحية هنا...",
                 send: "إرسال",
@@ -355,7 +355,7 @@
             },
             en: {
                 greeting: "🔥 Welcome to STC Quiz Assistance!<br><br>Please select the quiz flow you want to take:",
-                flowSelected: "🔥 Welcome!<br><br>Ask any question you have in mind or click on 🎓 and let's start training for the upcoming quizzes.<br><br>Ready to get Full Marks?",
+                flowSelected: "🔥 Welcome!<br><br>Ask any question you have in mind or type <strong>(quiz)</strong> and let's start training for the upcoming quizzes.<br><br>Ready to get Full Marks?",
                 comingSoon: "🚧 Coming Soon... The Fiber flow will be available shortly! 🚀",
                 placeholder: "Type your question or keyword here...",
                 send: "Send",
@@ -617,6 +617,20 @@
             // --- Conversational Flow Intercept ---
             const yesWords = ['yes', 'yeah', 'yep', 'y', 'sure', 'of course', 'نعم', 'اي', 'إي', 'أكيد', 'اكيد', 'يلا', 'جاهز', 'يب', 'اي نعم', 'اكيد جاهز'];
             const noWords = ['no', 'nope', 'n', 'لا', 'كلا', 'سلامتك', 'يعطيك العافيه', 'شكرا', 'لا شكرا', 'thanks', 'no thanks', 'يعطيك العافية', 'مو الحين'];
+            const quizWords = ['test', 'quiz', 'اختبار', 'كويز', 'امتحان', 'تست', 'جربني', 'اختبرني'];
+
+            // Quiz Trigger
+            if (quizWords.some(w => query.includes(w))) {
+                setTimeout(() => {
+                    typingDiv.remove();
+                    if (!isQuizMode) {
+                        toggleQuizMode();
+                    } else {
+                        printBotMessage(uiText[currentLang].useOptions, false);
+                    }
+                }, 800);
+                return;
+            }
 
             if (yesWords.includes(query)) {
                 setTimeout(() => {
