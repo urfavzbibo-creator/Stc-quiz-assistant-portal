@@ -41,35 +41,35 @@
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-main, #0A0E23);
-            color: var(--text-main, #ffffff);
+            background-color: var(--bg-main);
+            color: var(--text-main);
             transition: background-color 0.4s ease, color 0.4s ease;
             margin: 0;
             padding: 0;
         }
         
-        .header-bg { background-color: var(--bg-chat-container, #111827); border-bottom: 4px solid var(--stc-purple, #4F008C); }
-        .chat-wrapper { background-color: var(--bg-chat-container, #111827); border-color: var(--border-color, #374151); }
-        .input-area { background-color: var(--bg-chat-container, #111827); border-color: var(--border-color, #374151); }
-        .input-box { background-color: var(--bg-input, #1F2937); color: var(--text-main, #ffffff); border-color: var(--border-color, #374151); }
+        .header-bg { background-color: var(--bg-chat-container); border-bottom: 4px solid var(--stc-purple); }
+        .chat-wrapper { background-color: var(--bg-chat-container); border-color: var(--border-color); }
+        .input-area { background-color: var(--bg-chat-container); border-color: var(--border-color); }
+        .input-box { background-color: var(--bg-input); color: var(--text-main); border-color: var(--border-color); }
         
-        .bot-msg { background-color: var(--bot-bubble, #4F008C); color: var(--text-main, #ffffff); }
+        .bot-msg { background-color: var(--bot-bubble); color: var(--text-main); }
         .light-mode .bot-msg { color: #1f2937; } 
         
-        .user-msg { background-color: var(--user-bubble, #374151); color: #ffffff; }
+        .user-msg { background-color: var(--user-bubble); color: #ffffff; }
 
         .option-button {
-            background-color: var(--option-btn, rgba(79, 0, 140, 0.3));
-            color: var(--text-main, #ffffff);
-            border: 1px solid var(--stc-purple, #4F008C);
+            background-color: var(--option-btn);
+            color: var(--text-main);
+            border: 1px solid var(--stc-purple);
             transition: all 0.2s ease;
         }
-        .option-button:hover { background-color: var(--option-btn-hover, rgba(79, 0, 140, 0.6)); transform: translateY(-2px); }
-        .light-mode .option-button { color: var(--stc-purple, #4F008C); font-weight: 700; }
+        .option-button:hover { background-color: var(--option-btn-hover); transform: translateY(-2px); }
+        .light-mode .option-button { color: var(--stc-purple); font-weight: 700; }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--stc-purple, #4F008C); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--stc-purple); border-radius: 10px; }
 
         .chat-container { height: calc(100vh - 160px); scroll-behavior: smooth; }
         .message { animation: fadeIn 0.4s ease-out forwards; }
@@ -84,7 +84,35 @@
         .stc-logo-box { background-color: #4F008C; width: 45px; height: 45px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 5px; }
 
         #admin-modal { background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
-        .admin-panel { background-color: var(--bg-chat-container, #111827); border: 2px solid var(--stc-purple, #4F008C); }
+        .admin-panel { background-color: var(--bg-chat-container); border: 2px solid var(--stc-purple); }
+
+        /* Pill shape button style matching your reference image */
+        .pill-btn {
+            background-color: #4B5563; /* Tailwind gray-600 */
+            color: #ffffff;
+            border: 1px solid #6B7280; /* Tailwind gray-500 */
+            border-radius: 9999px; /* Fully rounded */
+            padding: 8px 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .pill-btn:hover {
+            background-color: #374151; /* Tailwind gray-700 */
+            transform: translateY(-1px);
+        }
+        .light-mode .pill-btn {
+            background-color: #E5E7EB; /* Light mode alternative */
+            color: #1F2937;
+            border-color: #D1D5DB;
+        }
+        .light-mode .pill-btn:hover {
+            background-color: #D1D5DB;
+        }
     </style>
 </head>
 <body class="flex flex-col h-screen" onload="initApp()">
@@ -95,7 +123,7 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg" alt="stc Kuwait Logo" class="h-full object-contain filter brightness-0 invert">
             </div>
             <div>
-                <h1 class="text-xl font-bold" style="color: var(--stc-purple, #4F008C);">STC Quiz Assistance</h1>
+                <h1 class="text-xl font-bold" style="color: var(--stc-purple);">STC Quiz Assistance</h1>
                 <p class="text-xs font-bold text-muted" id="mode-subtitle">المساعد الذكي</p>
             </div>
         </div>
@@ -127,7 +155,7 @@
             
             <div class="input-area p-4 border-t flex gap-3 items-center transition-colors duration-300">
                 <input type="text" id="user-input" class="input-box flex-grow border rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 transition text-lg" placeholder="اكتب سؤالك أو كلمة مفتاحية هنا..." disabled>
-                <button onclick="handleSend()" id="send-btn" class="text-white px-6 sm:px-8 py-4 rounded-xl font-bold transition shadow-md active:scale-95 text-lg flex items-center gap-2" style="background-color: var(--stc-purple, #4F008C);" disabled>
+                <button onclick="handleSend()" id="send-btn" class="text-white px-6 sm:px-8 py-4 rounded-xl font-bold transition shadow-md active:scale-95 text-lg flex items-center gap-2" style="background-color: var(--stc-purple);" disabled>
                     <span class="hidden sm:inline" id="send-text">إرسال</span>
                     <i class="fa-solid fa-paper-plane rtl:rotate-180"></i>
                 </button>
@@ -334,7 +362,7 @@
             {q: "في اجراء TRADE IN يجب من الموظف ان يطلب من العميل مايلي", a: "عمل نسخه احتياطيه من الجهاز القديم"}
         ];
 
-        let botKnowledge = []; // Dynamically assigned
+        let botKnowledge = []; 
         let currentLang = 'ar';
         let isDarkMode = true;
         let isQuizMode = false;
@@ -346,7 +374,8 @@
         const uiText = {
             ar: {
                 greeting: "🔥 هلا وغلا في STC Quiz Assistance!<br><br>الرجاء اختيار الاختبار الذي ترغب في إجرائه:",
-                flowSelected: "تم اختيار <strong>{flow}</strong>! ✅<br>اكتب سؤالك، أو اضغط على أيقونة الاختبار 🎓 للبدء.",
+                flowSelected: "🔥 هلا والله!<br><br>اسأل أي سؤال بخاطرك أو اضغط على 🎓 وخلّنا نبلش تدريب الكويزات الجاية.<br><br>جاهز تجيب Full Marks؟",
+                comingSoon: "🚧 قريباً... مسار الفايبر (Fiber) سيكون متاحاً قريباً! 🚀",
                 placeholder: "اكتب سؤالك أو كلمة مفتاحية هنا...",
                 send: "إرسال",
                 notFound: "عذراً، لم أتمكن من العثور على إجابة. يرجى توضيح استفسارك أو سؤالك.",
@@ -358,7 +387,8 @@
             },
             en: {
                 greeting: "🔥 Welcome to STC Quiz Assistance!<br><br>Please select the quiz flow you want to take:",
-                flowSelected: "<strong>{flow}</strong> selected! ✅<br>Ask me a question, or click the Quiz icon 🎓 to test your knowledge.",
+                flowSelected: "🔥 Welcome!<br><br>Ask any question you have in mind or click on 🎓 and let's start training for the upcoming quizzes.<br><br>Ready to get Full Marks?",
+                comingSoon: "🚧 Coming Soon... The Fiber flow will be available shortly! 🚀",
                 placeholder: "Type your question or keyword here...",
                 send: "Send",
                 notFound: "Sorry, I couldn't find an exact match. Please clarify your inquiry or question.",
@@ -380,7 +410,6 @@
             const chatBox = document.getElementById('chat-box');
             chatBox.innerHTML = ''; 
             
-            // Disable inputs & quiz button
             document.getElementById('user-input').disabled = true;
             document.getElementById('send-btn').disabled = true;
             document.getElementById('quiz-btn').disabled = true;
@@ -389,35 +418,43 @@
             printBotMessage(uiText[currentLang].greeting, false);
 
             const optionsHtml = `
-                <div class="flex flex-col gap-3 mt-2 w-full">
-                    <button onclick="selectFlow('E-Channels')" class="option-button w-full text-center p-4 rounded-xl font-bold shadow-md text-lg">🌐 E-Channels | القنوات الإلكترونية</button>
-                    <button onclick="selectFlow('Call Center')" class="option-button w-full text-center p-4 rounded-xl font-bold shadow-md text-lg">📞 Call Center | مركز الاتصال</button>
-                    <button onclick="selectFlow('Resolutions')" class="option-button w-full text-center p-4 rounded-xl font-bold shadow-md text-lg">🛠️ Resolutions | الحلول</button>
-                    <button onclick="selectFlow('Telesales')" class="option-button w-full text-center p-4 rounded-xl font-bold shadow-md text-lg">🛒 Telesales | المبيعات الهاتفية</button>
+                <div class="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
+                    <button onclick="selectFlow('E-Channels')" class="pill-btn">🌐 E-Channels</button>
+                    <button onclick="selectFlow('Call Center')" class="pill-btn">📞 Call Center</button>
+                    <button onclick="selectFlow('Resolutions')" class="pill-btn">🛠️ Resolutions</button>
+                    <button onclick="selectFlow('Telesales')" class="pill-btn">🛒 Telesales</button>
+                    <button onclick="selectFlow('Fiber')" class="pill-btn">⚡ Fiber</button>
                 </div>
             `;
             printBotMessage(optionsHtml, false);
         }
 
         function selectFlow(flowName) {
+            addUserMessage(flowName);
+            const typingDiv = showThinking();
+            
+            if (flowName === 'Fiber') {
+                setTimeout(() => {
+                    typingDiv.remove();
+                    printBotMessage(uiText[currentLang].comingSoon, false);
+                }, 800);
+                return; 
+            }
+
             if (flowName === 'Telesales') {
                 botKnowledge = telesalesKnowledge;
             } else {
-                botKnowledge = originalKnowledge; // E-Channels, Call Center, Resolutions
+                botKnowledge = originalKnowledge; 
             }
             
-            // Enable inputs & quiz button
             document.getElementById('user-input').disabled = false;
             document.getElementById('send-btn').disabled = false;
             document.getElementById('quiz-btn').disabled = false;
             document.getElementById('quiz-btn').style.opacity = "1";
             
-            addUserMessage(flowName);
-            
-            const typingDiv = showThinking();
             setTimeout(() => {
                 typingDiv.remove();
-                printBotMessage(uiText[currentLang].flowSelected.replace('{flow}', flowName), false);
+                printBotMessage(uiText[currentLang].flowSelected, false);
             }, 800);
         }
 
@@ -443,7 +480,6 @@
             document.getElementById('user-input').placeholder = uiText[currentLang].placeholder;
             document.getElementById('send-text').innerText = uiText[currentLang].send;
             
-            // Restart flow to apply language
             showFlowSelection();
         }
 
@@ -521,9 +557,8 @@
             if(analytics.logs.length > 50) analytics.logs.pop(); 
         }
 
-        // --- Multiple Choice Quiz Features ---
         function toggleQuizMode() {
-            if(botKnowledge.length === 0) return; // Not selected yet
+            if(botKnowledge.length === 0) return; 
             isQuizMode = !isQuizMode;
             document.getElementById('chat-box').innerHTML = ''; 
             document.getElementById('mode-subtitle').innerText = isQuizMode ? "وضع الاختبار 🎓" : "المساعد الذكي";
@@ -606,6 +641,10 @@
         function processAndRespond(userQuery) {
             const typingDiv = showThinking();
             let query = userQuery.toLowerCase().trim();
+            
+            if (query.includes("زيد") || query.includes("zeed")) {
+                query += " زييد";
+            }
 
             setTimeout(() => {
                 typingDiv.remove();
