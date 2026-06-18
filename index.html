@@ -42,7 +42,7 @@
             --shadow-header: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-main); color: var(--text-main); transition: background-color 0.4s ease; margin: 0; padding: 0; }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-main); color: var(--text-main); transition: background-color 0.4s ease; margin: 0; padding: 0; overflow: hidden; }
         
         .header-bg { background-color: var(--bg-chat-container); border-bottom: 2px solid var(--neon-purple); box-shadow: var(--shadow-header); }
         .chat-wrapper { background-color: var(--bg-chat-container); border: 1px solid var(--border-color); box-shadow: var(--shadow-header); }
@@ -91,94 +91,154 @@
 </head>
 <body class="flex flex-col h-screen" onload="initApp()">
 
-    <header class="header-bg p-4 flex justify-between items-center transition-colors duration-300">
-        <div class="flex items-center gap-4">
-            <div id="logo-container" class="h-12 rounded-xl bg-white flex items-center justify-center shadow-lg overflow-hidden px-3 transition-colors duration-300 border border-purple-500/50">
-                <img src="image_193da6.jpg" alt="STC Quiz Logo" class="h-10 object-contain" 
-                     onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert'); document.getElementById('logo-container').style.backgroundColor='#4F008C';">
+    <!-- SECURE LOGIN OVERLAY -->
+    <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md transition-opacity duration-500">
+        <div class="bg-[#090014] border-2 border-purple-600 rounded-2xl p-8 max-w-md w-full mx-4 shadow-[0_0_30px_rgba(168,85,247,0.4)] flex flex-col gap-6 items-center text-center">
+            <div class="h-20 w-24 bg-white rounded-xl flex items-center justify-center overflow-hidden border border-purple-500/50 mb-2 p-2">
+                <img src="image_193da6.jpg" alt="STC Quiz Logo" class="h-full object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert');">
             </div>
-            <div>
-                <h1 class="text-xl font-bold" style="color: var(--neon-purple); text-shadow: 0 0 10px rgba(168,85,247,0.3);">STC Quiz Assistance</h1>
-                <p class="text-xs font-bold text-muted" id="mode-subtitle">المساعد الذكي</p>
-            </div>
-        </div>
-        <div class="flex gap-2">
-            <button onclick="showFlowSelection()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-blue-400 transition hover:scale-105" title="Home / Change Quiz">
-                <i class="fa-solid fa-house"></i>
-            </button>
-            <button onclick="toggleAdmin()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-purple-400 transition hover:scale-105" title="Admin Dashboard">
-                <i class="fa-solid fa-satellite-dish"></i>
-            </button>
-            <button onclick="toggleQuizMode()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-green-400 transition hover:scale-105" title="Test Me" id="quiz-btn" disabled style="opacity: 0.5;">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </button>
-            <button onclick="toggleTheme()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-yellow-400 transition hover:scale-105" id="theme-btn">
-                <i class="fa-solid fa-sun"></i>
-            </button>
-        </div>
-    </header>
-
-    <main class="flex-grow flex justify-center p-2 sm:p-4 relative">
-        <div class="chat-wrapper w-full max-w-4xl rounded-2xl flex flex-col overflow-hidden transition-colors duration-300">
-            <div id="chat-box" class="chat-container p-4 sm:p-6 overflow-y-auto flex flex-col gap-5"></div>
             
-            <div class="input-area p-4 flex gap-3 items-center transition-colors duration-300">
-                <input type="text" id="user-input" class="input-box flex-grow rounded-xl px-5 py-4 focus:outline-none transition text-lg" placeholder="اكتب سؤالك أو كلمة مفتاحية هنا..." disabled>
-                <button onclick="handleSend()" id="send-btn" class="send-btn-neon text-white px-6 sm:px-8 py-4 rounded-xl font-bold active:scale-95 text-lg flex items-center gap-2" disabled>
-                    <span class="hidden sm:inline" id="send-text">إرسال</span>
-                    <i class="fa-solid fa-paper-plane rtl:rotate-180"></i>
+            <div>
+                <h2 class="text-3xl font-bold mb-2" style="color: var(--neon-purple); text-shadow: 0 0 10px rgba(168,85,247,0.5);">STC Portal</h2>
+                <p class="text-purple-300 text-sm opacity-80">Restricted Access. Please log in.</p>
+            </div>
+            
+            <div class="w-full flex flex-col gap-4">
+                <input type="text" id="login-user" class="input-box w-full rounded-xl px-4 py-3 focus:outline-none transition text-left" placeholder="Username" dir="ltr">
+                <input type="password" id="login-pass" class="input-box w-full rounded-xl px-4 py-3 focus:outline-none transition text-left" placeholder="Password" dir="ltr" onkeypress="if(event.key === 'Enter') attemptLogin()">
+            </div>
+            
+            <p id="login-error" class="text-red-400 text-sm hidden font-bold" style="text-shadow: 0 0 5px rgba(248,113,113,0.5);">
+                <i class="fa-solid fa-triangle-exclamation"></i> بيانات الدخول غير صحيحة / Invalid Credentials
+            </p>
+            
+            <button onclick="attemptLogin()" class="send-btn-neon w-full text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock-open"></i> تسجيل الدخول
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="main-app" class="flex flex-col h-screen opacity-0 transition-opacity duration-700 pointer-events-none">
+        <header class="header-bg p-4 flex justify-between items-center transition-colors duration-300">
+            <div class="flex items-center gap-4">
+                <div id="logo-container" class="h-12 rounded-xl bg-white flex items-center justify-center shadow-lg overflow-hidden px-3 transition-colors duration-300 border border-purple-500/50">
+                    <img src="image_193da6.jpg" alt="STC Quiz Logo" class="h-10 object-contain" 
+                         onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert'); document.getElementById('logo-container').style.backgroundColor='#4F008C';">
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold" style="color: var(--neon-purple); text-shadow: 0 0 10px rgba(168,85,247,0.3);">STC Quiz Assistance</h1>
+                    <p class="text-xs font-bold text-muted" id="mode-subtitle">المساعد الذكي</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="showFlowSelection()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-blue-400 transition hover:scale-105" title="Home / Change Quiz">
+                    <i class="fa-solid fa-house"></i>
+                </button>
+                <button onclick="toggleAdmin()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-purple-400 transition hover:scale-105" title="Admin Dashboard">
+                    <i class="fa-solid fa-satellite-dish"></i>
+                </button>
+                <button onclick="toggleQuizMode()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-green-400 transition hover:scale-105" title="Test Me" id="quiz-btn" disabled style="opacity: 0.5;">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </button>
+                <button onclick="toggleTheme()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-yellow-400 transition hover:scale-105" id="theme-btn">
+                    <i class="fa-solid fa-sun"></i>
                 </button>
             </div>
-        </div>
+        </header>
 
-        <!-- LIVE ADMIN DASHBOARD -->
-        <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4">
-            <div class="admin-panel rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] flex flex-col">
-                <div class="flex justify-between items-center mb-4 border-b pb-2 border-purple-800">
-                    <h2 class="text-2xl font-bold text-purple-400" style="text-shadow: 0 0 10px rgba(168,85,247,0.5);">
-                        <i class="fa-solid fa-server mr-2"></i> Live Admin Terminal <span class="live-indicator ml-2"></span>
-                    </h2>
-                    <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-                </div>
+        <main class="flex-grow flex justify-center p-2 sm:p-4 relative">
+            <div class="chat-wrapper w-full max-w-4xl rounded-2xl flex flex-col overflow-hidden transition-colors duration-300">
+                <div id="chat-box" class="chat-container p-4 sm:p-6 overflow-y-auto flex flex-col gap-5"></div>
                 
-                <p class="text-xs text-yellow-300 mb-4 bg-yellow-900/30 p-2 rounded border border-yellow-700/50">
-                    <i class="fa-solid fa-triangle-exclamation"></i> <strong>Admin Note:</strong> This is a frontend prototype dashboard tracking your open tab session activity.
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div class="bg-gray-900 border border-purple-800 p-4 rounded-xl text-center shadow-inner">
-                        <p class="text-sm text-gray-400">Total Local Queries</p>
-                        <p class="text-3xl font-bold text-white" id="stat-total">0</p>
-                    </div>
-                    <div class="bg-gray-900 border border-purple-800 p-4 rounded-xl text-center shadow-inner">
-                        <p class="text-sm text-gray-400">Quiz Accuracy</p>
-                        <p class="text-3xl font-bold text-green-400" id="stat-success" style="text-shadow: 0 0 10px rgba(74,222,128,0.5);">0%</p>
-                    </div>
-                    <div class="bg-gray-900 border border-purple-800 p-4 rounded-xl text-center shadow-inner">
-                        <p class="text-sm text-gray-400">Failed Searches / Errors</p>
-                        <p class="text-3xl font-bold text-red-400" id="stat-failed" style="text-shadow: 0 0 10px rgba(248,113,113,0.5);">0</p>
-                    </div>
+                <div class="input-area p-4 flex gap-3 items-center transition-colors duration-300">
+                    <input type="text" id="user-input" class="input-box flex-grow rounded-xl px-5 py-4 focus:outline-none transition text-lg" placeholder="اكتب سؤالك أو كلمة مفتاحية هنا..." disabled>
+                    <button onclick="handleSend()" id="send-btn" class="send-btn-neon text-white px-6 sm:px-8 py-4 rounded-xl font-bold active:scale-95 text-lg flex items-center gap-2" disabled>
+                        <span class="hidden sm:inline" id="send-text">إرسال</span>
+                        <i class="fa-solid fa-paper-plane rtl:rotate-180"></i>
+                    </button>
                 </div>
+            </div>
 
-                <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
-                    <div class="flex flex-col overflow-hidden">
-                        <h3 class="font-bold text-gray-300 mb-2"><i class="fa-solid fa-magnifying-glass"></i> Live Search Feed:</h3>
-                        <ul id="analytics-log" class="bg-gray-900 border border-purple-900 rounded-xl p-4 text-sm text-gray-300 flex flex-col gap-2 overflow-y-auto flex-grow h-48">
-                            <li class="opacity-50 italic">Waiting for incoming queries...</li>
-                        </ul>
+            <!-- LIVE ADMIN DASHBOARD -->
+            <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4">
+                <div class="admin-panel rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] flex flex-col">
+                    <div class="flex justify-between items-center mb-4 border-b pb-2 border-purple-800">
+                        <h2 class="text-2xl font-bold text-purple-400" style="text-shadow: 0 0 10px rgba(168,85,247,0.5);">
+                            <i class="fa-solid fa-server mr-2"></i> Live Admin Terminal <span class="live-indicator ml-2"></span>
+                        </h2>
+                        <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
                     </div>
-                    <div class="flex flex-col overflow-hidden">
-                        <h3 class="font-bold text-red-400 mb-2"><i class="fa-solid fa-bug"></i> Error & Network Log:</h3>
-                        <ul id="error-log" class="bg-gray-900 border border-red-900/50 rounded-xl p-4 text-sm text-gray-300 flex flex-col gap-2 overflow-y-auto flex-grow h-48">
-                            <li class="opacity-50 italic">System stable. No errors.</li>
-                        </ul>
+                    
+                    <p class="text-xs text-yellow-300 mb-4 bg-yellow-900/30 p-2 rounded border border-yellow-700/50">
+                        <i class="fa-solid fa-triangle-exclamation"></i> <strong>Admin Note:</strong> This is a frontend prototype dashboard tracking your open tab session activity.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-gray-900 border border-purple-800 p-4 rounded-xl text-center shadow-inner">
+                            <p class="text-sm text-gray-400">Total Local Queries</p>
+                            <p class="text-3xl font-bold text-white" id="stat-total">0</p>
+                        </div>
+                        <div class="bg-gray-900 border border-purple-800 p-4 rounded-xl text-center shadow-inner">
+                            <p class="text-sm text-gray-400">Quiz Accuracy</p>
+                            <p class="text-3xl font-bold text-green-400" id="stat-success" style="text-shadow: 0 0 10px rgba(74,222,128,0.5);">0%</p>
+                        </div>
+                        <div class="bg-gray-900 border border-purple-800 p-4 rounded-xl text-center shadow-inner">
+                            <p class="text-sm text-gray-400">Failed Searches / Errors</p>
+                            <p class="text-3xl font-bold text-red-400" id="stat-failed" style="text-shadow: 0 0 10px rgba(248,113,113,0.5);">0</p>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+                        <div class="flex flex-col overflow-hidden">
+                            <h3 class="font-bold text-gray-300 mb-2"><i class="fa-solid fa-magnifying-glass"></i> Live Search Feed:</h3>
+                            <ul id="analytics-log" class="bg-gray-900 border border-purple-900 rounded-xl p-4 text-sm text-gray-300 flex flex-col gap-2 overflow-y-auto flex-grow h-48">
+                                <li class="opacity-50 italic">Waiting for incoming queries...</li>
+                            </ul>
+                        </div>
+                        <div class="flex flex-col overflow-hidden">
+                            <h3 class="font-bold text-red-400 mb-2"><i class="fa-solid fa-bug"></i> Error & Network Log:</h3>
+                            <ul id="error-log" class="bg-gray-900 border border-red-900/50 rounded-xl p-4 text-sm text-gray-300 flex flex-col gap-2 overflow-y-auto flex-grow h-48">
+                                <li class="opacity-50 italic">System stable. No errors.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <script>
+        // --- LOGIN AUTHENTICATION LOGIC ---
+        function attemptLogin() {
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+            
+            if (user === 'zbibo' && pass === 'Stc123') {
+                // Hide Error
+                document.getElementById('login-error').classList.add('hidden');
+                
+                // Fade out overlay
+                const overlay = document.getElementById('login-overlay');
+                overlay.style.opacity = '0';
+                
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    // Reveal Main App
+                    const mainApp = document.getElementById('main-app');
+                    mainApp.classList.remove('opacity-0', 'pointer-events-none');
+                    document.body.style.overflow = 'auto';
+                    
+                    // Initialize the assistant flow
+                    showFlowSelection();
+                }, 500);
+            } else {
+                // Show Error
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        // --- KNOWLEDGE BASE ---
         const originalKnowledge = [
             {q: "ماذا تظهر حالة 'In progress' في نظام BSS؟", a: "المعاملة جارية"},
             {q: "ماذا يحصل عند استخدام كامل سعة الإنترنت في خدمة 'خليك ON'؟", a: "يتم تقليل السرعة إلى 256 كيلوبت"},
@@ -194,9 +254,9 @@
             {q: "ماذا توضح خانة 'Age on Network' في نظام BSS؟", a: "Connection date"},
             {q: "العروض الترويجية والإعلامية في نظرة عامة على BSS تظهر بناءً على:", a: "حسب أهلية العميل"},
             {q: "سعر استخدام الرسائل المحلية في باقات الدفع الآجل (خارج الباقة) هو:", a: "20 فلس / للرسالة"},
-            {q: "في باقة 25 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية? ", a: "1000 رسالة"},
-            {q: "في باقة 35 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية? ", a: "1000 رسالة"},
-            {q: "توفر باقة التميز 75 دينار للدفع الآجل كم رسالة محلية? ", a: "2000 رسالة محلية"},
+            {q: "في باقة 25 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية؟", a: "1000 رسالة"},
+            {q: "في باقة 35 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية؟", a: "1000 رسالة"},
+            {q: "توفر باقة التميز 75 دينار للدفع الآجل كم رسالة محلية؟", a: "2000 رسالة محلية"},
             {q: "ما هي رسوم باقة التجوال الخاصة (7 أيام) بين السعودية والبحرين؟", a: "KD 8"},
             {q: "في باقة التجوال المميزة بقيمة 12 د.ك يحصل العميل على رسائل تجوال:", a: "SMS 30"},
             {q: "يتم تفعيل باقة 12 د.ك المميزة للتجوال عبر إرسال كود:", a: "p1 to 102"},
@@ -274,7 +334,7 @@
             {q: "يمكن للعملاء استخدام رصيد 8 د.ك في باقة 10 د.ك خلك-ON من أجل:", a: "جميع ما سبق"},
             {q: "الحصول على اشتراكين ترفيهيين مقابل Baity 5G يحق لعملاء؟", a: "6 أشهر"},
             {q: "ما هو خيار Auto Port-In (BSS system) ؟", a: "خيار يتيح تنفيذ عملية نقل الرقم فورًا دون انتظار موافقة الشركة المحوّل منها"},
-            {q: "ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل转向:", a: "ثلاث أشهر"}
+            {q: "ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "ثلاث أشهر"}
         ];
 
         const telesalesKnowledge = [
@@ -352,6 +412,7 @@
         let currentQuizItem = null;
         let quizScore = 0;
         let quizAttempts = 0;
+        
         let analytics = { total: 0, hits: 0, misses: 0, logs: [], errors: [] };
 
         const uiText = {
@@ -361,7 +422,7 @@
                 comingSoon: "🚧 قريباً... مسار الفايبر (Fiber) سيكون متاحاً قريباً! 🚀",
                 placeholder: "اكتب سؤالك أو كلمة مفتاحية هنا...",
                 send: "إرسال",
-                notFound: "عذراً، لم أتمكن من العثور على إجابة داخلية دقيقة. لكن لا تشيل هم! كتبت لك رابط بحث مباشر لموسوعة المعرفة:",
+                notFound: "عذراً، لم أتمكن من العثور على إجابة دقيقة. يرجى توضيح استفسارك أو إعادة صياغة السؤال.",
                 multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
                 anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--neon-purple);'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>",
                 quizStart: "🎓 <strong style='color: var(--neon-purple);'>بدأ الاختبار المتعدد الخيارات!</strong><br><br>إليك السؤال الأول:",
@@ -375,7 +436,7 @@
         const chitChatCategories = [
             {
                 name: 'greetings',
-                words: ['السلام عليكم', 'هلا', 'مرحبا', 'hello', 'hi', 'hey', 'صباح الخير', 'مساء الخير', 'صباح النور', 'مساء النور', 'أهلا', 'شلونك', 'كيفك', 'شخبارك', 'كيف الحال', 'how r u', 'howru'],
+                words: ['السلام عليكم', 'هلا', 'مرحبا', 'hello', 'hi', 'hey', 'صباح الخير', 'مساء الخير', 'صباح النور', 'مساء النور', 'أهلا', 'شلونك', 'كيفك', 'شخبارك', 'كيف الحال', 'how are you', 'how r u', 'how are u', 'howru', 'hru', 'whats up', 'whatsup', 'عامل ايه', 'أخبارك'],
                 reply: 'يا هلا وغلا بطلنا! 🌟 بخير الله يسلمك دامك منورنا اليوم.. آمرني وش الكلمة أو السؤال اللي حاب تفهمه؟'
             },
             {
@@ -390,7 +451,7 @@
             },
             {
                 name: 'agreement',
-                words: ['okay', 'ok', 'تمام', 'اوكي', 'أوكي', 'صح', 'بالضبط', 'exactly', 'agree', 'اتفق', '100%', 'ماشي'],
+                words: ['okay', 'ok', 'تمام', 'اوكي', 'أوكي', 'صح', 'بالضبط', 'exactly', 'agree', 'اتفق', '100%', 'ماشي', 'حسنا', 'زين'],
                 reply: 'حلوين وعال العال! 👍 دامنا متفقين وعلى خط واحد، الكيبورد كيبوردك.. اسألني أي شي بخصوص الأنظمة والباقات! 🔥'
             },
             {
@@ -408,7 +469,7 @@
         function initApp() {
             const btn = document.getElementById('theme-btn');
             btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            showFlowSelection();
+            // Wait for user login instead of calling showFlowSelection immediately
         }
 
         function showFlowSelection() {
@@ -695,7 +756,7 @@
 
             if (query.includes("زيد") || query.includes("zeed")) query += " زييد";
 
-            // --- 4. DATA SEARCH PATTERN & FALLBACK KNOWLEDGE BASE LINK ---
+            // --- 4. DATA SEARCH PATTERN & NO-MATCH FALLBACK ---
             setTimeout(() => {
                 typingDiv.remove();
                 let queryWords = query.split(" ").filter(w => w.length > 2);
@@ -716,18 +777,7 @@
                 if (matches.length === 0) {
                     logAnalytics(query, false);
                     logError(`Zero matches for: '${query}'`);
-                    
-                    // Generate dynamic safe query search parameter mapping strings
-                    let webSearchUrl = "https://www.google.com/search?q=" + encodeURIComponent("stc kuwait " + userQuery);
-                    
-                    let fallbackHtml = `
-                        <p class="mb-3">${uiText['ar'].notFound}</p>
-                        <div class="mt-2">
-                            <a href="${webSearchUrl}" target="_blank" class="pill-btn inline-flex items-center gap-2 text-sm border-purple-500 bg-purple-950/40 text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.4)]">
-                                <i class="fa-solid fa-earth-americas text-purple-400"></i> 🔎 Search Global Knowledge Base
-                            </a>
-                        </div>`;
-                    printBotMessage(fallbackHtml, false);
+                    printBotMessage(uiText['ar'].notFound, false);
                 } 
                 else if (matches.length === 1 || matches[0].score > matches[1]?.score + 1) {
                     logAnalytics(query, true);
