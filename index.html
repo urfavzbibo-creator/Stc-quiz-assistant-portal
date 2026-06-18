@@ -131,7 +131,7 @@
             </div>
         </div>
 
-        <!-- NEW ADVANCED ADMIN DASHBOARD -->
+        <!-- LIVE ADMIN DASHBOARD -->
         <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4">
             <div class="admin-panel rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] flex flex-col">
                 <div class="flex justify-between items-center mb-4 border-b pb-2 border-purple-800">
@@ -142,7 +142,7 @@
                 </div>
                 
                 <p class="text-xs text-yellow-300 mb-4 bg-yellow-900/30 p-2 rounded border border-yellow-700/50">
-                    <i class="fa-solid fa-triangle-exclamation"></i> <strong>Admin Note:</strong> This is a frontend prototype. To track other network users in real-time across different devices, you must connect this UI to a Backend Database (e.g. Firebase).
+                    <i class="fa-solid fa-triangle-exclamation"></i> <strong>Admin Note:</strong> This is a frontend prototype dashboard tracking your open tab session activity.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -194,9 +194,9 @@
             {q: "ماذا توضح خانة 'Age on Network' في نظام BSS؟", a: "Connection date"},
             {q: "العروض الترويجية والإعلامية في نظرة عامة على BSS تظهر بناءً على:", a: "حسب أهلية العميل"},
             {q: "سعر استخدام الرسائل المحلية في باقات الدفع الآجل (خارج الباقة) هو:", a: "20 فلس / للرسالة"},
-            {q: "في باقة 25 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية؟", a: "1000 رسالة"},
-            {q: "في باقة 35 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية؟", a: "1000 رسالة"},
-            {q: "توفر باقة التميز 75 دينار للدفع الآجل كم رسالة محلية؟", a: "2000 رسالة محلية"},
+            {q: "في باقة 25 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية? ", a: "1000 رسالة"},
+            {q: "في باقة 35 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية? ", a: "1000 رسالة"},
+            {q: "توفر باقة التميز 75 دينار للدفع الآجل كم رسالة محلية? ", a: "2000 رسالة محلية"},
             {q: "ما هي رسوم باقة التجوال الخاصة (7 أيام) بين السعودية والبحرين؟", a: "KD 8"},
             {q: "في باقة التجوال المميزة بقيمة 12 د.ك يحصل العميل على رسائل تجوال:", a: "SMS 30"},
             {q: "يتم تفعيل باقة 12 د.ك المميزة للتجوال عبر إرسال كود:", a: "p1 to 102"},
@@ -274,7 +274,7 @@
             {q: "يمكن للعملاء استخدام رصيد 8 د.ك في باقة 10 د.ك خلك-ON من أجل:", a: "جميع ما سبق"},
             {q: "الحصول على اشتراكين ترفيهيين مقابل Baity 5G يحق لعملاء؟", a: "6 أشهر"},
             {q: "ما هو خيار Auto Port-In (BSS system) ؟", a: "خيار يتيح تنفيذ عملية نقل الرقم فورًا دون انتظار موافقة الشركة المحوّل منها"},
-            {q: "ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "ثلاث أشهر"}
+            {q: "ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل转向:", a: "ثلاث أشهر"}
         ];
 
         const telesalesKnowledge = [
@@ -352,7 +352,6 @@
         let currentQuizItem = null;
         let quizScore = 0;
         let quizAttempts = 0;
-        
         let analytics = { total: 0, hits: 0, misses: 0, logs: [], errors: [] };
 
         const uiText = {
@@ -362,7 +361,7 @@
                 comingSoon: "🚧 قريباً... مسار الفايبر (Fiber) سيكون متاحاً قريباً! 🚀",
                 placeholder: "اكتب سؤالك أو كلمة مفتاحية هنا...",
                 send: "إرسال",
-                notFound: "عذراً، لم أتمكن من العثور على إجابة. يرجى توضيح استفسارك أو سؤالك.",
+                notFound: "عذراً، لم أتمكن من العثور على إجابة داخلية دقيقة. لكن لا تشيل هم! كتبت لك رابط بحث مباشر لموسوعة المعرفة:",
                 multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
                 anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--neon-purple);'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>",
                 quizStart: "🎓 <strong style='color: var(--neon-purple);'>بدأ الاختبار المتعدد الخيارات!</strong><br><br>إليك السؤال الأول:",
@@ -373,16 +372,37 @@
             }
         };
 
-        // --- GENERAL CHIT CHAT DICTIONARY ---
-        const chitChatDict = [
-            { words: ['شلونك', 'كيفك', 'how are you', 'شخبارك', 'كيف الحال', 'how r u', 'howru', 'عامل ايه', 'whatsup', 'whats up'], reply: 'بخير الله يسلمك دامك بخير! جاهز نكسر الدنيا بالكويز؟ 😎🔥' },
-            { words: ['السلام عليكم', 'هلا', 'مرحبا', 'hello', 'hi', 'hey', 'صباح الخير', 'مساء الخير', 'صباح النور', 'مساء النور', 'أهلا'], reply: 'يا هلا وغلا! منورنا يا بطل، آمرني وش سؤالك اليوم؟ 🌟' },
-            { words: ['احبك', 'أحبك', 'love you', 'i love u', 'i love you', 'احلى بوت', 'حبيبي', 'يا عمري', 'قلبي'], reply: 'حبتك العافية يا قلبي! 💜 فداك، بس لا تخليني أخجل وركز بالكويز الحين 😆✨' },
-            { words: ['يعطيك العافية', 'شكرا', 'مشكور', 'thanks', 'thank you', 'تسلم', 'thx', 'عفوا', 'ما قصرت', 'يعطيك العافيه'], reply: 'يعافيك ربي يا غالي! بالخدمة دايماً، أي استفسار ثاني أنا موجود 💜✨' },
-            { words: ['حلو', 'بطل', 'كفو', 'عاش', 'nice', 'good', 'awesome', 'great', 'ممتاز', 'perfect', 'thats cool', 'that is cool', 'cool', 'wow', 'واو', 'عجيب', 'رهيب', 'خرافي', 'شاطر', 'ذكي', 'smart', 'good bot', 'اسطوره', 'أسطورة'], reply: 'أنت الأرهب والأحلى! 😎✨ إحنا هنا عشان نسهل عليك.. وياك نروح أبعد 🚀' },
-            { words: ['okay', 'ok', 'تمام', 'اوكي', 'أوكي', 'صح', 'بالضبط', 'exactly', 'agree', 'اتفق', '100%'], reply: 'حلوين! دام اتفقنا، خلنا ندخل بالعمق.. قط سؤالك أو اكتب (اختبار) وخلنا نختبر معلوماتك 🔥😎' },
-            { words: ['شنو يعني', 'وش تقصد', 'what do you mean', 'لحظه', 'دقيقه', 'wait', 'hold on', 'اشرح لي', 'كيف', 'how', 'ما فهمت', 'شلون'], reply: 'أبشر، خذ وقتك! 💜 أنا موجود هنا عشان أسهل عليك وأوضح لك أي شي يخص STC. قط الكلمة اللي محيرتك وأنا أضبطك 🚀' },
-            { words: ['dumb', 'stupid', 'غبي', 'سيء', 'فاشل', 'bad', 'idiot', 'زفت', 'خايس'], reply: 'مسموح يا غالي، أنا مساعد ذكي أتعلم منك كل يوم! 😅 خلنا نركز بالكويز الحين ونجيب Full Marks 💜' }
+        const chitChatCategories = [
+            {
+                name: 'greetings',
+                words: ['السلام عليكم', 'هلا', 'مرحبا', 'hello', 'hi', 'hey', 'صباح الخير', 'مساء الخير', 'صباح النور', 'مساء النور', 'أهلا', 'شلونك', 'كيفك', 'شخبارك', 'كيف الحال', 'how r u', 'howru'],
+                reply: 'يا هلا وغلا بطلنا! 🌟 بخير الله يسلمك دامك منورنا اليوم.. آمرني وش الكلمة أو السؤال اللي حاب تفهمه؟'
+            },
+            {
+                name: 'affection',
+                words: ['احبك', 'أحبك', 'love you', 'i love u', 'i love you', 'حبيبي', 'يا عمري', 'يا بعد قلبي', 'غالي'],
+                reply: 'تسلم لي حبتك العافية يا بعد قلبي! 💜 غالي ومقامك عالي، بس لا تخليني أستحي الحين وركز بالكويز عشان تجيب Full Marks! 😉✨'
+            },
+            {
+                name: 'praise',
+                words: ['حلو', 'بطل', 'كفو', 'عاش', 'nice', 'good', 'awesome', 'great', 'ممتاز', 'perfect', 'thats cool', 'that is cool', 'cool', 'wow', 'واو', 'عجيب', 'رهيب', 'خرافي', 'شاطر', 'ذكي', 'smart', 'good bot', 'اسطوره', 'أسطورة'],
+                reply: 'أنت الأسطورة وكفوك الطيب! 😎✨ نكبر بدعمكم، وهدفنا دايماً وياكم نروح أبعد 🚀 جاهز للسؤال الجاي؟'
+            },
+            {
+                name: 'agreement',
+                words: ['okay', 'ok', 'تمام', 'اوكي', 'أوكي', 'صح', 'بالضبط', 'exactly', 'agree', 'اتفق', '100%', 'ماشي'],
+                reply: 'حلوين وعال العال! 👍 دامنا متفقين وعلى خط واحد، الكيبورد كيبوردك.. اسألني أي شي بخصوص الأنظمة والباقات! 🔥'
+            },
+            {
+                name: 'clarification',
+                words: ['شنو يعني', 'وش تقصد', 'what do you mean', 'لحظه', 'دقيقه', 'wait', 'hold on', 'اشرح لي', 'كيف', 'how', 'ما فهمت', 'شلون', 'ليش', 'why'],
+                reply: 'خذ راحتك ولا تستعجل أبداً! 💜 أنا هنا عشان أبسط لك الأمور المعقدة. إذا واجهتك أي صعوبة في الأنظمة، بس اكتب لي الكلمة الأساسية وأنا بشرحها لك بالتفصيل! 🎯'
+            },
+            {
+                name: 'insults',
+                words: ['dumb', 'stupid', 'غبي', 'سيء', 'فاشل', 'bad', 'idiot', 'زفت', 'خايس'],
+                reply: 'حصل خير يا غالي! 😅 المساعد الذكي يتعلم كل يوم من أبطال STC. عطني فرصة ثانية وقط سؤالك بوضوح وتشوف كيف أضبطك! 💜'
+            }
         ];
 
         function initApp() {
@@ -458,10 +478,6 @@
             }
         }
 
-        function toggleLanguage() {
-            alert("This prototype focuses on the primary Arabic structure currently. Dual-language full translation is a work in progress.");
-        }
-
         function scrollToBottom() {
             const chatBox = document.getElementById('chat-box');
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -496,7 +512,7 @@
             scrollToBottom();
         }
 
-        // --- ADMIN DASHBOARD ---
+        // --- DASHBOARD AND REPORTING MANAGEMENT ---
         function toggleAdmin() {
             const modal = document.getElementById('admin-modal');
             if (modal.classList.contains('hidden')) {
@@ -549,7 +565,7 @@
             if(analytics.errors.length > 50) analytics.errors.pop();
         }
 
-        // --- GROUPED QUIZ MODE ---
+        // --- GROUPED COMPONENT TESTING ---
         function toggleQuizMode() {
             if(botKnowledge.length === 0) return; 
             isQuizMode = !isQuizMode;
@@ -571,7 +587,6 @@
             const randomIndex = Math.floor(Math.random() * botKnowledge.length);
             currentQuizItem = botKnowledge[randomIndex];
             
-            // SMART GROUPING: Try to find similar questions based on common words
             let questionWords = currentQuizItem.q.split(' ').filter(w => w.length > 4);
             let similarItems = botKnowledge.filter(item => {
                 return questionWords.some(qw => item.q.includes(qw)) && item.a !== currentQuizItem.a;
@@ -580,7 +595,6 @@
             let choices = [currentQuizItem.a];
             let attempts = 0;
             
-            // First fill choices with similar answers if available
             while(choices.length < 4 && similarItems.length > 0 && attempts < 20) {
                 let rIdx = Math.floor(Math.random() * similarItems.length);
                 let wAns = similarItems[rIdx].a;
@@ -588,7 +602,6 @@
                 attempts++;
             }
 
-            // Fallback to random if not enough similar ones found
             attempts = 0;
             while(choices.length < 4 && attempts < 50) {
                 let randomWrongIndex = Math.floor(Math.random() * botKnowledge.length);
@@ -649,15 +662,15 @@
             const typingDiv = showThinking();
             let query = userQuery.toLowerCase().trim();
             
-            // --- 1. CHIT CHAT INTERCEPTOR ---
-            for(let chat of chitChatDict) {
-                if(chat.words.some(w => query.includes(w))) {
-                    setTimeout(() => { typingDiv.remove(); printBotMessage(chat.reply, false); }, 800);
+            // --- 1. DYNAMIC CATEGORIZED EMOTIONAL CHIT CHAT ---
+            for(let cat of chitChatCategories) {
+                if(cat.words.some(w => query.includes(w))) {
+                    setTimeout(() => { typingDiv.remove(); printBotMessage(cat.reply, false); }, 800);
                     return;
                 }
             }
 
-            // --- 2. YES/NO INTERCEPTOR ---
+            // --- 2. YES/NO SYSTEM INTERCEPTORS ---
             const yesWords = ['yes', 'yeah', 'yep', 'y', 'sure', 'of course', 'نعم', 'اي', 'إي', 'أكيد', 'اكيد', 'يلا', 'جاهز', 'يب', 'اي نعم', 'اكيد جاهز'];
             const noWords = ['no', 'nope', 'n', 'لا', 'كلا', 'سلامتك', 'مو الحين'];
             if (yesWords.includes(query)) {
@@ -669,7 +682,7 @@
                 return;
             }
 
-            // --- 3. QUIZ TRIGGER ---
+            // --- 3. DYNAMIC INTENT TRIGGERS ---
             const quizWords = ['test', 'quiz', 'اختبار', 'كويز', 'امتحان', 'تست', 'جربني', 'اختبرني'];
             if (quizWords.some(w => query.includes(w))) {
                 setTimeout(() => {
@@ -680,10 +693,9 @@
                 return;
             }
 
-            // --- 4. SYNONYMS ---
             if (query.includes("زيد") || query.includes("zeed")) query += " زييد";
 
-            // --- 5. ACTUAL SEARCH ---
+            // --- 4. DATA SEARCH PATTERN & FALLBACK KNOWLEDGE BASE LINK ---
             setTimeout(() => {
                 typingDiv.remove();
                 let queryWords = query.split(" ").filter(w => w.length > 2);
@@ -703,8 +715,19 @@
 
                 if (matches.length === 0) {
                     logAnalytics(query, false);
-                    logError(`User searched for '${query}' but found zero matches.`);
-                    printBotMessage(uiText['ar'].notFound, false);
+                    logError(`Zero matches for: '${query}'`);
+                    
+                    // Generate dynamic safe query search parameter mapping strings
+                    let webSearchUrl = "https://www.google.com/search?q=" + encodeURIComponent("stc kuwait " + userQuery);
+                    
+                    let fallbackHtml = `
+                        <p class="mb-3">${uiText['ar'].notFound}</p>
+                        <div class="mt-2">
+                            <a href="${webSearchUrl}" target="_blank" class="pill-btn inline-flex items-center gap-2 text-sm border-purple-500 bg-purple-950/40 text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.4)]">
+                                <i class="fa-solid fa-earth-americas text-purple-400"></i> 🔎 Search Global Knowledge Base
+                            </a>
+                        </div>`;
+                    printBotMessage(fallbackHtml, false);
                 } 
                 else if (matches.length === 1 || matches[0].score > matches[1]?.score + 1) {
                     logAnalytics(query, true);
