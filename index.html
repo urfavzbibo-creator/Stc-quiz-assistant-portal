@@ -1,29 +1,80 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>stc Smart AI</title>
+    <title>STC Quiz Assistance</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
         
+        :root {
+            /* Dark Mode (Default) Variables */
+            --bg-main: #0A0E23;
+            --bg-chat-container: #111827;
+            --bg-input: #1F2937;
+            --text-main: #ffffff;
+            --text-muted: #9CA3AF;
+            --border-color: #374151;
+            --stc-purple: #4F008C;
+            --stc-purple-hover: #3b006a;
+            --bot-bubble: #4F008C;
+            --user-bubble: #374151;
+            --option-btn: rgba(79, 0, 140, 0.3);
+            --option-btn-hover: rgba(79, 0, 140, 0.6);
+        }
+
+        .light-mode {
+            /* Light Mode Variables */
+            --bg-main: #f3f4f6;
+            --bg-chat-container: #ffffff;
+            --bg-input: #f9fafb;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --stc-purple: #4F008C;
+            --stc-purple-hover: #3b006a;
+            --bot-bubble: #f0e6f7;
+            --user-bubble: #4F008C;
+            --option-btn: #f3e8fa;
+            --option-btn-hover: #e5d0f5;
+        }
+
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: #0A0E23;
-            color: #ffffff;
-            transition: all 0.3s ease;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
             margin: 0;
             padding: 0;
         }
 
-        .bg-stc-purple { background-color: #4F008C !important; }
-        .text-stc-purple { color: #4F008C !important; }
-        .border-stc-purple { border-color: #4F008C !important; }
+        .header-bg { background-color: var(--bg-chat-container); border-bottom: 4px solid var(--stc-purple); }
+        .chat-wrapper { background-color: var(--bg-chat-container); border-color: var(--border-color); }
+        .input-area { background-color: var(--bg-chat-container); border-color: var(--border-color); }
+        .input-box { background-color: var(--bg-input); color: var(--text-main); border-color: var(--border-color); }
         
+        .bot-msg { background-color: var(--bot-bubble); color: var(--text-main); }
+        .light-mode .bot-msg { color: #1f2937; } 
+        
+        .user-msg { background-color: var(--user-bubble); color: #ffffff; }
+
+        .option-button {
+            background-color: var(--option-btn);
+            color: var(--text-main);
+            border: 1px solid var(--stc-purple);
+            transition: all 0.2s ease;
+        }
+        .option-button:hover {
+            background-color: var(--option-btn-hover);
+            transform: translateY(-2px);
+        }
+        .light-mode .option-button { color: var(--stc-purple); font-weight: 700; }
+
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1a1a2e; }
-        ::-webkit-scrollbar-thumb { background: #4F008C; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--stc-purple); border-radius: 10px; }
 
         .chat-container { height: calc(100vh - 160px); scroll-behavior: smooth; }
         
@@ -34,7 +85,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ChatGPT style thinking dots */
         .typing-indicator {
             display: flex;
             gap: 6px;
@@ -45,71 +95,72 @@
         .dot {
             width: 8px;
             height: 8px;
-            background-color: #ffffff;
+            background-color: currentColor;
             border-radius: 50%;
             animation: bounce 1.4s infinite ease-in-out both;
         }
         .dot:nth-child(1) { animation-delay: -0.32s; }
         .dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
             40% { transform: scale(1); opacity: 1; }
         }
         
-        /* Message formatting */
-        .bot-response-text {
-            line-height: 1.6;
-            font-size: 1.1rem;
-        }
-        .bot-response-text strong {
-            color: #D4AF37; /* Luxury Gold accent for the answer */
+        .stc-logo-box {
+            background-color: #4F008C;
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
         }
     </style>
 </head>
 <body class="flex flex-col h-screen">
 
-    <!-- Header with stc Logo -->
-    <header class="bg-white shadow-lg p-4 flex justify-between items-center border-b-4 border-stc-purple">
+    <header class="header-bg shadow-lg p-4 flex justify-between items-center transition-colors duration-300">
         <div class="flex items-center gap-4">
-            <!-- Official stc Logo formatting -->
-            <div class="bg-white p-1 rounded-lg shadow-sm border border-gray-200 flex items-center justify-center">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg" alt="stc Kuwait Logo" class="h-10">
+            <div class="stc-logo-box shadow-md">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg" alt="stc Kuwait Logo" class="h-full object-contain filter brightness-0 invert">
             </div>
             <div>
-                <h1 id="app-title" class="text-xl font-bold text-stc-purple">stc Smart Assistant</h1>
-                <p id="app-subtitle" class="text-xs text-gray-500 font-bold">AI Powered by AG Quizlet</p>
+                <h1 class="text-xl font-bold" style="color: var(--stc-purple);">STC Quiz Assistance</h1>
+                <p class="text-xs font-bold text-muted" style="color: var(--text-muted);">المساعد الذكي</p>
             </div>
         </div>
-        <button onclick="toggleLanguage()" id="lang-btn" class="bg-stc-purple text-white px-5 py-2 rounded-lg font-bold hover:bg-purple-800 transition shadow-md active:scale-95">
-            عربي
-        </button>
+        <div class="flex gap-2">
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 transition hover:scale-105" id="theme-btn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <button onclick="toggleLanguage()" id="lang-btn" class="hidden sm:block option-button px-4 py-2 rounded-lg font-bold shadow-md text-sm">
+                English
+            </button>
+        </div>
     </header>
 
-    <!-- Chat Area -->
     <main class="flex-grow flex justify-center p-2 sm:p-4">
-        <div class="w-full max-w-4xl bg-gray-900 rounded-2xl shadow-2xl border border-gray-800 flex flex-col overflow-hidden">
+        <div class="chat-wrapper w-full max-w-4xl rounded-2xl shadow-2xl border flex flex-col overflow-hidden transition-colors duration-300">
             <div id="chat-box" class="chat-container p-4 sm:p-6 overflow-y-auto flex flex-col gap-5">
-                <!-- Initial Welcome Message -->
-                <div class="message bg-stc-purple text-white p-5 rounded-2xl rounded-tl-sm self-start max-w-[90%] sm:max-w-[80%] shadow-md bot-response-text">
-                    <p id="welcome-msg">Hello! I am your stc AI Assistant. I have memorized all 90 questions from your system. How can I help you today?</p>
+                <div class="message bot-msg p-5 rounded-2xl rounded-tr-sm self-start max-w-[95%] sm:max-w-[85%] shadow-md text-lg leading-relaxed">
+                    🔥 هلا وغلا في STC Quiz Assistance!<br><br>
+                    عندك سؤال بالكويز؟ لا تشيل هم 😎<br>
+                    اكتب سؤالك، وأنا بحاول أساعدك بأسرع وأوضح إجابة ممكنة. 🚀
                 </div>
             </div>
             
-            <!-- Input Area -->
-            <div class="p-4 bg-gray-800 border-t border-gray-700 flex gap-3 items-center">
-                <input type="text" id="user-input" class="flex-grow bg-gray-900 text-white border border-gray-600 rounded-xl px-5 py-4 focus:outline-none focus:border-stc-purple focus:ring-1 focus:ring-stc-purple transition text-lg" placeholder="Ask me anything about stc...">
-                <button onclick="handleSend()" id="send-btn" class="bg-stc-purple text-white px-8 py-4 rounded-xl font-bold hover:bg-purple-800 transition shadow-md active:scale-95 text-lg flex items-center gap-2">
-                    <span>Send</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
+            <div class="input-area p-4 border-t flex gap-3 items-center transition-colors duration-300">
+                <input type="text" id="user-input" class="input-box flex-grow border rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 transition text-lg" placeholder="اكتب سؤالك أو كلمة مفتاحية هنا...">
+                <button onclick="handleSend()" class="text-white px-6 sm:px-8 py-4 rounded-xl font-bold transition shadow-md active:scale-95 text-lg flex items-center gap-2" style="background-color: var(--stc-purple);">
+                    <span class="hidden sm:inline" id="send-text">إرسال</span>
+                    <i class="fa-solid fa-paper-plane rtl:rotate-180"></i>
                 </button>
             </div>
         </div>
     </main>
 
     <script>
-        // The Complete Brain: All 90 Questions
         const botKnowledge = [
             {q: "ماذا تظهر حالة 'In progress' في نظام BSS؟", a: "المعاملة جارية"},
             {q: "ماذا يحصل عند استخدام كامل سعة الإنترنت في خدمة 'خليك ON'؟", a: "يتم تقليل السرعة إلى 256 كيلوبت"},
@@ -200,52 +251,55 @@
             {q: "في باقة 35 د.ك خلك ON، يحصل العميل على ... دقيقة محلية:", a: "دقائق غير محدودة"},
             {q: "ما هي تكلفة خدمة FOZ للألعاب الإضافية على باقات Baity 5G؟", a: "5KD"},
             {q: "كيف يمكن للعميل الاستفسار عن استخدام الإنترنت لخطوط الدفع الآجل؟", a: "ارسل كود Q الى رقم 567"},
-            {q: "ما هي خيارات الاشتراك المتاحة لخدمات بيتي 5G؟", a: "سنتان / 3 سنوات /18 شهرا"}
+            {q: "ما هي خيارات الاشتراك المتاحة لخدمات بيتي 5G؟", a: "سنتان / 3 سنوات /18 شهرا"},
+            {q: "سياسة الاستخدام العادل الموجودة في باقة 15 KD للدفع الآجل للإنترنت هي:", a: "الأنترنت: غير محدود (استخدام عادل: 10 TB)"},
+            {q: "يمكن للعملاء استخدام رصيد 8 د.ك في باقة 10 د.ك خلك-ON من أجل:", a: "جميع ما سبق"},
+            {q: "الحصول على اشتراكين ترفيهيين مقابل Baity 5G يحق لعملاء؟", a: "6 أشهر"},
+            {q: "ما هو خيار Auto Port-In (BSS system) ؟", a: "خيار يتيح تنفيذ عملية نقل الرقم فورًا دون انتظار موافقة الشركة المحوّل منها"},
+            {q: "ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "ثلاث أشهر"}
         ];
 
-        let currentLang = 'en';
+        let currentLang = 'ar';
+        let isDarkMode = true;
+
         const uiText = {
-            en: {
-                title: "stc Smart Assistant",
-                subtitle: "AI Powered by AG Quizlet",
-                langBtn: "عربي",
-                welcome: "Hello! I am your stc AI Assistant. I have memorized all 90 questions from your system. How can I help you today?",
-                placeholder: "Ask me anything about stc...",
-                send: "Send",
-                notFound: "I'm sorry, I couldn't find an exact match in my training data. Could you try rephrasing your question or using keywords?",
-                greetingReply: "Hello there! 👋 I am ready to help you with any stc or BSS questions you have. Just ask!"
-            },
             ar: {
-                title: "المساعد الذكي stc",
-                subtitle: "مدعوم ببيانات AG",
-                langBtn: "English",
-                welcome: "مرحباً! أنا مساعدك الذكي من stc. لقد حفظت جميع الأسئلة الـ 90. كيف يمكنني مساعدتك اليوم؟",
-                placeholder: "اسألني أي شيء عن stc...",
+                placeholder: "اكتب سؤالك أو كلمة مفتاحية هنا...",
                 send: "إرسال",
-                notFound: "عذراً، لم أتمكن من العثور على إجابة دقيقة. يرجى محاولة استخدام كلمات مفتاحية من السؤال الأصلي.",
-                greetingReply: "أهلاً بك! 👋 أنا جاهز لمساعدتك في أي استفسارات تخص stc أو نظام BSS. تفضل بسؤالي!"
+                notFound: "عذراً، لم أتمكن من العثور على إجابة. يرجى توضيح استفسارك أو سؤالك.",
+                multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
+                anythingElse: "<br><br><span class='text-sm opacity-80'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>"
+            },
+            en: {
+                placeholder: "Type your question or keyword here...",
+                send: "Send",
+                notFound: "Sorry, I couldn't find an exact match. Please clarify your inquiry or question.",
+                multipleFound: "I found multiple questions related to your search. Please choose one:",
+                anythingElse: "<br><br><span class='text-sm opacity-80'>Is there anything else I can help you with? 😊</span>"
             }
         };
 
-        const greetingsList = ["hi", "hello", "hey", "مرحبا", "هلا", "شلونك", "السلام", "كيفك", "good morning", "good evening", "هاي"];
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('light-mode');
+            const btn = document.getElementById('theme-btn');
+            if(isDarkMode) {
+                btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+                btn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-gray-700 text-yellow-400 transition hover:scale-105";
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+                btn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-gray-200 text-orange-500 transition hover:scale-105";
+            }
+        }
 
         function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
             document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
             document.documentElement.lang = currentLang;
             
-            document.getElementById('app-title').innerText = uiText[currentLang].title;
-            document.getElementById('app-subtitle').innerText = uiText[currentLang].subtitle;
-            document.getElementById('lang-btn').innerText = uiText[currentLang].langBtn;
-            document.getElementById('welcome-msg').innerText = uiText[currentLang].welcome;
+            document.getElementById('lang-btn').innerText = currentLang === 'ar' ? 'English' : 'عربي';
             document.getElementById('user-input').placeholder = uiText[currentLang].placeholder;
-            
-            // Update button content directly while keeping icon
-            const btn = document.getElementById('send-btn');
-            btn.innerHTML = `<span>${uiText[currentLang].send}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ${currentLang === 'ar' ? 'rotate-180' : ''}" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>`;
+            document.getElementById('send-text').innerText = uiText[currentLang].send;
         }
 
         function scrollToBottom() {
@@ -256,65 +310,102 @@
         function addUserMessage(text) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
-            msgDiv.className = "message bg-gray-700 text-white p-4 rounded-2xl rounded-tr-sm self-end max-w-[90%] sm:max-w-[80%] shadow-md leading-relaxed text-lg";
+            msgDiv.className = "message user-msg p-4 rounded-2xl rounded-tl-sm self-end max-w-[90%] sm:max-w-[80%] shadow-md leading-relaxed text-lg";
+            if(currentLang === 'ar') {
+                msgDiv.classList.replace('rounded-tl-sm', 'rounded-tr-sm');
+            }
             msgDiv.innerText = text;
             chatBox.appendChild(msgDiv);
             scrollToBottom();
         }
 
-        // Simulates AI typing and thinking
-        function processAndRespond(userQuery) {
+        function showThinking() {
             const chatBox = document.getElementById('chat-box');
-            
-            // 1. Create Thinking Indicator
             const typingDiv = document.createElement('div');
-            typingDiv.className = "message bg-stc-purple text-white rounded-2xl rounded-tl-sm self-start shadow-md typing-indicator";
+            typingDiv.id = "thinking-indicator";
+            typingDiv.className = "message bot-msg rounded-2xl shadow-md typing-indicator";
+            if(currentLang === 'ar') {
+                typingDiv.classList.add('self-start', 'rounded-tr-sm');
+            } else {
+                typingDiv.classList.add('self-start', 'rounded-tl-sm');
+            }
             typingDiv.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
             chatBox.appendChild(typingDiv);
             scrollToBottom();
+            return typingDiv;
+        }
 
-            // 2. Find the Answer
-            let finalAnswer = "";
-            let query = userQuery.toLowerCase().trim();
-
-            if (greetingsList.some(greet => query === greet || query.startsWith(greet + " "))) {
-                finalAnswer = uiText[currentLang].greetingReply;
-            } else {
-                let queryWords = query.split(" ");
-                let bestMatch = null;
-                let maxScore = 0;
-
-                for (let item of botKnowledge) {
-                    let score = 0;
-                    let questionText = item.q.toLowerCase();
-                    
-                    for (let word of queryWords) {
-                        if (word.length > 2) { 
-                            if (questionText.includes(word)) score += 2;
-                        }
-                    }
-                    
-                    if (score > maxScore) {
-                        maxScore = score;
-                        // Format the output smoothly
-                        bestMatch = `<div class="opacity-70 text-sm mb-2 pb-2 border-b border-purple-400">` + item.q + `</div>` +
-                                    `<strong>` + item.a + `</strong>`;
-                    }
-                }
-                finalAnswer = maxScore > 0 ? bestMatch : uiText[currentLang].notFound;
-            }
-
-            // 3. Remove dots and show message after a delay
+        window.forceAnswer = function(index) {
+            const item = botKnowledge[index];
+            addUserMessage(item.q);
+            
+            const typingDiv = showThinking();
             setTimeout(() => {
                 typingDiv.remove();
-                
-                const msgDiv = document.createElement('div');
-                msgDiv.className = "message bg-stc-purple text-white p-5 rounded-2xl rounded-tl-sm self-start max-w-[90%] sm:max-w-[80%] shadow-md bot-response-text";
-                msgDiv.innerHTML = finalAnswer;
-                
-                chatBox.appendChild(msgDiv);
-                scrollToBottom();
-            }, 1000); // 1 second thinking time
+                printBotMessage(`<div class="opacity-70 text-sm mb-2 pb-2 border-b border-purple-500/30">` + item.q + `</div><strong>` + item.a + `</strong>` + uiText[currentLang].anythingElse);
+            }, 600);
+        };
+
+        function printBotMessage(htmlContent) {
+            const chatBox = document.getElementById('chat-box');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = "message bot-msg p-5 rounded-2xl self-start max-w-[95%] sm:max-w-[85%] shadow-md text-lg leading-relaxed";
+            if(currentLang === 'ar') {
+                msgDiv.classList.add('rounded-tr-sm');
+            } else {
+                msgDiv.classList.add('rounded-tl-sm');
+            }
+            msgDiv.innerHTML = htmlContent;
+            chatBox.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        function processAndRespond(userQuery) {
+            const typingDiv = showThinking();
+            let query = userQuery.toLowerCase().trim();
+
+            setTimeout(() => {
+                typingDiv.remove();
+
+                let queryWords = query.split(" ").filter(w => w.length > 2);
+                if(queryWords.length === 0) queryWords = [query]; 
+
+                let matches = [];
+
+                for (let i = 0; i < botKnowledge.length; i++) {
+                    let score = 0;
+                    let qText = botKnowledge[i].q.toLowerCase();
+                    
+                    for (let word of queryWords) {
+                        if (qText.includes(word)) score += 1;
+                    }
+                    if (score > 0) {
+                        matches.push({ index: i, score: score, item: botKnowledge[i] });
+                    }
+                }
+
+                matches.sort((a, b) => b.score - a.score);
+
+                if (matches.length === 0) {
+                    printBotMessage(uiText[currentLang].notFound);
+                } 
+                else if (matches.length === 1 || matches[0].score > matches[1]?.score + 1) {
+                    let item = matches[0].item;
+                    printBotMessage(`<div class="opacity-70 text-sm mb-2 pb-2 border-b border-purple-500/30">` + item.q + `</div><strong>` + item.a + `</strong>` + uiText[currentLang].anythingElse);
+                } 
+                else {
+                    let topMatches = matches.slice(0, 4); 
+                    let optionsHtml = `<p class="mb-3 font-bold">${uiText[currentLang].multipleFound}</p><div class="flex flex-col gap-2">`;
+                    
+                    for (let match of topMatches) {
+                        optionsHtml += `<button onclick="forceAnswer(${match.index})" class="option-button text-right p-3 rounded-xl text-md cursor-pointer transition-all shadow-sm">${match.item.q}</button>`;
+                    }
+                    optionsHtml += `</div>`;
+                    
+                    printBotMessage(optionsHtml);
+                }
+
+            }, 800); 
         }
 
         function handleSend() {
