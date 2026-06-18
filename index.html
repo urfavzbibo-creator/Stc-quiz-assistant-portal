@@ -84,6 +84,9 @@
         
         .send-btn-neon { background-color: var(--stc-purple); box-shadow: var(--shadow-neon); transition: all 0.3s; }
         .send-btn-neon:hover:not(:disabled) { box-shadow: 0 0 20px rgba(168, 85, 247, 0.9); background-color: #6b21a8; }
+        
+        .live-indicator { width: 10px; height: 10px; background-color: #ef4444; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px #ef4444; animation: pulseRed 1.5s infinite; }
+        @keyframes pulseRed { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
     </style>
 </head>
 <body class="flex flex-col h-screen" onload="initApp()">
@@ -103,17 +106,14 @@
             <button onclick="showFlowSelection()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-blue-400 transition hover:scale-105" title="Home / Change Quiz">
                 <i class="fa-solid fa-house"></i>
             </button>
-            <button onclick="toggleAdmin()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-purple-400 transition hover:scale-105" title="Admin Analytics">
-                <i class="fa-solid fa-chart-pie"></i>
+            <button onclick="toggleAdmin()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-purple-400 transition hover:scale-105" title="Admin Dashboard">
+                <i class="fa-solid fa-satellite-dish"></i>
             </button>
             <button onclick="toggleQuizMode()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-green-400 transition hover:scale-105" title="Test Me" id="quiz-btn" disabled style="opacity: 0.5;">
                 <i class="fa-solid fa-graduation-cap"></i>
             </button>
             <button onclick="toggleTheme()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-yellow-400 transition hover:scale-105" id="theme-btn">
                 <i class="fa-solid fa-sun"></i>
-            </button>
-            <button onclick="toggleLanguage()" id="lang-btn" class="hidden sm:block pill-btn text-sm">
-                English
             </button>
         </div>
     </header>
@@ -131,31 +131,48 @@
             </div>
         </div>
 
+        <!-- NEW ADVANCED ADMIN DASHBOARD -->
         <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4">
-            <div class="admin-panel rounded-2xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
-                <div class="flex justify-between items-center mb-6 border-b pb-2 border-purple-800">
-                    <h2 class="text-2xl font-bold text-purple-400" style="text-shadow: 0 0 10px rgba(168,85,247,0.5);"><i class="fa-solid fa-chart-line mr-2"></i> Systems Prototype Analytics</h2>
+            <div class="admin-panel rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] flex flex-col">
+                <div class="flex justify-between items-center mb-4 border-b pb-2 border-purple-800">
+                    <h2 class="text-2xl font-bold text-purple-400" style="text-shadow: 0 0 10px rgba(168,85,247,0.5);">
+                        <i class="fa-solid fa-server mr-2"></i> Live Admin Terminal <span class="live-indicator ml-2"></span>
+                    </h2>
                     <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
                 </div>
-                <div class="grid grid-cols-3 gap-4 mb-6">
+                
+                <p class="text-xs text-yellow-300 mb-4 bg-yellow-900/30 p-2 rounded border border-yellow-700/50">
+                    <i class="fa-solid fa-triangle-exclamation"></i> <strong>Admin Note:</strong> This is a frontend prototype. To track other network users in real-time across different devices, you must connect this UI to a Backend Database (e.g. Firebase).
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div class="bg-gray-900 border border-purple-800 p-4 rounded-xl text-center shadow-inner">
-                        <p class="text-sm text-gray-400">Total Queries</p>
+                        <p class="text-sm text-gray-400">Total Local Queries</p>
                         <p class="text-3xl font-bold text-white" id="stat-total">0</p>
                     </div>
                     <div class="bg-gray-900 border border-purple-800 p-4 rounded-xl text-center shadow-inner">
-                        <p class="text-sm text-gray-400">Success Rate</p>
+                        <p class="text-sm text-gray-400">Quiz Accuracy</p>
                         <p class="text-3xl font-bold text-green-400" id="stat-success" style="text-shadow: 0 0 10px rgba(74,222,128,0.5);">0%</p>
                     </div>
                     <div class="bg-gray-900 border border-purple-800 p-4 rounded-xl text-center shadow-inner">
-                        <p class="text-sm text-gray-400">Failed Queries</p>
+                        <p class="text-sm text-gray-400">Failed Searches / Errors</p>
                         <p class="text-3xl font-bold text-red-400" id="stat-failed" style="text-shadow: 0 0 10px rgba(248,113,113,0.5);">0</p>
                     </div>
                 </div>
-                <div>
-                    <h3 class="font-bold text-gray-300 mb-2">Recent Search Logs:</h3>
-                    <ul id="analytics-log" class="bg-gray-900 border border-purple-900 rounded-xl p-4 text-sm text-gray-300 flex flex-col gap-2 max-h-60 overflow-y-auto">
-                        <li>No data yet...</li>
-                    </ul>
+
+                <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+                    <div class="flex flex-col overflow-hidden">
+                        <h3 class="font-bold text-gray-300 mb-2"><i class="fa-solid fa-magnifying-glass"></i> Live Search Feed:</h3>
+                        <ul id="analytics-log" class="bg-gray-900 border border-purple-900 rounded-xl p-4 text-sm text-gray-300 flex flex-col gap-2 overflow-y-auto flex-grow h-48">
+                            <li class="opacity-50 italic">Waiting for incoming queries...</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col overflow-hidden">
+                        <h3 class="font-bold text-red-400 mb-2"><i class="fa-solid fa-bug"></i> Error & Network Log:</h3>
+                        <ul id="error-log" class="bg-gray-900 border border-red-900/50 rounded-xl p-4 text-sm text-gray-300 flex flex-col gap-2 overflow-y-auto flex-grow h-48">
+                            <li class="opacity-50 italic">System stable. No errors.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -335,7 +352,8 @@
         let currentQuizItem = null;
         let quizScore = 0;
         let quizAttempts = 0;
-        let analytics = { total: 0, hits: 0, misses: 0, logs: [] };
+        
+        let analytics = { total: 0, hits: 0, misses: 0, logs: [], errors: [] };
 
         const uiText = {
             ar: {
@@ -352,23 +370,17 @@
                 useOptions: "يرجى اختيار إحدى الإجابات من الخيارات أعلاه للتقدم في الاختبار.",
                 yesReply: "حيّاك الله يا بطل 😎✨<br><br>يلا نبدأ، قطّ سؤالك وأنا بالخدمة 💜<br><br>أي استفسار عندك لا يردك إلا الكيبورد 😆👌<br><br>اكتب سؤالك الحين، وياك نروح أبعد.",
                 noReply: "نورتنا يا الغالي 🌟💜<br><br>إذا عندك أي استفسار ثاني لا تتردد، إحنا بالخدمة دائمًا 👌<br><br>سعدنا بتواصلك، وياك نروح أبعد 🚀✨"
-            },
-            en: {
-                greeting: "🔥 Welcome to STC Quiz Assistance!<br><br>Please select the quiz flow you want to take:",
-                flowSelected: "🔥 Welcome!<br><br>Ask any question you have in mind or type <strong>(quiz)</strong> and let's start training for the upcoming quizzes.<br><br>Ready to get Full Marks?",
-                comingSoon: "🚧 Coming Soon... The Fiber flow will be available shortly! 🚀",
-                placeholder: "Type your question or keyword here...",
-                send: "Send",
-                notFound: "Sorry, I couldn't find an exact match. Please clarify your inquiry or question.",
-                multipleFound: "I found multiple questions related to your search. Please choose one:",
-                anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--neon-purple);'>Is there anything else I can help you with? 😊</span>",
-                quizStart: "🎓 <strong style='color: var(--neon-purple);'>Multiple Choice Quiz Started!</strong><br><br>Here is your first question:",
-                quizEnd: "Quiz ended. Back to normal assistant mode! 🚀",
-                useOptions: "Please select an answer from the multiple choice options above.",
-                yesReply: "حيّاك الله يا بطل 😎✨<br><br>يلا نبدأ، قطّ سؤالك وأنا بالخدمة 💜<br><br>أي استفسار عندك لا يردك إلا الكيبورد 😆👌<br><br>اكتب سؤالك الحين، وياك نروح أبعد.",
-                noReply: "نورتنا يا الغالي 🌟💜<br><br>إذا عندك أي استفسار ثاني لا تتردد، إحنا بالخدمة دائمًا 👌<br><br>سعدنا بتواصلك، وياك نروح أبعد 🚀✨"
             }
         };
+
+        // --- GENERAL CHIT CHAT DICTIONARY ---
+        const chitChatDict = [
+            { words: ['شلونك', 'كيفك', 'how are you', 'شخبارك', 'كيف الحال', 'how r u', 'howru', 'عامل ايه'], reply: 'بخير الله يسلمك دامك بخير! جاهز نكسر الدنيا بالكويز؟ 😎🔥' },
+            { words: ['يعطيك العافية', 'شكرا', 'مشكور', 'thanks', 'thank you', 'تسلم', 'thx', 'عفوا'], reply: 'يعافيك ربي يا غالي! بالخدمة دايماً 💜✨' },
+            { words: ['حلو', 'بطل', 'كفو', 'عاش', 'nice', 'good', 'awesome', 'great', 'ممتاز', 'perfect'], reply: 'أنت الأحلى! إحنا هنا عشان نسهل عليك.. وياك نروح أبعد 🚀' },
+            { words: ['السلام عليكم', 'هلا', 'مرحبا', 'hello', 'hi', 'hey', 'صباح الخير', 'مساء الخير'], reply: 'يا هلا وغلا! منورنا، آمرني وش سؤالك اليوم؟ 🌟' },
+            { words: ['احبك', 'أحبك', 'love you', 'احلى بوت'], reply: 'حبتك العافية! 💜 فداك، بس ركز بالكويز الحين 😆' }
+        ];
 
         function initApp() {
             const btn = document.getElementById('theme-btn');
@@ -387,7 +399,7 @@
             document.getElementById('quiz-btn').disabled = true;
             document.getElementById('quiz-btn').style.opacity = "0.5";
             
-            printBotMessage(uiText[currentLang].greeting, false);
+            printBotMessage(uiText['ar'].greeting, false);
 
             const optionsHtml = `
                 <div class="flex flex-wrap gap-3 mt-3 justify-center sm:justify-start">
@@ -408,7 +420,7 @@
             if (flowName === 'Fiber') {
                 setTimeout(() => {
                     typingDiv.remove();
-                    printBotMessage(uiText[currentLang].comingSoon, false);
+                    printBotMessage(uiText['ar'].comingSoon, false);
                 }, 800);
                 return; 
             }
@@ -426,7 +438,7 @@
             
             setTimeout(() => {
                 typingDiv.remove();
-                printBotMessage(uiText[currentLang].flowSelected, false);
+                printBotMessage(uiText['ar'].flowSelected, false);
             }, 800);
         }
 
@@ -444,15 +456,7 @@
         }
 
         function toggleLanguage() {
-            currentLang = currentLang === 'ar' ? 'en' : 'ar';
-            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-            document.documentElement.lang = currentLang;
-            
-            document.getElementById('lang-btn').innerText = currentLang === 'ar' ? 'English' : 'عربي';
-            document.getElementById('user-input').placeholder = uiText[currentLang].placeholder;
-            document.getElementById('send-text').innerText = uiText[currentLang].send;
-            
-            showFlowSelection();
+            alert("This prototype focuses on the primary Arabic structure currently. Dual-language full translation is a work in progress.");
         }
 
         function scrollToBottom() {
@@ -463,8 +467,7 @@
         function addUserMessage(text) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
-            msgDiv.className = "message user-msg p-4 rounded-2xl rounded-tl-sm self-end max-w-[90%] sm:max-w-[80%] shadow-md leading-relaxed text-lg";
-            if(currentLang === 'ar') msgDiv.classList.replace('rounded-tl-sm', 'rounded-tr-sm');
+            msgDiv.className = "message user-msg p-4 rounded-2xl rounded-tr-sm self-end max-w-[90%] sm:max-w-[80%] shadow-md leading-relaxed text-lg";
             msgDiv.innerText = text;
             chatBox.appendChild(msgDiv);
             scrollToBottom();
@@ -474,9 +477,7 @@
             const chatBox = document.getElementById('chat-box');
             const typingDiv = document.createElement('div');
             typingDiv.id = "thinking-indicator";
-            typingDiv.className = "message bot-msg p-4 rounded-2xl shadow-md typing-indicator";
-            if(currentLang === 'ar') typingDiv.classList.add('self-start', 'rounded-tr-sm');
-            else typingDiv.classList.add('self-start', 'rounded-tl-sm');
+            typingDiv.className = "message bot-msg p-4 rounded-2xl shadow-md typing-indicator self-start rounded-tr-sm";
             typingDiv.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
             chatBox.appendChild(typingDiv);
             scrollToBottom();
@@ -486,15 +487,13 @@
         function printBotMessage(htmlContent, appendHelp = true) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
-            msgDiv.className = "message bot-msg p-5 rounded-2xl self-start max-w-[95%] sm:max-w-[85%] text-lg leading-relaxed w-full";
-            if(currentLang === 'ar') msgDiv.classList.add('rounded-tr-sm');
-            else msgDiv.classList.add('rounded-tl-sm');
-            
-            msgDiv.innerHTML = htmlContent + (appendHelp ? uiText[currentLang].anythingElse : "");
+            msgDiv.className = "message bot-msg p-5 rounded-2xl self-start max-w-[95%] sm:max-w-[85%] text-lg leading-relaxed w-full rounded-tr-sm";
+            msgDiv.innerHTML = htmlContent + (appendHelp ? uiText['ar'].anythingElse : "");
             chatBox.appendChild(msgDiv);
             scrollToBottom();
         }
 
+        // --- ADMIN DASHBOARD ---
         function toggleAdmin() {
             const modal = document.getElementById('admin-modal');
             if (modal.classList.contains('hidden')) {
@@ -507,13 +506,25 @@
                 if(analytics.logs.length > 0) {
                     logUl.innerHTML = analytics.logs.map(log => 
                         `<li class="border-b border-purple-900 pb-2 mb-2 flex items-center">
-                            <span class="${log.found ? 'text-green-400' : 'text-red-400'} mr-3 text-lg" style="text-shadow: 0 0 5px currentColor;">
-                                <i class="fa-solid ${log.found ? 'fa-check' : 'fa-xmark'}"></i>
+                            <span class="${log.found ? 'text-green-400' : 'text-yellow-400'} mr-3 text-lg" style="text-shadow: 0 0 5px currentColor;">
+                                <i class="fa-solid ${log.found ? 'fa-check' : 'fa-magnifying-glass'}"></i>
                             </span>
-                            <span class="text-purple-200">"${log.query}"</span>
+                            <span class="text-purple-200">Searched: "${log.query}"</span>
+                        </li>`
+                    ).join('');
+                } else {
+                    logUl.innerHTML = '<li class="opacity-50 italic">Waiting for incoming queries...</li>';
+                }
+
+                const errUl = document.getElementById('error-log');
+                if(analytics.errors.length > 0) {
+                    errUl.innerHTML = analytics.errors.map(err => 
+                        `<li class="border-b border-red-900/50 pb-2 mb-2 flex items-center text-red-300">
+                            <i class="fa-solid fa-triangle-exclamation mr-2"></i> ${err}
                         </li>`
                     ).join('');
                 }
+
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
             } else {
@@ -524,11 +535,18 @@
 
         function logAnalytics(query, found) {
             analytics.total++;
-            if(found) analytics.hits++; else analytics.misses++;
+            if(found) analytics.hits++; 
             analytics.logs.unshift({query: query, found: found}); 
             if(analytics.logs.length > 50) analytics.logs.pop(); 
         }
 
+        function logError(msg) {
+            analytics.misses++;
+            analytics.errors.unshift(msg);
+            if(analytics.errors.length > 50) analytics.errors.pop();
+        }
+
+        // --- GROUPED QUIZ MODE ---
         function toggleQuizMode() {
             if(botKnowledge.length === 0) return; 
             isQuizMode = !isQuizMode;
@@ -538,11 +556,11 @@
             
             if(isQuizMode) {
                 quizScore = 0; quizAttempts = 0;
-                printBotMessage(uiText[currentLang].quizStart, false);
+                printBotMessage(uiText['ar'].quizStart, false);
                 askNextMCQ();
             } else {
                 currentQuizItem = null;
-                printBotMessage(uiText[currentLang].quizEnd, false);
+                printBotMessage(uiText['ar'].quizEnd, false);
             }
         }
 
@@ -550,16 +568,32 @@
             const randomIndex = Math.floor(Math.random() * botKnowledge.length);
             currentQuizItem = botKnowledge[randomIndex];
             
+            // SMART GROUPING: Try to find similar questions based on common words
+            let questionWords = currentQuizItem.q.split(' ').filter(w => w.length > 4);
+            let similarItems = botKnowledge.filter(item => {
+                return questionWords.some(qw => item.q.includes(qw)) && item.a !== currentQuizItem.a;
+            });
+
             let choices = [currentQuizItem.a];
-            let attemptsToFindWrong = 0;
+            let attempts = 0;
             
-            while(choices.length < 4 && attemptsToFindWrong < 50) {
+            // First fill choices with similar answers if available
+            while(choices.length < 4 && similarItems.length > 0 && attempts < 20) {
+                let rIdx = Math.floor(Math.random() * similarItems.length);
+                let wAns = similarItems[rIdx].a;
+                if(!choices.includes(wAns) && wAns.length > 1) { choices.push(wAns); }
+                attempts++;
+            }
+
+            // Fallback to random if not enough similar ones found
+            attempts = 0;
+            while(choices.length < 4 && attempts < 50) {
                 let randomWrongIndex = Math.floor(Math.random() * botKnowledge.length);
                 let wrongAnswer = botKnowledge[randomWrongIndex].a;
                 if(!choices.includes(wrongAnswer) && wrongAnswer.length > 1) {
                     choices.push(wrongAnswer);
                 }
-                attemptsToFindWrong++;
+                attempts++;
             }
             
             choices.sort(() => Math.random() - 0.5);
@@ -574,9 +608,7 @@
             }
             quizHtml += `</div>`;
 
-            setTimeout(() => {
-                printBotMessage(quizHtml, false);
-            }, 800);
+            setTimeout(() => { printBotMessage(quizHtml, false); }, 800);
         }
 
         window.handleMCQSelection = function(selectedText, isCorrect) {
@@ -614,52 +646,47 @@
             const typingDiv = showThinking();
             let query = userQuery.toLowerCase().trim();
             
-            // --- Conversational Flow Intercept ---
-            const yesWords = ['yes', 'yeah', 'yep', 'y', 'sure', 'of course', 'نعم', 'اي', 'إي', 'أكيد', 'اكيد', 'يلا', 'جاهز', 'يب', 'اي نعم', 'اكيد جاهز'];
-            const noWords = ['no', 'nope', 'n', 'لا', 'كلا', 'سلامتك', 'يعطيك العافيه', 'شكرا', 'لا شكرا', 'thanks', 'no thanks', 'يعطيك العافية', 'مو الحين'];
-            const quizWords = ['test', 'quiz', 'اختبار', 'كويز', 'امتحان', 'تست', 'جربني', 'اختبرني'];
+            // --- 1. CHIT CHAT INTERCEPTOR ---
+            for(let chat of chitChatDict) {
+                if(chat.words.some(w => query.includes(w))) {
+                    setTimeout(() => { typingDiv.remove(); printBotMessage(chat.reply, false); }, 800);
+                    return;
+                }
+            }
 
-            // Quiz Trigger
+            // --- 2. YES/NO INTERCEPTOR ---
+            const yesWords = ['yes', 'yeah', 'yep', 'y', 'sure', 'of course', 'نعم', 'اي', 'إي', 'أكيد', 'اكيد', 'يلا', 'جاهز', 'يب', 'اي نعم', 'اكيد جاهز'];
+            const noWords = ['no', 'nope', 'n', 'لا', 'كلا', 'سلامتك', 'مو الحين'];
+            if (yesWords.includes(query)) {
+                setTimeout(() => { typingDiv.remove(); printBotMessage(uiText['ar'].yesReply, false); }, 800);
+                return;
+            }
+            if (noWords.includes(query)) {
+                setTimeout(() => { typingDiv.remove(); printBotMessage(uiText['ar'].noReply, false); }, 800);
+                return;
+            }
+
+            // --- 3. QUIZ TRIGGER ---
+            const quizWords = ['test', 'quiz', 'اختبار', 'كويز', 'امتحان', 'تست', 'جربني', 'اختبرني'];
             if (quizWords.some(w => query.includes(w))) {
                 setTimeout(() => {
                     typingDiv.remove();
-                    if (!isQuizMode) {
-                        toggleQuizMode();
-                    } else {
-                        printBotMessage(uiText[currentLang].useOptions, false);
-                    }
+                    if (!isQuizMode) toggleQuizMode();
+                    else printBotMessage(uiText['ar'].useOptions, false);
                 }, 800);
                 return;
             }
 
-            if (yesWords.includes(query)) {
-                setTimeout(() => {
-                    typingDiv.remove();
-                    printBotMessage(uiText[currentLang].yesReply, false);
-                }, 800);
-                return;
-            }
+            // --- 4. SYNONYMS ---
+            if (query.includes("زيد") || query.includes("zeed")) query += " زييد";
 
-            if (noWords.includes(query)) {
-                setTimeout(() => {
-                    typingDiv.remove();
-                    printBotMessage(uiText[currentLang].noReply, false);
-                }, 800);
-                return;
-            }
-
-            if (query.includes("زيد") || query.includes("zeed")) {
-                query += " زييد";
-            }
-
+            // --- 5. ACTUAL SEARCH ---
             setTimeout(() => {
                 typingDiv.remove();
-
                 let queryWords = query.split(" ").filter(w => w.length > 2);
                 if(queryWords.length === 0) queryWords = [query]; 
 
                 let matches = [];
-
                 for (let i = 0; i < botKnowledge.length; i++) {
                     let score = 0;
                     let qText = botKnowledge[i].q.toLowerCase();
@@ -673,7 +700,8 @@
 
                 if (matches.length === 0) {
                     logAnalytics(query, false);
-                    printBotMessage(uiText[currentLang].notFound, false);
+                    logError(`User searched for '${query}' but found zero matches.`);
+                    printBotMessage(uiText['ar'].notFound, false);
                 } 
                 else if (matches.length === 1 || matches[0].score > matches[1]?.score + 1) {
                     logAnalytics(query, true);
@@ -683,14 +711,13 @@
                 else {
                     logAnalytics(query, true);
                     let topMatches = matches.slice(0, 4); 
-                    let optionsHtml = `<p class="mb-3 font-bold text-purple-300">${uiText[currentLang].multipleFound}</p><div class="flex flex-col gap-3">`;
+                    let optionsHtml = `<p class="mb-3 font-bold text-purple-300">${uiText['ar'].multipleFound}</p><div class="flex flex-col gap-3">`;
                     for (let match of topMatches) {
                         optionsHtml += `<button onclick="forceAnswer(${match.index})" class="pill-btn w-full text-right p-3 rounded-xl text-md cursor-pointer">${match.item.q}</button>`;
                     }
                     optionsHtml += `</div>`;
                     printBotMessage(optionsHtml, false);
                 }
-
             }, 800); 
         }
 
@@ -702,11 +729,8 @@
             addUserMessage(text);
             inputField.value = '';
 
-            if(isQuizMode) {
-                printBotMessage(uiText[currentLang].useOptions, false);
-            } else {
-                processAndRespond(text);
-            }
+            if(isQuizMode) printBotMessage(uiText['ar'].useOptions, false);
+            else processAndRespond(text);
         }
 
         document.getElementById('user-input').addEventListener('keypress', function(e) {
