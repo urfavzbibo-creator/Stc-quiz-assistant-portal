@@ -91,11 +91,10 @@
 </head>
 <body class="flex flex-col h-screen" onload="initApp()">
 
-    <!-- SECURE LOGIN OVERLAY -->
     <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md transition-opacity duration-500">
         <div class="bg-[#090014] border-2 border-purple-600 rounded-2xl p-8 max-w-md w-full mx-4 shadow-[0_0_30px_rgba(168,85,247,0.4)] flex flex-col gap-6 items-center text-center">
             <div class="h-20 w-24 bg-white rounded-xl flex items-center justify-center overflow-hidden border border-purple-500/50 mb-2 p-2">
-                <img src="image_193da6.jpg" alt="STC Quiz Logo" class="h-full object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert');">
+                <img src="image_9004c3.jpg" alt="STC Quiz Logo" class="h-full object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert');">
             </div>
             
             <div>
@@ -118,12 +117,11 @@
         </div>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
     <div id="main-app" class="flex flex-col h-screen opacity-0 transition-opacity duration-700 pointer-events-none">
         <header class="header-bg p-4 flex justify-between items-center transition-colors duration-300">
             <div class="flex items-center gap-4">
                 <div id="logo-container" class="h-12 rounded-xl bg-white flex items-center justify-center shadow-lg overflow-hidden px-3 transition-colors duration-300 border border-purple-500/50">
-                    <img src="image_193da6.jpg" alt="STC Quiz Logo" class="h-10 object-contain" 
+                    <img src="image_9004c3.jpg" alt="STC Quiz Logo" class="h-10 object-contain" 
                          onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert'); document.getElementById('logo-container').style.backgroundColor='#4F008C';">
                 </div>
                 <div>
@@ -160,7 +158,6 @@
                 </div>
             </div>
 
-            <!-- LIVE ADMIN DASHBOARD -->
             <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4">
                 <div class="admin-panel rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] flex flex-col">
                     <div class="flex justify-between items-center mb-4 border-b pb-2 border-purple-800">
@@ -215,25 +212,17 @@
             const pass = document.getElementById('login-pass').value.trim();
             
             if (user === 'zbibo' && pass === 'Stc123') {
-                // Hide Error
                 document.getElementById('login-error').classList.add('hidden');
-                
-                // Fade out overlay
                 const overlay = document.getElementById('login-overlay');
                 overlay.style.opacity = '0';
-                
                 setTimeout(() => {
                     overlay.style.display = 'none';
-                    // Reveal Main App
                     const mainApp = document.getElementById('main-app');
                     mainApp.classList.remove('opacity-0', 'pointer-events-none');
                     document.body.style.overflow = 'auto';
-                    
-                    // Initialize the assistant flow
                     showFlowSelection();
                 }, 500);
             } else {
-                // Show Error
                 document.getElementById('login-error').classList.remove('hidden');
             }
         }
@@ -422,7 +411,7 @@
                 comingSoon: "🚧 قريباً... مسار الفايبر (Fiber) سيكون متاحاً قريباً! 🚀",
                 placeholder: "اكتب سؤالك أو كلمة مفتاحية هنا...",
                 send: "إرسال",
-                notFound: "عذراً، لم أتمكن من العثور على إجابة دقيقة. يرجى توضيح استفسارك أو إعادة صياغة السؤال.",
+                notFound: "عذراً يا بطل، ما لقيت إجابة دقيقة في قاعدة بياناتي. ياليت توضح سؤالك أكثر أو تصيغه بطريقة ثانية عشان أقدر أساعدك! 💜",
                 multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
                 anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--neon-purple);'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>",
                 quizStart: "🎓 <strong style='color: var(--neon-purple);'>بدأ الاختبار المتعدد الخيارات!</strong><br><br>إليك السؤال الأول:",
@@ -469,7 +458,7 @@
         function initApp() {
             const btn = document.getElementById('theme-btn');
             btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            // Wait for user login instead of calling showFlowSelection immediately
+            // Wait for user login
         }
 
         function showFlowSelection() {
@@ -648,6 +637,7 @@
             const randomIndex = Math.floor(Math.random() * botKnowledge.length);
             currentQuizItem = botKnowledge[randomIndex];
             
+            // SMART GROUPING: Filter to find similar questions but prevent duplicate similar strings
             let questionWords = currentQuizItem.q.split(' ').filter(w => w.length > 4);
             let similarItems = botKnowledge.filter(item => {
                 return questionWords.some(qw => item.q.includes(qw)) && item.a !== currentQuizItem.a;
@@ -656,19 +646,30 @@
             let choices = [currentQuizItem.a];
             let attempts = 0;
             
-            while(choices.length < 4 && similarItems.length > 0 && attempts < 20) {
+            // Phase 1: Try to fill with similar context answers
+            while(choices.length < 4 && similarItems.length > 0 && attempts < 50) {
                 let rIdx = Math.floor(Math.random() * similarItems.length);
                 let wAns = similarItems[rIdx].a;
-                if(!choices.includes(wAns) && wAns.length > 1) { choices.push(wAns); }
+                
+                // CRITICAL FIX: Ensure the new answer isn't just a slight variation of an already picked choice
+                let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
+                
+                if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) { 
+                    choices.push(wAns); 
+                }
                 attempts++;
             }
 
+            // Phase 2: Fallback to random unique answers
             attempts = 0;
-            while(choices.length < 4 && attempts < 50) {
+            while(choices.length < 4 && attempts < 100) {
                 let randomWrongIndex = Math.floor(Math.random() * botKnowledge.length);
-                let wrongAnswer = botKnowledge[randomWrongIndex].a;
-                if(!choices.includes(wrongAnswer) && wrongAnswer.length > 1) {
-                    choices.push(wrongAnswer);
+                let wAns = botKnowledge[randomWrongIndex].a;
+                
+                let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
+                
+                if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) {
+                    choices.push(wAns);
                 }
                 attempts++;
             }
