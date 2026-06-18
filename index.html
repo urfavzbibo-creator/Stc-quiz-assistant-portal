@@ -10,7 +10,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
         
         :root {
-            /* Dark Mode (Default) Variables */
             --bg-main: #0A0E23;
             --bg-chat-container: #111827;
             --bg-input: #1F2937;
@@ -26,7 +25,6 @@
         }
 
         .light-mode {
-            /* Light Mode Variables */
             --bg-main: #f3f4f6;
             --bg-chat-container: #ffffff;
             --bg-input: #f9fafb;
@@ -43,82 +41,53 @@
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
+            background-color: var(--bg-main, #0A0E23);
+            color: var(--text-main, #ffffff);
             transition: background-color 0.4s ease, color 0.4s ease;
             margin: 0;
             padding: 0;
         }
-
-        .header-bg { background-color: var(--bg-chat-container); border-bottom: 4px solid var(--stc-purple); }
-        .chat-wrapper { background-color: var(--bg-chat-container); border-color: var(--border-color); }
-        .input-area { background-color: var(--bg-chat-container); border-color: var(--border-color); }
-        .input-box { background-color: var(--bg-input); color: var(--text-main); border-color: var(--border-color); }
         
-        .bot-msg { background-color: var(--bot-bubble); color: var(--text-main); }
+        .header-bg { background-color: var(--bg-chat-container, #111827); border-bottom: 4px solid var(--stc-purple, #4F008C); }
+        .chat-wrapper { background-color: var(--bg-chat-container, #111827); border-color: var(--border-color, #374151); }
+        .input-area { background-color: var(--bg-chat-container, #111827); border-color: var(--border-color, #374151); }
+        .input-box { background-color: var(--bg-input, #1F2937); color: var(--text-main, #ffffff); border-color: var(--border-color, #374151); }
+        
+        .bot-msg { background-color: var(--bot-bubble, #4F008C); color: var(--text-main, #ffffff); }
         .light-mode .bot-msg { color: #1f2937; } 
         
-        .user-msg { background-color: var(--user-bubble); color: #ffffff; }
+        .user-msg { background-color: var(--user-bubble, #374151); color: #ffffff; }
 
         .option-button {
-            background-color: var(--option-btn);
-            color: var(--text-main);
-            border: 1px solid var(--stc-purple);
+            background-color: var(--option-btn, rgba(79, 0, 140, 0.3));
+            color: var(--text-main, #ffffff);
+            border: 1px solid var(--stc-purple, #4F008C);
             transition: all 0.2s ease;
         }
-        .option-button:hover {
-            background-color: var(--option-btn-hover);
-            transform: translateY(-2px);
-        }
-        .light-mode .option-button { color: var(--stc-purple); font-weight: 700; }
+        .option-button:hover { background-color: var(--option-btn-hover, rgba(79, 0, 140, 0.6)); transform: translateY(-2px); }
+        .light-mode .option-button { color: var(--stc-purple, #4F008C); font-weight: 700; }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--stc-purple); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--stc-purple, #4F008C); border-radius: 10px; }
 
         .chat-container { height: calc(100vh - 160px); scroll-behavior: smooth; }
-        
         .message { animation: fadeIn 0.4s ease-out forwards; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        .typing-indicator {
-            display: flex;
-            gap: 6px;
-            padding: 12px 16px;
-            align-items: center;
-            width: fit-content;
-        }
-        .dot {
-            width: 8px;
-            height: 8px;
-            background-color: currentColor;
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
-            40% { transform: scale(1); opacity: 1; }
-        }
+        .typing-indicator { display: flex; gap: 6px; padding: 12px 16px; align-items: center; width: fit-content; }
+        .dot { width: 8px; height: 8px; background-color: currentColor; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .dot:nth-child(1) { animation-delay: -0.32s; } .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
         
-        .stc-logo-box {
-            background-color: #4F008C;
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-        }
+        .stc-logo-box { background-color: #4F008C; width: 45px; height: 45px; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 5px; }
+
+        #admin-modal { background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .admin-panel { background-color: var(--bg-chat-container, #111827); border: 2px solid var(--stc-purple, #4F008C); }
     </style>
 </head>
-<body class="flex flex-col h-screen">
+<body class="flex flex-col h-screen" onload="initApp()">
 
     <header class="header-bg shadow-lg p-4 flex justify-between items-center transition-colors duration-300">
         <div class="flex items-center gap-4">
@@ -126,12 +95,22 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg" alt="stc Kuwait Logo" class="h-full object-contain filter brightness-0 invert">
             </div>
             <div>
-                <h1 class="text-xl font-bold" style="color: var(--stc-purple);">STC Quiz Assistance</h1>
-                <p class="text-xs font-bold text-muted" style="color: var(--text-muted);">المساعد الذكي</p>
+                <h1 class="text-xl font-bold" style="color: var(--stc-purple, #4F008C);">STC Quiz Assistance</h1>
+                <p class="text-xs font-bold text-muted" id="mode-subtitle">المساعد الذكي</p>
             </div>
         </div>
         <div class="flex gap-2">
-            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 transition hover:scale-105" id="theme-btn">
+            <!-- Home / Change Flow Button -->
+            <button onclick="showFlowSelection()" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-blue-500 transition hover:scale-105 shadow-md" title="Home / Change Quiz">
+                <i class="fa-solid fa-house"></i>
+            </button>
+            <button onclick="toggleAdmin()" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-purple-600 transition hover:scale-105 shadow-md" title="Admin Analytics">
+                <i class="fa-solid fa-chart-pie"></i>
+            </button>
+            <button onclick="toggleQuizMode()" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-green-500 transition hover:scale-105 shadow-md" title="Test Me" id="quiz-btn" disabled style="opacity: 0.5;">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </button>
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 transition hover:scale-105 shadow-md" id="theme-btn">
                 <i class="fa-solid fa-moon"></i>
             </button>
             <button onclick="toggleLanguage()" id="lang-btn" class="hidden sm:block option-button px-4 py-2 rounded-lg font-bold shadow-md text-sm">
@@ -140,28 +119,55 @@
         </div>
     </header>
 
-    <main class="flex-grow flex justify-center p-2 sm:p-4">
+    <main class="flex-grow flex justify-center p-2 sm:p-4 relative">
         <div class="chat-wrapper w-full max-w-4xl rounded-2xl shadow-2xl border flex flex-col overflow-hidden transition-colors duration-300">
             <div id="chat-box" class="chat-container p-4 sm:p-6 overflow-y-auto flex flex-col gap-5">
-                <div class="message bot-msg p-5 rounded-2xl rounded-tr-sm self-start max-w-[95%] sm:max-w-[85%] shadow-md text-lg leading-relaxed">
-                    🔥 هلا وغلا في STC Quiz Assistance!<br><br>
-                    عندك سؤال بالكويز؟ لا تشيل هم 😎<br>
-                    اكتب سؤالك، وأنا بحاول أساعدك بأسرع وأوضح إجابة ممكنة. 🚀
-                </div>
+                <!-- Chat will be populated by JS -->
             </div>
             
             <div class="input-area p-4 border-t flex gap-3 items-center transition-colors duration-300">
-                <input type="text" id="user-input" class="input-box flex-grow border rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 transition text-lg" placeholder="اكتب سؤالك أو كلمة مفتاحية هنا...">
-                <button onclick="handleSend()" class="text-white px-6 sm:px-8 py-4 rounded-xl font-bold transition shadow-md active:scale-95 text-lg flex items-center gap-2" style="background-color: var(--stc-purple);">
+                <input type="text" id="user-input" class="input-box flex-grow border rounded-xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-purple-500 transition text-lg" placeholder="اكتب سؤالك أو كلمة مفتاحية هنا..." disabled>
+                <button onclick="handleSend()" id="send-btn" class="text-white px-6 sm:px-8 py-4 rounded-xl font-bold transition shadow-md active:scale-95 text-lg flex items-center gap-2" style="background-color: var(--stc-purple, #4F008C);" disabled>
                     <span class="hidden sm:inline" id="send-text">إرسال</span>
                     <i class="fa-solid fa-paper-plane rtl:rotate-180"></i>
                 </button>
             </div>
         </div>
+
+        <!-- Admin Analytics Modal -->
+        <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4">
+            <div class="admin-panel rounded-2xl p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto shadow-2xl">
+                <div class="flex justify-between items-center mb-6 border-b pb-2 border-gray-600">
+                    <h2 class="text-2xl font-bold text-purple-500"><i class="fa-solid fa-chart-line mr-2"></i> Systems Prototype Analytics</h2>
+                    <button onclick="toggleAdmin()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="bg-gray-800 p-4 rounded-xl text-center shadow-inner">
+                        <p class="text-sm text-gray-400">Total Queries</p>
+                        <p class="text-3xl font-bold text-white" id="stat-total">0</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-xl text-center shadow-inner">
+                        <p class="text-sm text-gray-400">Success Rate</p>
+                        <p class="text-3xl font-bold text-green-400" id="stat-success">0%</p>
+                    </div>
+                    <div class="bg-gray-800 p-4 rounded-xl text-center shadow-inner">
+                        <p class="text-sm text-gray-400">Failed Queries</p>
+                        <p class="text-3xl font-bold text-red-400" id="stat-failed">0</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-300 mb-2">Recent Search Logs:</h3>
+                    <ul id="analytics-log" class="bg-gray-800 rounded-xl p-4 text-sm text-gray-300 flex flex-col gap-2 max-h-60 overflow-y-auto">
+                        <li>No data yet...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
-        const botKnowledge = [
+        // Data Bank 1: The First 95 Questions (Flows 1, 2, 3)
+        const originalKnowledge = [
             {q: "ماذا تظهر حالة 'In progress' في نظام BSS؟", a: "المعاملة جارية"},
             {q: "ماذا يحصل عند استخدام كامل سعة الإنترنت في خدمة 'خليك ON'؟", a: "يتم تقليل السرعة إلى 256 كيلوبت"},
             {q: "ما هو رمز إلغاء الاشتراك الموحد الجديد لباقات الدفع المسبق؟", a: "إرسال ( D ) إلى (510)"},
@@ -252,32 +258,168 @@
             {q: "ما هي تكلفة خدمة FOZ للألعاب الإضافية على باقات Baity 5G؟", a: "5KD"},
             {q: "كيف يمكن للعميل الاستفسار عن استخدام الإنترنت لخطوط الدفع الآجل؟", a: "ارسل كود Q الى رقم 567"},
             {q: "ما هي خيارات الاشتراك المتاحة لخدمات بيتي 5G؟", a: "سنتان / 3 سنوات /18 شهرا"},
-            {q: "سياسة الاستخدام العادل الموجودة في باقة 15 KD للدفع الآجل للإنترنت هي:", a: "الأنترنت: غير محدود (استخدام عادل: 10 TB)"},
+            {q: "سياسة الاستخدام العادل الموجودة في باقة 15 KD للدفع الآجل للإنترنت هي:", a: "لأنترنت: غير محدود (استخدام عادل: 10 TB)"},
             {q: "يمكن للعملاء استخدام رصيد 8 د.ك في باقة 10 د.ك خلك-ON من أجل:", a: "جميع ما سبق"},
             {q: "الحصول على اشتراكين ترفيهيين مقابل Baity 5G يحق لعملاء؟", a: "6 أشهر"},
             {q: "ما هو خيار Auto Port-In (BSS system) ؟", a: "خيار يتيح تنفيذ عملية نقل الرقم فورًا دون انتظار موافقة الشركة المحوّل منها"},
             {q: "ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "ثلاث أشهر"}
         ];
 
+        // Data Bank 2: The 65 Telesales Questions (Flow 4)
+        const telesalesKnowledge = [
+            {q: "قواعد الحصول ع جهاز اضافي زييد", a: "كل ماسبق"},
+            {q: "الاجهزه التي تكون متوافقه مع ال ESIM هي", a: "Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20"},
+            {q: "في نظام BSS اجمالي الوقت المنقضي هو ل", a: "رقم الخط"},
+            {q: "عدد مرات استخدام اسم العميل", a: "ثلاث مرات واكثر"},
+            {q: "كيف يستطيع الموظف مشاهدة تاريخ المعاملات", a: "Requests"},
+            {q: "في تكلفة عقد الانهاء خانة نظره عامه تعني", a: "جميع ماسبق"},
+            {q: "كم مش راوتر يمكن للعميل الحصول عليه في عرض بيتنا 5 جي", a: "مش راوتر 3"},
+            {q: "مدة الانتظار المسموحه", a: "لايتعدى 30 ثانيه قابله للتجديد"},
+            {q: "يحصل العميل ع 100 دقيقه دوليه وخصم 50% ع 3 اضعاف عدد الدقائق الدوليه", a: "75"},
+            {q: "ترمز مقولة AGE ON NETWORK الى", a: "conection date"},
+            {q: "ماذا تعني GO BACK TO DASHBOARD", a: "العوده الى الصفحه الرئيسيه"},
+            {q: "من اجل عمل TRADE IN يجب ع العميل احضار", a: "الجهاز القديم"},
+            {q: "توفر باقة التميز 75 دينار للدفع الاجل", a: "رساله محليه 2000"},
+            {q: "يدعم جهاز ايفون 15 بلس شرائح الكترونيه بحد اقصى", a: "شرائح الكترونيه 20"},
+            {q: "كم سعة الانترنت في باقة 25 دك", a: "100 GB"},
+            {q: "اذا كانت المطالبه الاولى للعميل الاستبدال في DEVICE CARE فانه لايكون مؤهل للحصول على", a: "كل ماسبق"},
+            {q: "يمكن الاستفاده من عرض 10 دك راوتر المشاركه شريحتين من خلال مدة التزام ..... فقط", a: "شهر 24"},
+            {q: "ل100 قيقا مجاني لمواقع التواصل الاجتماعي مع باقات خلك اون غير متوفر مع الباقات التاليه", a: "35 KD"},
+            {q: "ماهي متطلبات تقديم مطالبه DEVICE CARE", a: "كل ماسبق"},
+            {q: "عند التسجيل في برنامج قطاف ع خط دفع اجل صوتي او انترنت يحصل العميل ع ..... نقطه ترحيبيه ؟", a: "100"},
+            {q: "خطوات تجديد عقد العميل", a: "شرح العرض بالتفصيل-التاكد ع العنوان-تلخيص العرض"},
+            {q: "اذا اردنا التاكد من اسم الموظف الذي اجرى معامله ع الخط علينا الانتقال الى", a: "Requests"},
+            {q: "وظيفة جهاز PLUME MESH هي", a: "توسيع نطاق التغطيه لاجهزة WIFI"},
+            {q: "يمكن استخدام المبلع المحصل من TRADE IN من اجل", a: "الفواتير المتاخره"},
+            {q: "يمكن للعملاء الحصول ع حزمه واحده فقط بعد شراء PACK3 من اجهزة PLUME MESH", a: "نعم"},
+            {q: "يساعدنا شريط البحث في العثور ع الملف الشخصي للعميل من خلال", a: "رقم البطاقه المدنيه"},
+            {q: "ماهي نوع الاجهزه المسموح بها عمل TRADE IN", a: "الهاتف المحمول / الجهاز اللوحي"},
+            {q: "في برنامج (BSS) يستطيع العميل الدفع عن طريق ؟", a: "Cash/Debit/Credit"},
+            {q: "وظيفة شعار STC في نظام BSS هي الانتقال الى", a: "DASHBOARD"},
+            {q: "اذا كان لدى العميل عرض اجهزه كومبو (اساسيه وثانويه ) هل يكون مؤهل لاعاده الجدوله", a: "لا"},
+            {q: "اثناء اضافة VAS يجب تحديد خيار اختيار الكل", a: "تعم"},
+            {q: "العميل يمكنه ان يحصل ع فتره تجريبيه لخدمة ( STC TV ) ؟", a: "7 Days"},
+            {q: "من هم فئة (Group A) في سياسة الائتمان وقواعد العمل ؟", a: "Kuwaiti/Non Kuwaiti/GCC/USA/UK/CAN"},
+            {q: "هل يستطيع عملاء STC للدفع الاجل استخدام خاصية الدفع من خلال نظام المساعده الالي", a: "نعم"},
+            {q: "عند التسجيل في برنامج قطاف ع خط دفع مسبق صوتي  يحصل العميل ع ..... نقطه ترحيبيه ؟", a: "10"},
+            {q: "اعادة الجدوله لجهاز ايفون 14 تعني", a: "التجديد المبكر"},
+            {q: "الصوره تدل ع انتهاء الصلاحيه", a: "انتهاء صلاحية البطاقه المدنيه"},
+            {q: "مدة الاستعداد للمكالمه", a: "اقل من 3 ثوان"},
+            {q: "اين يمكنك التحقق من رصيد العميل", a: "OVERVEIW"},
+            {q: "العروض الترويجيه والاعلاميه في نظره عامه على (BSS) تظهر حسب ؟", a: "تظهر حسب اهلية العميل"},
+            {q: "هل تخفيض باقة العميل مؤهل مع اعادة الجدوله", a: "لا"},
+            {q: "من اجل الحصول ع خط دفع اجل يجب الايكون عمر العميل اقل من", a: "21 سنه"},
+            {q: "كم مستخدم ع راوتر كات 7", a: "32"},
+            {q: "يمكن تفعيل خط جديد عن طريق اختيار", a: "ADD SERVICE"},
+            {q: "من اجل تغيير الباقه يجب ع العميل اختيار", a: "PREPAID PLAN/VAS/ADD NEW SERVICE"},
+            {q: "سيحصل عملاء باقة ال 40 الصوتيه ع GB….. انترنت اثناء التجوال ؟", a: "10 GB"},
+            {q: "الرسوم المتكرره في نظام (BSS) هي الرسوم الشهريه ؟", a: "صح"},
+            {q: "ماهي المدة من انتقال (Medium Risk Profile) الى (Low Risk Profile) في حال عدم انقطاع الخط؟", a: "شهر واحد"},
+            {q: "ماهي المدة من انتقال (High Risk Profile) الى (Medium Risk Profile) في حال عدم انقطاع الخط؟", a: "3شهور"},
+            {q: "اذا كان العميل لديه باقة انترنت مشتركه فأنه غير مؤهل للحصول ع شريحه انترنت مشتركه مع باقة 45 الصوتيه ؟", a: "نعم"},
+            {q: "الرسوم الاوليه في نظام BSS هي الرسوم الشهريه", a: "لا"},
+            {q: "يحصل العميل جودة الفيديو من باقة (Premium) لخدمة (STC TV) ؟", a: "4K"},
+            {q: "اي من الباقات الصوتيه تحمل صفة خلك دائما ع تواصل", a: "كل ماسبق"},
+            {q: "كم دقيقه دوليه في باقة ال 40 الصوتيه ؟", a: "ليس مماسبق"},
+            {q: "كيف تتم التعبئه في برنامج ( BSS ) ؟", a: "Service Request Button / Recharge"},
+            {q: "يحصل عميل تيربونت ع امتار كيبل ..... مجانيه لاول مره ؟", a: "25متر"},
+            {q: "يدعم جهاز سامسونق ZFLIP5 شرائح الكترونيه بعدد", a: "5 شرائح"},
+            {q: "يظهر هذا التنبيه عندما نحاول", a: "حذف اي خدمه"},
+            {q: "يمكن مشاهدة هذه الصفحه بالضغط ع", a: "CART"},
+            {q: "عروض بدون جهاز لعملاء التجديد ع باقات الدفع الاجل الصوتيه مع التزام 12 شهر وخصم 20% يتوفر ل", a: "الترقيه فقط"},
+            {q: "كم دقيقه محليه في باقة ال20 الصوتيه", a: "2000"},
+            {q: "العملاء الانترنت الذين لديهم خطوط ثانويه يستطيعون التجديد", a: "نعم"},
+            {q: "كم سعة استخدام عميل تيربونت اشتراك شهري 35 دك ؟", a: "غير محدود"},
+            {q: "ماذا تظهر حالة INPROGRESS", a: "المعامله جاريه"},
+            {q: "في اجراء TRADE IN يجب من الموظف ان يطلب من العميل مايلي", a: "عمل نسخه احتياطيه من الجهاز القديم"}
+        ];
+
+        let botKnowledge = []; // Dynamically assigned
         let currentLang = 'ar';
         let isDarkMode = true;
+        let isQuizMode = false;
+        let currentQuizItem = null;
+        let quizScore = 0;
+        let quizAttempts = 0;
+        let analytics = { total: 0, hits: 0, misses: 0, logs: [] };
 
         const uiText = {
             ar: {
+                greeting: "🔥 هلا وغلا في STC Quiz Assistance!<br><br>الرجاء اختيار الاختبار الذي ترغب في إجرائه:",
+                flowSelected: "تم اختيار <strong>{flow}</strong>! ✅<br>اكتب سؤالك، أو اضغط على أيقونة الاختبار 🎓 للبدء.",
                 placeholder: "اكتب سؤالك أو كلمة مفتاحية هنا...",
                 send: "إرسال",
                 notFound: "عذراً، لم أتمكن من العثور على إجابة. يرجى توضيح استفسارك أو سؤالك.",
                 multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
-                anythingElse: "<br><br><span class='text-sm opacity-80'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>"
+                anythingElse: "<br><br><span class='text-sm opacity-80'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>",
+                quizStart: "🎓 <strong>بدأ الاختبار المتعدد الخيارات!</strong><br><br>إليك السؤال الأول:",
+                quizEnd: "تم إنهاء الاختبار. عدنا إلى وضع المساعد العادي! 🚀",
+                useOptions: "يرجى اختيار إحدى الإجابات من الخيارات أعلاه للتقدم في الاختبار."
             },
             en: {
+                greeting: "🔥 Welcome to STC Quiz Assistance!<br><br>Please select the quiz flow you want to take:",
+                flowSelected: "<strong>{flow}</strong> selected! ✅<br>Ask me a question, or click the Quiz icon 🎓 to test your knowledge.",
                 placeholder: "Type your question or keyword here...",
                 send: "Send",
                 notFound: "Sorry, I couldn't find an exact match. Please clarify your inquiry or question.",
                 multipleFound: "I found multiple questions related to your search. Please choose one:",
-                anythingElse: "<br><br><span class='text-sm opacity-80'>Is there anything else I can help you with? 😊</span>"
+                anythingElse: "<br><br><span class='text-sm opacity-80'>Is there anything else I can help you with? 😊</span>",
+                quizStart: "🎓 <strong>Multiple Choice Quiz Started!</strong><br><br>Here is your first question:",
+                quizEnd: "Quiz ended. Back to normal assistant mode! 🚀",
+                useOptions: "Please select an answer from the multiple choice options above."
             }
         };
+
+        function initApp() {
+            showFlowSelection();
+        }
+
+        function showFlowSelection() {
+            isQuizMode = false;
+            botKnowledge = [];
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML = ''; 
+            
+            // Disable inputs & quiz button
+            document.getElementById('user-input').disabled = true;
+            document.getElementById('send-btn').disabled = true;
+            document.getElementById('quiz-btn').disabled = true;
+            document.getElementById('quiz-btn').style.opacity = "0.5";
+            
+            printBotMessage(uiText[currentLang].greeting, false);
+
+            const optionsHtml = `
+                <div class="flex flex-col gap-3 mt-2 w-full">
+                    <button onclick="selectFlow('E-Channels')" class="option-button w-full text-center p-4 rounded-xl font-bold shadow-md text-lg">🌐 E-Channels | القنوات الإلكترونية</button>
+                    <button onclick="selectFlow('Call Center')" class="option-button w-full text-center p-4 rounded-xl font-bold shadow-md text-lg">📞 Call Center | مركز الاتصال</button>
+                    <button onclick="selectFlow('Resolutions')" class="option-button w-full text-center p-4 rounded-xl font-bold shadow-md text-lg">🛠️ Resolutions | الحلول</button>
+                    <button onclick="selectFlow('Telesales')" class="option-button w-full text-center p-4 rounded-xl font-bold shadow-md text-lg">🛒 Telesales | المبيعات الهاتفية</button>
+                </div>
+            `;
+            printBotMessage(optionsHtml, false);
+        }
+
+        function selectFlow(flowName) {
+            if (flowName === 'Telesales') {
+                botKnowledge = telesalesKnowledge;
+            } else {
+                botKnowledge = originalKnowledge; // E-Channels, Call Center, Resolutions
+            }
+            
+            // Enable inputs & quiz button
+            document.getElementById('user-input').disabled = false;
+            document.getElementById('send-btn').disabled = false;
+            document.getElementById('quiz-btn').disabled = false;
+            document.getElementById('quiz-btn').style.opacity = "1";
+            
+            addUserMessage(flowName);
+            
+            const typingDiv = showThinking();
+            setTimeout(() => {
+                typingDiv.remove();
+                printBotMessage(uiText[currentLang].flowSelected.replace('{flow}', flowName), false);
+            }, 800);
+        }
 
         function toggleTheme() {
             isDarkMode = !isDarkMode;
@@ -285,10 +427,10 @@
             const btn = document.getElementById('theme-btn');
             if(isDarkMode) {
                 btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-                btn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-gray-700 text-yellow-400 transition hover:scale-105";
+                btn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-gray-700 text-yellow-400 transition hover:scale-105 shadow-md";
             } else {
                 btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-                btn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-gray-200 text-orange-500 transition hover:scale-105";
+                btn.className = "w-10 h-10 rounded-full flex items-center justify-center bg-gray-200 text-orange-500 transition hover:scale-105 shadow-md";
             }
         }
 
@@ -300,6 +442,9 @@
             document.getElementById('lang-btn').innerText = currentLang === 'ar' ? 'English' : 'عربي';
             document.getElementById('user-input').placeholder = uiText[currentLang].placeholder;
             document.getElementById('send-text').innerText = uiText[currentLang].send;
+            
+            // Restart flow to apply language
+            showFlowSelection();
         }
 
         function scrollToBottom() {
@@ -311,9 +456,7 @@
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
             msgDiv.className = "message user-msg p-4 rounded-2xl rounded-tl-sm self-end max-w-[90%] sm:max-w-[80%] shadow-md leading-relaxed text-lg";
-            if(currentLang === 'ar') {
-                msgDiv.classList.replace('rounded-tl-sm', 'rounded-tr-sm');
-            }
+            if(currentLang === 'ar') msgDiv.classList.replace('rounded-tl-sm', 'rounded-tr-sm');
             msgDiv.innerText = text;
             chatBox.appendChild(msgDiv);
             scrollToBottom();
@@ -324,41 +467,141 @@
             const typingDiv = document.createElement('div');
             typingDiv.id = "thinking-indicator";
             typingDiv.className = "message bot-msg rounded-2xl shadow-md typing-indicator";
-            if(currentLang === 'ar') {
-                typingDiv.classList.add('self-start', 'rounded-tr-sm');
-            } else {
-                typingDiv.classList.add('self-start', 'rounded-tl-sm');
-            }
+            if(currentLang === 'ar') typingDiv.classList.add('self-start', 'rounded-tr-sm');
+            else typingDiv.classList.add('self-start', 'rounded-tl-sm');
             typingDiv.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
             chatBox.appendChild(typingDiv);
             scrollToBottom();
             return typingDiv;
         }
 
+        function printBotMessage(htmlContent, appendHelp = true) {
+            const chatBox = document.getElementById('chat-box');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = "message bot-msg p-5 rounded-2xl self-start max-w-[95%] sm:max-w-[85%] shadow-md text-lg leading-relaxed w-full";
+            if(currentLang === 'ar') msgDiv.classList.add('rounded-tr-sm');
+            else msgDiv.classList.add('rounded-tl-sm');
+            
+            msgDiv.innerHTML = htmlContent + (appendHelp ? uiText[currentLang].anythingElse : "");
+            chatBox.appendChild(msgDiv);
+            scrollToBottom();
+        }
+
+        function toggleAdmin() {
+            const modal = document.getElementById('admin-modal');
+            if (modal.classList.contains('hidden')) {
+                document.getElementById('stat-total').innerText = analytics.total;
+                let rate = analytics.total > 0 ? Math.round((analytics.hits / analytics.total) * 100) : 0;
+                document.getElementById('stat-success').innerText = rate + "%";
+                document.getElementById('stat-failed').innerText = analytics.misses;
+                
+                const logUl = document.getElementById('analytics-log');
+                if(analytics.logs.length > 0) {
+                    logUl.innerHTML = analytics.logs.map(log => 
+                        `<li class="border-b border-gray-700 pb-1 mb-1">
+                            <span class="${log.found ? 'text-green-400' : 'text-red-400'} mr-2">
+                                <i class="fa-solid ${log.found ? 'fa-check' : 'fa-xmark'}"></i>
+                            </span>
+                            "${log.query}"
+                        </li>`
+                    ).join('');
+                }
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function logAnalytics(query, found) {
+            analytics.total++;
+            if(found) analytics.hits++; else analytics.misses++;
+            analytics.logs.unshift({query: query, found: found}); 
+            if(analytics.logs.length > 50) analytics.logs.pop(); 
+        }
+
+        // --- Multiple Choice Quiz Features ---
+        function toggleQuizMode() {
+            if(botKnowledge.length === 0) return; // Not selected yet
+            isQuizMode = !isQuizMode;
+            document.getElementById('chat-box').innerHTML = ''; 
+            document.getElementById('mode-subtitle').innerText = isQuizMode ? "وضع الاختبار 🎓" : "المساعد الذكي";
+            document.getElementById('mode-subtitle').style.color = isQuizMode ? "#22c55e" : "";
+            
+            if(isQuizMode) {
+                quizScore = 0; quizAttempts = 0;
+                printBotMessage(uiText[currentLang].quizStart, false);
+                askNextMCQ();
+            } else {
+                currentQuizItem = null;
+                printBotMessage(uiText[currentLang].quizEnd, false);
+            }
+        }
+
+        function askNextMCQ() {
+            const randomIndex = Math.floor(Math.random() * botKnowledge.length);
+            currentQuizItem = botKnowledge[randomIndex];
+            
+            let choices = [currentQuizItem.a];
+            let attemptsToFindWrong = 0;
+            
+            while(choices.length < 4 && attemptsToFindWrong < 50) {
+                let randomWrongIndex = Math.floor(Math.random() * botKnowledge.length);
+                let wrongAnswer = botKnowledge[randomWrongIndex].a;
+                if(!choices.includes(wrongAnswer) && wrongAnswer.length > 1) {
+                    choices.push(wrongAnswer);
+                }
+                attemptsToFindWrong++;
+            }
+            
+            choices.sort(() => Math.random() - 0.5);
+            
+            let quizHtml = `<div class="text-xl font-bold opacity-90 mb-4">${currentQuizItem.q}</div>`;
+            quizHtml += `<div class="flex flex-col gap-3 w-full">`;
+            
+            for(let i=0; i<choices.length; i++) {
+                let safeChoice = choices[i].replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                let isCorrect = (choices[i] === currentQuizItem.a);
+                quizHtml += `<button onclick="handleMCQSelection('${safeChoice}', ${isCorrect})" class="option-button w-full text-right p-4 rounded-xl text-md cursor-pointer transition-all shadow-md font-bold">${choices[i]}</button>`;
+            }
+            quizHtml += `</div>`;
+
+            setTimeout(() => {
+                printBotMessage(quizHtml, false);
+            }, 800);
+        }
+
+        window.handleMCQSelection = function(selectedText, isCorrect) {
+            addUserMessage(selectedText);
+            const typingDiv = showThinking();
+            
+            setTimeout(() => {
+                typingDiv.remove();
+                quizAttempts++;
+                
+                if(isCorrect) {
+                    quizScore++;
+                    printBotMessage(`✅ <strong>إجابة صحيحة!</strong> 👏<br><br><span class="text-sm font-bold text-green-300">النتيجة: ${quizScore}/${quizAttempts}</span>`, false);
+                } else {
+                    printBotMessage(`❌ <strong>إجابة خاطئة.</strong><br>الجواب الصحيح هو: <span class="font-bold text-yellow-300">${currentQuizItem.a}</span><br><br><span class="text-sm font-bold opacity-80">النتيجة: ${quizScore}/${quizAttempts}</span>`, false);
+                }
+                
+                setTimeout(() => { askNextMCQ(); }, 2500);
+            }, 800);
+        }
+
         window.forceAnswer = function(index) {
             const item = botKnowledge[index];
             addUserMessage(item.q);
+            logAnalytics(item.q, true);
             
             const typingDiv = showThinking();
             setTimeout(() => {
                 typingDiv.remove();
-                printBotMessage(`<div class="opacity-70 text-sm mb-2 pb-2 border-b border-purple-500/30">` + item.q + `</div><strong>` + item.a + `</strong>` + uiText[currentLang].anythingElse);
+                printBotMessage(`<div class="opacity-70 text-sm mb-2 pb-2 border-b border-purple-500/30">` + item.q + `</div><strong>` + item.a + `</strong>`, true);
             }, 600);
         };
-
-        function printBotMessage(htmlContent) {
-            const chatBox = document.getElementById('chat-box');
-            const msgDiv = document.createElement('div');
-            msgDiv.className = "message bot-msg p-5 rounded-2xl self-start max-w-[95%] sm:max-w-[85%] shadow-md text-lg leading-relaxed";
-            if(currentLang === 'ar') {
-                msgDiv.classList.add('rounded-tr-sm');
-            } else {
-                msgDiv.classList.add('rounded-tl-sm');
-            }
-            msgDiv.innerHTML = htmlContent;
-            chatBox.appendChild(msgDiv);
-            scrollToBottom();
-        }
 
         function processAndRespond(userQuery) {
             const typingDiv = showThinking();
@@ -375,34 +618,32 @@
                 for (let i = 0; i < botKnowledge.length; i++) {
                     let score = 0;
                     let qText = botKnowledge[i].q.toLowerCase();
-                    
                     for (let word of queryWords) {
                         if (qText.includes(word)) score += 1;
                     }
-                    if (score > 0) {
-                        matches.push({ index: i, score: score, item: botKnowledge[i] });
-                    }
+                    if (score > 0) matches.push({ index: i, score: score, item: botKnowledge[i] });
                 }
 
                 matches.sort((a, b) => b.score - a.score);
 
                 if (matches.length === 0) {
-                    printBotMessage(uiText[currentLang].notFound);
+                    logAnalytics(query, false);
+                    printBotMessage(uiText[currentLang].notFound, false);
                 } 
                 else if (matches.length === 1 || matches[0].score > matches[1]?.score + 1) {
+                    logAnalytics(query, true);
                     let item = matches[0].item;
-                    printBotMessage(`<div class="opacity-70 text-sm mb-2 pb-2 border-b border-purple-500/30">` + item.q + `</div><strong>` + item.a + `</strong>` + uiText[currentLang].anythingElse);
+                    printBotMessage(`<div class="opacity-70 text-sm mb-2 pb-2 border-b border-purple-500/30">` + item.q + `</div><strong>` + item.a + `</strong>`, true);
                 } 
                 else {
+                    logAnalytics(query, true);
                     let topMatches = matches.slice(0, 4); 
                     let optionsHtml = `<p class="mb-3 font-bold">${uiText[currentLang].multipleFound}</p><div class="flex flex-col gap-2">`;
-                    
                     for (let match of topMatches) {
                         optionsHtml += `<button onclick="forceAnswer(${match.index})" class="option-button text-right p-3 rounded-xl text-md cursor-pointer transition-all shadow-sm">${match.item.q}</button>`;
                     }
                     optionsHtml += `</div>`;
-                    
-                    printBotMessage(optionsHtml);
+                    printBotMessage(optionsHtml, false);
                 }
 
             }, 800); 
@@ -411,12 +652,16 @@
         function handleSend() {
             const inputField = document.getElementById('user-input');
             const text = inputField.value.trim();
-            if(!text) return;
+            if(!text || botKnowledge.length === 0) return;
 
             addUserMessage(text);
             inputField.value = '';
 
-            processAndRespond(text);
+            if(isQuizMode) {
+                printBotMessage(uiText[currentLang].useOptions, false);
+            } else {
+                processAndRespond(text);
+            }
         }
 
         document.getElementById('user-input').addEventListener('keypress', function(e) {
