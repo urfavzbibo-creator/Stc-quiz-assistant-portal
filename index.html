@@ -10,7 +10,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
         
         :root {
-            /* DARK MODE: Pitch Black + Neon Purple */
             --bg-main: #000000;
             --bg-chat-container: #090014;
             --bg-input: #120024;
@@ -73,7 +72,7 @@
         #admin-modal { background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
         .admin-panel { background-color: var(--bg-chat-container); border: 2px solid var(--neon-purple); box-shadow: var(--shadow-header); }
 
-        .pill-btn { background-color: var(--pill-bg); color: var(--text-main); border: 1px solid var(--neon-purple); border-radius: 9999px; padding: 8px 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; box-shadow: var(--shadow-neon); }
+        .pill-btn { background-color: var(--pill-bg); color: var(--text-main); border: 1px solid var(--neon-purple); border-radius: 9999px; padding: 8px 20px; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; box-shadow: var(--shadow-neon); cursor: pointer;}
         .pill-btn:hover { background-color: var(--stc-purple); color: #ffffff; box-shadow: 0 0 20px rgba(168, 85, 247, 0.8); transform: translateY(-2px); }
         .light-mode .pill-btn { border-color: #d1d5db; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .light-mode .pill-btn:hover { background-color: var(--stc-purple); border-color: var(--stc-purple); }
@@ -91,6 +90,7 @@
 </head>
 <body class="flex flex-col h-screen" onload="initApp()">
 
+    <!-- SECURE LOGIN OVERLAY -->
     <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md transition-opacity duration-500">
         <div class="bg-[#090014] border-2 border-purple-600 rounded-2xl p-8 max-w-md w-full mx-4 shadow-[0_0_30px_rgba(168,85,247,0.4)] flex flex-col gap-6 items-center text-center">
             <div class="h-20 w-24 bg-white rounded-xl flex items-center justify-center overflow-hidden border border-purple-500/50 mb-2 p-2">
@@ -117,6 +117,7 @@
         </div>
     </div>
 
+    <!-- MAIN APP WRAPPER -->
     <div id="main-app" class="flex flex-col h-screen opacity-0 transition-opacity duration-700 pointer-events-none">
         <header class="header-bg p-4 flex justify-between items-center transition-colors duration-300">
             <div class="flex items-center gap-4">
@@ -126,7 +127,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold" style="color: var(--neon-purple); text-shadow: 0 0 10px rgba(168,85,247,0.3);">STC Quiz Assistance</h1>
-                    <p class="text-xs font-bold text-muted" id="mode-subtitle">المساعد الذكي</p>
+                    <p class="text-xs font-bold text-muted" id="mode-subtitle">المساعد الذكي العام</p>
                 </div>
             </div>
             <div class="flex gap-2">
@@ -136,7 +137,7 @@
                 <button onclick="toggleAdmin()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-purple-400 transition hover:scale-105" title="Admin Dashboard">
                     <i class="fa-solid fa-satellite-dish"></i>
                 </button>
-                <button onclick="toggleQuizMode()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-green-400 transition hover:scale-105" title="Test Me" id="quiz-btn" disabled style="opacity: 0.5;">
+                <button onclick="toggleQuizMode()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-green-400 transition hover:scale-105" title="Test Me" id="quiz-btn">
                     <i class="fa-solid fa-graduation-cap"></i>
                 </button>
                 <button onclick="toggleTheme()" class="action-btn w-10 h-10 rounded-full flex items-center justify-center bg-gray-800 dark:bg-gray-800 text-yellow-400 transition hover:scale-105" id="theme-btn">
@@ -150,14 +151,15 @@
                 <div id="chat-box" class="chat-container p-4 sm:p-6 overflow-y-auto flex flex-col gap-5"></div>
                 
                 <div class="input-area p-4 flex gap-3 items-center transition-colors duration-300">
-                    <input type="text" id="user-input" class="input-box flex-grow rounded-xl px-5 py-4 focus:outline-none transition text-lg" placeholder="اكتب سؤالك أو كلمة مفتاحية هنا..." disabled>
-                    <button onclick="handleSend()" id="send-btn" class="send-btn-neon text-white px-6 sm:px-8 py-4 rounded-xl font-bold active:scale-95 text-lg flex items-center gap-2" disabled>
+                    <input type="text" id="user-input" class="input-box flex-grow rounded-xl px-5 py-4 focus:outline-none transition text-lg" placeholder="اكتب سؤالك أو كلمة مفتاحية هنا...">
+                    <button onclick="handleSend()" id="send-btn" class="send-btn-neon text-white px-6 sm:px-8 py-4 rounded-xl font-bold active:scale-95 text-lg flex items-center gap-2">
                         <span class="hidden sm:inline" id="send-text">إرسال</span>
                         <i class="fa-solid fa-paper-plane rtl:rotate-180"></i>
                     </button>
                 </div>
             </div>
 
+            <!-- LIVE ADMIN DASHBOARD -->
             <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4">
                 <div class="admin-panel rounded-2xl p-6 w-full max-w-4xl max-h-[90vh] flex flex-col">
                     <div class="flex justify-between items-center mb-4 border-b pb-2 border-purple-800">
@@ -244,7 +246,7 @@
             {q: "العروض الترويجية والإعلامية في نظرة عامة على BSS تظهر بناءً على:", a: "حسب أهلية العميل"},
             {q: "سعر استخدام الرسائل المحلية في باقات الدفع الآجل (خارج الباقة) هو:", a: "20 فلس / للرسالة"},
             {q: "في باقة 25 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية؟", a: "1000 رسالة"},
-            {q: "في باقة 35 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية؟", a: "1000 رسالة"},
+            {q: "في باقة 35 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية؟", a: "1000 رسالة (باقة 35)"},
             {q: "توفر باقة التميز 75 دينار للدفع الآجل كم رسالة محلية؟", a: "2000 رسالة محلية"},
             {q: "ما هي رسوم باقة التجوال الخاصة (7 أيام) بين السعودية والبحرين؟", a: "KD 8"},
             {q: "في باقة التجوال المميزة بقيمة 12 د.ك يحصل العميل على رسائل تجوال:", a: "SMS 30"},
@@ -314,7 +316,7 @@
             {q: "كم هي تكلفة خدمة الايقاف المؤقت لمدة شهر؟", a: "لا شيء من المذكور"},
             {q: "توفر خدمة Device Care Essential للعميل:", a: "تمديد لمصنععة الجهاز"},
             {q: "يمكن استخدام المبلغ المحصل عليه الذي تم الحصول عليه عن طريق Trade in من أجل:", a: "الفواتير المتأخرة"},
-            {q: "كم عدد الرسائل المحلية المجانية المتوفرة على باقة 25 د.ك خلك ON للدفع الالجل الصوتية؟", a: "1000 رسالة"},
+            {q: "كم عدد الرسائل المحلية المجانية المتوفرة على باقة 25 د.ك خلك ON للدفع الالجل الصوتية؟", a: "1000 رسالة (باقة 25)"},
             {q: "في باقة 35 د.ك خلك ON، يحصل العميل على ... دقيقة محلية:", a: "دقائق غير محدودة"},
             {q: "ما هي تكلفة خدمة FOZ للألعاب الإضافية على باقات Baity 5G؟", a: "5KD"},
             {q: "كيف يمكن للعميل الاستفسار عن استخدام الإنترنت لخطوط الدفع الآجل؟", a: "ارسل كود Q الى رقم 567"},
@@ -331,8 +333,8 @@
             {q: "الاجهزه التي تكون متوافقه مع ال ESIM هي", a: "Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20"},
             {q: "في نظام BSS اجمالي الوقت المنقضي هو ل", a: "رقم الخط"},
             {q: "عدد مرات استخدام اسم العميل", a: "ثلاث مرات واكثر"},
-            {q: "كيف يستطيع الموظف مشاهدة تاريخ المعاملات", a: "Requests"},
-            {q: "في تكلفة عقد الانهاء خانة نظره عامه تعني", a: "جميع ماسبق"},
+            {q: "كيف يستطيع الموظف مشاهدة تاريخ المعاملات", a: "Requests (سجل الطلبات)"},
+            {q: "في تكلفة عقد الانهاء خانة نظره عامه تعني", a: "جميع ماسبق (النظرة العامة)"},
             {q: "كم مش راوتر يمكن للعميل الحصول عليه في عرض بيتنا 5 جي", a: "مش راوتر 3"},
             {q: "مدة الانتظار المسموحه", a: "لايتعدى 30 ثانيه قابله للتجديد"},
             {q: "يحصل العميل ع 100 دقيقه دوليه وخصم 50% ع 3 اضعاف عدد الدقائق الدوليه", a: "75"},
@@ -342,10 +344,10 @@
             {q: "توفر باقة التميز 75 دينار للدفع الاجل", a: "رساله محليه 2000"},
             {q: "يدعم جهاز ايفون 15 بلس شرائح الكترونيه بحد اقصى", a: "شرائح الكترونيه 20"},
             {q: "كم سعة الانترنت في باقة 25 دك", a: "100 GB"},
-            {q: "اذا كانت المطالبه الاولى للعميل الاستبدال في DEVICE CARE فانه لايكون مؤهل للحصول على", a: "كل ماسبق"},
+            {q: "اذا كانت المطالبه الاولى للعميل الاستبدال في DEVICE CARE فانه لايكون مؤهل للحصول على", a: "كل ماسبق (في المطالبة)"},
             {q: "يمكن الاستفاده من عرض 10 دك راوتر المشاركه شريحتين من خلال مدة التزام ..... فقط", a: "شهر 24"},
             {q: "ل100 قيقا مجاني لمواقع التواصل الاجتماعي مع باقات خلك اون غير متوفر مع الباقات التاليه", a: "35 KD"},
-            {q: "ماهي متطلبات تقديم مطالبه DEVICE CARE", a: "كل ماسبق"},
+            {q: "ماهي متطلبات تقديم مطالبه DEVICE CARE", a: "كل ماسبق (المتطلبات)"},
             {q: "عند التسجيل في برنامج قطاف ع خط دفع اجل صوتي او انترنت يحصل العميل ع ..... نقطه ترحيبيه ؟", a: "100"},
             {q: "خطوات تجديد عقد العميل", a: "شرح العرض بالتفصيل-التاكد ع العنوان-تلخيص العرض"},
             {q: "اذا اردنا التاكد من اسم الموظف الذي اجرى معامله ع الخط علينا الانتقال الى", a: "Requests"},
@@ -379,7 +381,7 @@
             {q: "اذا كان العميل لديه باقة انترنت مشتركه فأنه غير مؤهل للحصول ع شريحه انترنت مشتركه مع باقة 45 الصوتيه ؟", a: "نعم"},
             {q: "الرسوم الاوليه في نظام BSS هي الرسوم الشهريه", a: "لا"},
             {q: "يحصل العميل جودة الفيديو من باقة (Premium) لخدمة (STC TV) ؟", a: "4K"},
-            {q: "اي من الباقات الصوتيه تحمل صفة خلك دائما ع تواصل", a: "كل ماسبق"},
+            {q: "اي من الباقات الصوتيه تحمل صفة خلك دائما ع تواصل", a: "كل ماسبق (صفة خلك)"},
             {q: "كم دقيقه دوليه في باقة ال 40 الصوتيه ؟", a: "ليس مماسبق"},
             {q: "كيف تتم التعبئه في برنامج ( BSS ) ؟", a: "Service Request Button / Recharge"},
             {q: "يحصل عميل تيربونت ع امتار كيبل ..... مجانيه لاول مره ؟", a: "25متر"},
@@ -394,6 +396,9 @@
             {q: "في اجراء TRADE IN يجب من الموظف ان يطلب من العميل مايلي", a: "عمل نسخه احتياطيه من الجهاز القديم"}
         ];
 
+        // Combine all knowledge for the global "Main Flow" search
+        const allKnowledge = [...originalKnowledge, ...telesalesKnowledge];
+
         let botKnowledge = []; 
         let currentLang = 'ar';
         let isDarkMode = true;
@@ -401,15 +406,14 @@
         let currentQuizItem = null;
         let quizScore = 0;
         let quizAttempts = 0;
-        
         let analytics = { total: 0, hits: 0, misses: 0, logs: [], errors: [] };
 
         const uiText = {
             ar: {
-                greeting: "🔥 هلا وغلا في STC Quiz Assistance!<br><br>الرجاء اختيار الاختبار الذي ترغب في إجرائه:",
+                greeting: "🔥 هلا وغلا في STC Quiz Assistance!<br><br>تقدر تسألني أي شيء يخص باقات وأنظمة STC فوراً من هنا، أو تختار قسمك عشان نبدأ الكويز:",
                 flowSelected: "🔥 هلا والله!<br><br>اسأل أي سؤال بخاطرك أو اكتب <strong>(اختبار)</strong> وخلّنا نبلش تدريب الكويزات الجاية.<br><br>جاهز تجيب Full Marks؟",
                 comingSoon: "🚧 قريباً... مسار الفايبر (Fiber) سيكون متاحاً قريباً! 🚀",
-                placeholder: "اكتب سؤالك أو كلمة مفتاحية هنا...",
+                placeholder: "اكتب سؤالك، أو 'اختبار' للتدريب...",
                 send: "إرسال",
                 notFound: "عذراً يا بطل، ما لقيت إجابة دقيقة في قاعدة بياناتي. ياليت توضح سؤالك أكثر أو تصيغه بطريقة ثانية عشان أقدر أساعدك! 💜",
                 multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
@@ -423,6 +427,11 @@
         };
 
         const chitChatCategories = [
+            {
+                name: 'mixed_thanks_yes',
+                words: ['thank you yes', 'yes thank you', 'نعم شكرا', 'شكرا نعم', 'اي شكرا', 'ok thanks', 'اوكي شكرا'],
+                reply: 'العفو يا بطل! 💜 يلا دامك جاهز ومتحمس، خلنا نكمل.. قط سؤالك أو اكتب (اختبار) نكسر الدنيا! 🔥'
+            },
             {
                 name: 'greetings',
                 words: ['السلام عليكم', 'هلا', 'مرحبا', 'hello', 'hi', 'hey', 'صباح الخير', 'مساء الخير', 'صباح النور', 'مساء النور', 'أهلا', 'شلونك', 'كيفك', 'شخبارك', 'كيف الحال', 'how are you', 'how r u', 'how are u', 'howru', 'hru', 'whats up', 'whatsup', 'عامل ايه', 'أخبارك'],
@@ -458,19 +467,20 @@
         function initApp() {
             const btn = document.getElementById('theme-btn');
             btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            // Wait for user login
         }
 
         function showFlowSelection() {
             isQuizMode = false;
-            botKnowledge = [];
+            botKnowledge = []; // resets to use allKnowledge on main screen
             const chatBox = document.getElementById('chat-box');
             chatBox.innerHTML = ''; 
             
-            document.getElementById('user-input').disabled = true;
-            document.getElementById('send-btn').disabled = true;
-            document.getElementById('quiz-btn').disabled = true;
-            document.getElementById('quiz-btn').style.opacity = "0.5";
+            document.getElementById('user-input').disabled = false;
+            document.getElementById('send-btn').disabled = false;
+            document.getElementById('quiz-btn').disabled = false;
+            document.getElementById('quiz-btn').style.opacity = "1";
+            document.getElementById('mode-subtitle').innerText = "المساعد الذكي العام";
+            document.getElementById('mode-subtitle').style.color = "";
             
             printBotMessage(uiText['ar'].greeting, false);
 
@@ -504,10 +514,7 @@
                 botKnowledge = originalKnowledge; 
             }
             
-            document.getElementById('user-input').disabled = false;
-            document.getElementById('send-btn').disabled = false;
-            document.getElementById('quiz-btn').disabled = false;
-            document.getElementById('quiz-btn').style.opacity = "1";
+            document.getElementById('mode-subtitle').innerText = "مسار: " + flowName;
             
             setTimeout(() => {
                 typingDiv.remove();
@@ -562,7 +569,6 @@
             scrollToBottom();
         }
 
-        // --- DASHBOARD AND REPORTING MANAGEMENT ---
         function toggleAdmin() {
             const modal = document.getElementById('admin-modal');
             if (modal.classList.contains('hidden')) {
@@ -615,43 +621,43 @@
             if(analytics.errors.length > 50) analytics.errors.pop();
         }
 
-        // --- GROUPED COMPONENT TESTING ---
         function toggleQuizMode() {
-            if(botKnowledge.length === 0) return; 
+            let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
+            if(activePool.length === 0) return; 
+            
             isQuizMode = !isQuizMode;
             document.getElementById('chat-box').innerHTML = ''; 
-            document.getElementById('mode-subtitle').innerText = isQuizMode ? "وضع الاختبار 🎓" : "المساعد الذكي";
-            document.getElementById('mode-subtitle').style.color = isQuizMode ? "var(--neon-purple)" : "";
             
             if(isQuizMode) {
+                document.getElementById('mode-subtitle').innerText = "وضع الاختبار 🎓";
+                document.getElementById('mode-subtitle').style.color = "var(--neon-purple)";
                 quizScore = 0; quizAttempts = 0;
                 printBotMessage(uiText['ar'].quizStart, false);
                 askNextMCQ();
             } else {
+                document.getElementById('mode-subtitle').innerText = botKnowledge.length > 0 ? "مسار فرعي" : "المساعد الذكي العام";
+                document.getElementById('mode-subtitle').style.color = "";
                 currentQuizItem = null;
                 printBotMessage(uiText['ar'].quizEnd, false);
             }
         }
 
         function askNextMCQ() {
-            const randomIndex = Math.floor(Math.random() * botKnowledge.length);
-            currentQuizItem = botKnowledge[randomIndex];
+            let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
+            const randomIndex = Math.floor(Math.random() * activePool.length);
+            currentQuizItem = activePool[randomIndex];
             
-            // SMART GROUPING: Filter to find similar questions but prevent duplicate similar strings
             let questionWords = currentQuizItem.q.split(' ').filter(w => w.length > 4);
-            let similarItems = botKnowledge.filter(item => {
+            let similarItems = activePool.filter(item => {
                 return questionWords.some(qw => item.q.includes(qw)) && item.a !== currentQuizItem.a;
             });
 
             let choices = [currentQuizItem.a];
             let attempts = 0;
             
-            // Phase 1: Try to fill with similar context answers
             while(choices.length < 4 && similarItems.length > 0 && attempts < 50) {
                 let rIdx = Math.floor(Math.random() * similarItems.length);
                 let wAns = similarItems[rIdx].a;
-                
-                // CRITICAL FIX: Ensure the new answer isn't just a slight variation of an already picked choice
                 let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
                 
                 if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) { 
@@ -660,12 +666,10 @@
                 attempts++;
             }
 
-            // Phase 2: Fallback to random unique answers
             attempts = 0;
             while(choices.length < 4 && attempts < 100) {
-                let randomWrongIndex = Math.floor(Math.random() * botKnowledge.length);
-                let wAns = botKnowledge[randomWrongIndex].a;
-                
+                let randomWrongIndex = Math.floor(Math.random() * activePool.length);
+                let wAns = activePool[randomWrongIndex].a;
                 let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
                 
                 if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) {
@@ -708,8 +712,9 @@
             }, 800);
         }
 
-        window.forceAnswer = function(index) {
-            const item = botKnowledge[index];
+        window.forceAnswer = function(index, useAllPool = false) {
+            let activePool = useAllPool ? allKnowledge : botKnowledge;
+            const item = activePool[index];
             addUserMessage(item.q);
             logAnalytics(item.q, true);
             
@@ -724,7 +729,7 @@
             const typingDiv = showThinking();
             let query = userQuery.toLowerCase().trim();
             
-            // --- 1. DYNAMIC CATEGORIZED EMOTIONAL CHIT CHAT ---
+            // --- 1. CHIT CHAT INTERCEPTOR ---
             for(let cat of chitChatCategories) {
                 if(cat.words.some(w => query.includes(w))) {
                     setTimeout(() => { typingDiv.remove(); printBotMessage(cat.reply, false); }, 800);
@@ -735,6 +740,8 @@
             // --- 2. YES/NO SYSTEM INTERCEPTORS ---
             const yesWords = ['yes', 'yeah', 'yep', 'y', 'sure', 'of course', 'نعم', 'اي', 'إي', 'أكيد', 'اكيد', 'يلا', 'جاهز', 'يب', 'اي نعم', 'اكيد جاهز'];
             const noWords = ['no', 'nope', 'n', 'لا', 'كلا', 'سلامتك', 'مو الحين'];
+            
+            // Check standalone match so it doesn't accidentally trigger if embedded in a long question
             if (yesWords.includes(query)) {
                 setTimeout(() => { typingDiv.remove(); printBotMessage(uiText['ar'].yesReply, false); }, 800);
                 return;
@@ -755,22 +762,32 @@
                 return;
             }
 
+            // Flow selection by typing
+            if (query.includes('e-channels') || query.includes('قنوات')) { setTimeout(() => { typingDiv.remove(); selectFlow('E-Channels'); }, 800); return; }
+            if (query.includes('call center') || query.includes('كول سنتر') || query.includes('اتصال')) { setTimeout(() => { typingDiv.remove(); selectFlow('Call Center'); }, 800); return; }
+            if (query.includes('resolutions') || query.includes('حلول')) { setTimeout(() => { typingDiv.remove(); selectFlow('Resolutions'); }, 800); return; }
+            if (query.includes('telesales') || query.includes('مبيعات')) { setTimeout(() => { typingDiv.remove(); selectFlow('Telesales'); }, 800); return; }
+            if (query.includes('fiber') || query.includes('فايبر')) { setTimeout(() => { typingDiv.remove(); selectFlow('Fiber'); }, 800); return; }
+
             if (query.includes("زيد") || query.includes("zeed")) query += " زييد";
 
-            // --- 4. DATA SEARCH PATTERN & NO-MATCH FALLBACK ---
+            // --- 4. DATA SEARCH PATTERN ---
             setTimeout(() => {
                 typingDiv.remove();
                 let queryWords = query.split(" ").filter(w => w.length > 2);
                 if(queryWords.length === 0) queryWords = [query]; 
 
+                // Search in active pool (selected flow OR all combined if on main screen)
+                let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
+                
                 let matches = [];
-                for (let i = 0; i < botKnowledge.length; i++) {
+                for (let i = 0; i < activePool.length; i++) {
                     let score = 0;
-                    let qText = botKnowledge[i].q.toLowerCase();
+                    let qText = activePool[i].q.toLowerCase();
                     for (let word of queryWords) {
                         if (qText.includes(word)) score += 1;
                     }
-                    if (score > 0) matches.push({ index: i, score: score, item: botKnowledge[i] });
+                    if (score > 0) matches.push({ index: i, score: score, item: activePool[i] });
                 }
 
                 matches.sort((a, b) => b.score - a.score);
@@ -790,7 +807,7 @@
                     let topMatches = matches.slice(0, 4); 
                     let optionsHtml = `<p class="mb-3 font-bold text-purple-300">${uiText['ar'].multipleFound}</p><div class="flex flex-col gap-3">`;
                     for (let match of topMatches) {
-                        optionsHtml += `<button onclick="forceAnswer(${match.index})" class="pill-btn w-full text-right p-3 rounded-xl text-md cursor-pointer">${match.item.q}</button>`;
+                        optionsHtml += `<button onclick="forceAnswer(${match.index}, ${botKnowledge.length === 0})" class="pill-btn w-full text-right p-3 rounded-xl text-md cursor-pointer">${match.item.q}</button>`;
                     }
                     optionsHtml += `</div>`;
                     printBotMessage(optionsHtml, false);
@@ -801,7 +818,7 @@
         function handleSend() {
             const inputField = document.getElementById('user-input');
             const text = inputField.value.trim();
-            if(!text || botKnowledge.length === 0) return;
+            if(!text) return; // Note: We removed the check for botKnowledge.length === 0 so main screen works
 
             addUserMessage(text);
             inputField.value = '';
