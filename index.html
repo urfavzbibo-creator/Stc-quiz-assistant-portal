@@ -10,17 +10,17 @@
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
         
         :root {
-            /* APPLE OLED DARK MODE WITH STC ACCENTS */
-            --bg-main: #000000;
-            --bg-glass: rgba(28, 28, 30, 0.7); /* iOS System Gray 6 with transparency */
-            --bg-glass-lighter: rgba(44, 44, 46, 0.7);
+            /* APPLE STYLE WITH DEEP NEON PURPLE */
+            --bg-main: #0B001A; /* Deep Neon Purple Base */
+            --bg-glass: rgba(60, 10, 100, 0.4); /* Purple Frosted Glass */
+            --bg-glass-lighter: rgba(90, 20, 140, 0.5); /* Lighter Purple Glass */
             --text-main: #F5F5F7;
-            --text-muted: #8E8E93;
-            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-muted: #E9D5FF; /* Soft purple text */
+            --border-glass: rgba(191, 90, 242, 0.3); /* Neon purple borders */
             --stc-purple: #4F008C;
-            --ios-purple: #BF5AF2; /* Apple's system purple */
-            --bot-bubble: rgba(88, 86, 214, 0.15); /* Soft indigo/purple glass */
-            --user-bubble: rgba(44, 44, 46, 0.8); /* iOS dark gray bubble */
+            --ios-purple: #BF5AF2; /* Neon Purple Glow */
+            --bot-bubble: rgba(191, 90, 242, 0.15); /* Purple tinted bubble */
+            --user-bubble: rgba(79, 0, 140, 0.6); /* STC Purple bubble */
         }
 
         .light-mode {
@@ -30,7 +30,7 @@
             --text-main: #1C1C1E;
             --text-muted: #8E8E93;
             --border-glass: rgba(0, 0, 0, 0.05);
-            --bot-bubble: rgba(88, 86, 214, 0.1);
+            --bot-bubble: rgba(191, 90, 242, 0.1);
             --user-bubble: #ffffff;
         }
 
@@ -51,29 +51,33 @@
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border-glass);
+            box-shadow: 0 10px 30px rgba(79, 0, 140, 0.2);
         }
         
         .header-bg { 
             background: var(--bg-glass);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
-            border-bottom: 0.5px solid var(--border-glass); 
+            border-bottom: 1px solid var(--border-glass); 
+            box-shadow: 0 4px 20px rgba(79, 0, 140, 0.15);
         }
 
         .bot-msg { 
             background: var(--bot-bubble);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 0.5px solid var(--border-glass);
+            border: 1px solid var(--border-glass);
             color: var(--text-main); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .user-msg { 
             background: var(--user-bubble); 
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 0.5px solid var(--border-glass);
+            border: 1px solid var(--border-glass);
             color: var(--text-main); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         /* Scrollbar Hidden for cleaner iOS look */
@@ -94,7 +98,7 @@
 
         /* Apple Style Typing Indicator */
         .typing-indicator { display: flex; gap: 4px; padding: 14px 18px; align-items: center; width: fit-content; }
-        .dot { width: 6px; height: 6px; background-color: var(--text-muted); border-radius: 50%; animation: iosBounce 1.4s infinite ease-in-out both; }
+        .dot { width: 6px; height: 6px; background-color: var(--ios-purple); border-radius: 50%; animation: iosBounce 1.4s infinite ease-in-out both; }
         .dot:nth-child(1) { animation-delay: -0.32s; } .dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes iosBounce { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-4px); opacity: 1; } }
         
@@ -107,8 +111,8 @@
             background: var(--bg-glass-lighter);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 0.5px solid var(--border-glass);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 8px 32px rgba(79,0,140,0.3);
         }
 
         .pill-btn { 
@@ -116,7 +120,7 @@
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             color: var(--text-main); 
-            border: 0.5px solid var(--border-glass); 
+            border: 1px solid var(--border-glass); 
             border-radius: 9999px; 
             padding: 10px 24px; 
             font-weight: 500; 
@@ -131,30 +135,38 @@
             background: var(--ios-purple); 
             color: #ffffff; 
             border-color: var(--ios-purple);
+            box-shadow: 0 0 20px rgba(191, 90, 242, 0.4);
             transform: scale(1.02); 
         }
         
         .action-icon {
             background: var(--bg-glass-lighter);
-            border: 0.5px solid var(--border-glass);
+            border: 1px solid var(--border-glass);
             color: var(--text-main);
             transition: all 0.2s ease;
         }
         .action-icon:hover {
-            background: var(--bg-glass);
+            background: var(--ios-purple);
+            border-color: var(--ios-purple);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(191, 90, 242, 0.5);
             transform: scale(1.05);
         }
 
         .send-btn-ios { 
             background-color: var(--ios-purple); 
+            box-shadow: 0 0 15px rgba(191, 90, 242, 0.4);
             transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
         }
         .send-btn-ios:hover:not(:disabled) { 
             transform: scale(1.05); 
             background-color: #D57FF5; 
+            box-shadow: 0 0 25px rgba(191, 90, 242, 0.8);
         }
         .send-btn-ios:disabled {
             background-color: var(--bg-glass);
+            box-shadow: none;
+            border: 1px solid var(--border-glass);
             color: var(--text-muted);
         }
         
@@ -164,45 +176,42 @@
 </head>
 <body class="flex flex-col h-screen" onload="initApp()">
 
-    <!-- SECURE LOGIN OVERLAY (Glassmorphism) -->
-    <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-2xl transition-opacity duration-700">
-        <div class="glass-panel rounded-3xl p-10 max-w-sm w-full mx-4 flex flex-col gap-6 items-center text-center shadow-2xl">
+    <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0B001A]/80 backdrop-blur-2xl transition-opacity duration-700">
+        <div class="glass-panel rounded-3xl p-10 max-w-sm w-full mx-4 flex flex-col gap-6 items-center text-center">
             <div class="h-20 w-24 bg-white/10 rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 mb-2 p-3 shadow-inner">
                 <img src="image_9004c3.jpg" alt="STC Quiz Logo" class="h-full object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert');">
             </div>
             
             <div>
-                <h2 class="text-2xl font-bold mb-1 tracking-wide" style="color: var(--ios-purple);">STC Portal</h2>
-                <p class="text-sm opacity-60" style="color: var(--text-muted);">Restricted Access</p>
+                <h2 class="text-2xl font-bold mb-1 tracking-wide" style="color: var(--ios-purple); text-shadow: 0 0 15px rgba(191,90,242,0.5);">STC Portal</h2>
+                <p class="text-sm opacity-80" style="color: var(--text-muted);">Restricted Access</p>
             </div>
             
             <div class="w-full flex flex-col gap-3">
-                <input type="text" id="login-user" class="w-full rounded-xl px-5 py-4 focus:outline-none transition text-left bg-black/20 border border-white/10 text-white placeholder-gray-500" placeholder="Username" dir="ltr">
-                <input type="password" id="login-pass" class="w-full rounded-xl px-5 py-4 focus:outline-none transition text-left bg-black/20 border border-white/10 text-white placeholder-gray-500" placeholder="Password" dir="ltr" onkeypress="if(event.key === 'Enter') attemptLogin()">
+                <input type="text" id="login-user" class="w-full rounded-xl px-5 py-4 focus:outline-none transition text-left bg-black/40 border border-[#BF5AF2]/30 text-white placeholder-[#E9D5FF]/50 focus:border-[#BF5AF2] focus:shadow-[0_0_15px_rgba(191,90,242,0.3)]" placeholder="Username" dir="ltr">
+                <input type="password" id="login-pass" class="w-full rounded-xl px-5 py-4 focus:outline-none transition text-left bg-black/40 border border-[#BF5AF2]/30 text-white placeholder-[#E9D5FF]/50 focus:border-[#BF5AF2] focus:shadow-[0_0_15px_rgba(191,90,242,0.3)]" placeholder="Password" dir="ltr" onkeypress="if(event.key === 'Enter') attemptLogin()">
             </div>
             
             <p id="login-error" class="text-[#FF453A] text-xs hidden font-medium tracking-wide">
                 Invalid Credentials. Please try again.
             </p>
             
-            <button onclick="attemptLogin()" class="w-full bg-[#BF5AF2] hover:bg-[#D57FF5] text-white py-4 rounded-xl font-bold text-md transition-all active:scale-95 mt-2">
+            <button onclick="attemptLogin()" class="w-full bg-[#BF5AF2] hover:bg-[#D57FF5] text-white py-4 rounded-xl font-bold text-md transition-all active:scale-95 mt-2 shadow-[0_0_20px_rgba(191,90,242,0.4)]">
                 Unlock
             </button>
         </div>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
     <div id="main-app" class="flex flex-col h-screen opacity-0 transition-opacity duration-1000 pointer-events-none relative">
         
-        <!-- HEADER -->
         <header class="header-bg p-4 flex justify-between items-center absolute top-0 w-full z-40">
             <div class="flex items-center gap-3">
-                <div id="logo-container" class="h-10 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden px-2 border border-white/10">
+                <div id="logo-container" class="h-10 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden px-2 border border-[#BF5AF2]/30">
                     <img src="image_9004c3.jpg" alt="Logo" class="h-6 object-contain" 
                          onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert');">
                 </div>
                 <div class="flex flex-col">
-                    <h1 class="text-lg font-bold tracking-wide" style="color: var(--text-main);">STC Assistant</h1>
+                    <h1 class="text-lg font-bold tracking-wide" style="color: var(--text-main); text-shadow: 0 0 10px rgba(191,90,242,0.3);">STC Assistant</h1>
                     <p class="text-[10px] uppercase tracking-wider" style="color: var(--ios-purple);" id="mode-subtitle">General AI</p>
                 </div>
             </div>
@@ -219,15 +228,13 @@
             </div>
         </header>
 
-        <!-- CHAT AREA -->
         <main class="flex-grow flex justify-center relative w-full pt-20">
             <div class="w-full max-w-4xl flex flex-col relative h-full">
                 <div id="chat-box" class="chat-container p-4 sm:p-6 flex flex-col gap-4 overflow-y-auto w-full"></div>
                 
-                <!-- FLOATING DOCKED INPUT (APPLE STYLE) -->
                 <div class="absolute bottom-0 w-full p-4 input-dock z-40 pb-6">
                     <div class="pill-input-wrapper rounded-full flex items-center p-1.5 gap-2 max-w-3xl mx-auto">
-                        <input type="text" id="user-input" class="flex-grow bg-transparent border-none text-white px-5 py-2 focus:outline-none placeholder-gray-500 text-md" placeholder="Message or type 'test'..." disabled>
+                        <input type="text" id="user-input" class="flex-grow bg-transparent border-none text-white px-5 py-2 focus:outline-none placeholder-[#E9D5FF]/40 text-md" placeholder="اكتب سؤالك أو 'اختبار' هنا..." disabled>
                         <button onclick="handleSend()" id="send-btn" class="send-btn-ios w-9 h-9 rounded-full flex items-center justify-center text-white shrink-0" disabled>
                             <i class="fa-solid fa-arrow-up"></i>
                         </button>
@@ -236,35 +243,34 @@
             </div>
         </main>
 
-        <!-- LIVE ADMIN DASHBOARD (Glassmorphic) -->
-        <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4 bg-black/40 backdrop-blur-2xl">
-            <div class="glass-panel rounded-3xl p-8 max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl">
-                <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                    <h2 class="text-xl font-bold" style="color: var(--text-main);">
+        <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4 bg-[#0B001A]/80 backdrop-blur-2xl">
+            <div class="glass-panel rounded-3xl p-8 max-w-4xl w-full max-h-[90vh] flex flex-col">
+                <div class="flex justify-between items-center mb-6 border-b border-[#BF5AF2]/30 pb-4">
+                    <h2 class="text-xl font-bold" style="color: var(--ios-purple); text-shadow: 0 0 15px rgba(191,90,242,0.5);">
                         Terminal <span class="live-indicator ml-2"></span>
                     </h2>
-                    <button onclick="toggleAdmin()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fa-solid fa-xmark text-sm"></i></button>
+                    <button onclick="toggleAdmin()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#BF5AF2] hover:text-white transition border border-white/10"><i class="fa-solid fa-xmark text-sm"></i></button>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-white/5 border border-white/5 p-5 rounded-2xl text-center">
-                        <p class="text-xs text-gray-400 uppercase tracking-widest mb-1">Queries</p>
+                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-5 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
+                        <p class="text-xs text-[#E9D5FF] uppercase tracking-widest mb-1">Queries</p>
                         <p class="text-3xl font-light text-white" id="stat-total">0</p>
                     </div>
-                    <div class="bg-white/5 border border-white/5 p-5 rounded-2xl text-center">
-                        <p class="text-xs text-gray-400 uppercase tracking-widest mb-1">Accuracy</p>
-                        <p class="text-3xl font-light text-[#32D74B]" id="stat-success">0%</p>
+                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-5 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
+                        <p class="text-xs text-[#E9D5FF] uppercase tracking-widest mb-1">Accuracy</p>
+                        <p class="text-3xl font-light text-[#32D74B]" id="stat-success" style="text-shadow: 0 0 10px rgba(50,215,75,0.4);">0%</p>
                     </div>
-                    <div class="bg-white/5 border border-white/5 p-5 rounded-2xl text-center">
-                        <p class="text-xs text-gray-400 uppercase tracking-widest mb-1">Misses</p>
-                        <p class="text-3xl font-light text-[#FF453A]" id="stat-failed">0</p>
+                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-5 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
+                        <p class="text-xs text-[#E9D5FF] uppercase tracking-widest mb-1">Misses</p>
+                        <p class="text-3xl font-light text-[#FF453A]" id="stat-failed" style="text-shadow: 0 0 10px rgba(255,69,58,0.4);">0</p>
                     </div>
                 </div>
 
                 <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
                     <div class="flex flex-col overflow-hidden">
-                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 pl-1">Live Feed</h3>
-                        <ul id="analytics-log" class="bg-white/5 border border-white/5 rounded-2xl p-4 text-sm text-gray-300 flex flex-col gap-3 overflow-y-auto flex-grow h-48 scroll-smooth">
+                        <h3 class="text-xs font-bold text-[#E9D5FF] uppercase tracking-widest mb-3 pl-1">Live Feed</h3>
+                        <ul id="analytics-log" class="bg-black/30 border border-[#BF5AF2]/20 rounded-2xl p-4 text-sm text-gray-300 flex flex-col gap-3 overflow-y-auto flex-grow h-48 scroll-smooth">
                             <li class="opacity-40 italic font-light text-center mt-10">Awaiting input...</li>
                         </ul>
                     </div>
@@ -406,7 +412,6 @@
     {q: "What are the allowed months to transfer the line from prepaid to postpaid? / ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "Three months / ثلاث أشهر", options: ["One month / شهر", "Two months / إثنان شهر", "Three months / ثلاث أشهر", "None of the mentioned / ليس مما سبق"]}
 ];
 
-
         const telesalesKnowledge = [
             {q: "قواعد الحصول ع جهاز اضافي زييد", a: "كل ماسبق"},
             {q: "الاجهزه التي تكون متوافقه مع ال ESIM هي", a: "Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20"},
@@ -495,8 +500,8 @@
                 send: "إرسال",
                 notFound: "عذراً يا بطل، ما لقيت إجابة دقيقة في قاعدة بياناتي. ياليت توضح سؤالك أكثر أو تصيغه بطريقة ثانية عشان أقدر أساعدك! 💜",
                 multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
-                anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--neon-purple);'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>",
-                quizStart: "🎓 <strong style='color: var(--neon-purple);'>بدأ الاختبار المتعدد الخيارات!</strong><br><br>إليك السؤال الأول:",
+                anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--ios-purple);'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>",
+                quizStart: "🎓 <strong style='color: var(--ios-purple);'>بدأ الاختبار المتعدد الخيارات!</strong><br><br>إليك السؤال الأول:",
                 quizEnd: "تم إنهاء الاختبار. عدنا إلى وضع المساعد العادي! 🚀",
                 useOptions: "يرجى اختيار إحدى الإجابات من الخيارات أعلاه للتقدم في الاختبار.",
                 yesReply: "حيّاك الله يا بطل 😎✨<br><br>يلا نبدأ، قطّ سؤالك وأنا بالخدمة 💜<br><br>أي استفسار عندك لا يردك إلا الكيبورد 😆👌<br><br>اكتب سؤالك الحين، وياك نروح أبعد.",
@@ -556,14 +561,13 @@
             document.getElementById('user-input').disabled = false;
             document.getElementById('send-btn').disabled = false;
             document.getElementById('quiz-btn').disabled = false;
-            document.getElementById('quiz-btn').style.opacity = "1";
             document.getElementById('mode-subtitle').innerText = "المساعد الذكي العام";
             document.getElementById('mode-subtitle').style.color = "";
             
             printBotMessage(uiText['ar'].greeting, false);
 
             const optionsHtml = `
-                <div class="flex flex-wrap gap-3 mt-3 justify-center sm:justify-start">
+                <div class="flex flex-wrap gap-3 mt-4 justify-center sm:justify-start">
                     <button onclick="selectFlow('E-Channels')" class="pill-btn">🌐 E-Channels</button>
                     <button onclick="selectFlow('Call Center')" class="pill-btn">📞 Call Center</button>
                     <button onclick="selectFlow('Resolutions')" class="pill-btn">🛠️ Resolutions</button>
@@ -699,7 +703,7 @@
             if(analytics.errors.length > 50) analytics.errors.pop();
         }
 
-        // --- EXPLICIT EXACT MCQ QUIZ ENGINE ---
+        // --- NEW EXACT-MATCH QUIZ ENGINE ---
         function toggleQuizMode() {
             let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
             if(activePool.length === 0) return; 
@@ -728,11 +732,11 @@
             
             let choices = [];
             
-            // USE EXACT OPTIONS FROM EXCEL SHEET (NO RANDOM GUESSING)
+            // Check if this specific question has exact preset options (from the new 102 list)
             if (currentQuizItem.options && currentQuizItem.options.length > 0) {
                 choices = [...currentQuizItem.options];
             } else {
-                // Fallback for Telesales (no preset options)
+                // Fallback smart generation for Telesales
                 choices = [currentQuizItem.a];
                 let questionWords = currentQuizItem.q.split(' ').filter(w => w.length > 4);
                 let similarItems = activePool.filter(item => {
@@ -764,6 +768,7 @@
             
             for(let i=0; i<choices.length; i++) {
                 let safeChoice = choices[i].replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                // Special check for exact matches
                 let isCorrect = (choices[i] === currentQuizItem.a);
                 quizHtml += `<button onclick="handleMCQSelection('${safeChoice}', ${isCorrect})" class="pill-btn w-full text-right p-4 rounded-2xl text-[0.95rem] cursor-pointer">${choices[i]}</button>`;
             }
@@ -900,7 +905,6 @@
             else processAndRespond(text);
         }
 
-        // Toggle send button state based on input
         document.getElementById('user-input').addEventListener('input', function(e) {
             document.getElementById('send-btn').disabled = e.target.value.trim() === '';
         });
