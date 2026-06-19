@@ -10,6 +10,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
         
         :root {
+            /* DARK MODE: Pitch Black + Neon Purple */
             --bg-main: #000000;
             --bg-chat-container: #090014;
             --bg-input: #120024;
@@ -229,104 +230,112 @@
             }
         }
 
-        // --- KNOWLEDGE BASE ---
+        // --- EXPLICIT KNOWLEDGE BASE (102 Questions with Explicit Options) ---
         const originalKnowledge = [
-            {q: "ماذا تظهر حالة 'In progress' في نظام BSS؟", a: "المعاملة جارية"},
-            {q: "ماذا يحصل عند استخدام كامل سعة الإنترنت في خدمة 'خليك ON'؟", a: "يتم تقليل السرعة إلى 256 كيلوبت"},
-            {q: "ما هو رمز إلغاء الاشتراك الموحد الجديد لباقات الدفع المسبق؟", a: "إرسال ( D ) إلى (510)"},
-            {q: "في نظام BSS، كيف يستطيع الموظف مشاهدة تاريخ المعاملات؟", a: "عن طريق خانة (Requests)"},
-            {q: "في نظام BSS، يستطيع العميل الدفع عن طريق:", a: "Cash / Debit / Credit"},
-            {q: "في تكلفة عقد الإنهاء في خانة نظرة عامة تعني (BSS System):", a: "جميع ما سبق"},
-            {q: "مع خط الهاتف للدفع الآجل الصوتية بقيمة 16 دينار كويتي، يمكن للعميل استخدام 1000 دقيقة:", a: "المحلية"},
-            {q: "ما هي متطلبات تقديم مطالبة Device Care؟", a: "كل ما سبق (مدنية + عقد)"},
-            {q: "فيما يتعلق ببرنامج Trade In، لا يتم تضمين أحد الشروط التالية في تقييم الجهاز:", a: "الحاجة إلى علبة وشاحن"},
-            {q: "يمكن للعملاء اللذين لديهم باقة تميز 100 د.ك للدفع الآجل الصوتي استخدام إنترنت التجوال بسعة:", a: "150 GB"},
-            {q: "تشمل ميزات Home Pass الأساسية لخدمة Plume Mesh ما يلي:", a: "إدارة خصوصية البيانات"},
-            {q: "ماذا توضح خانة 'Age on Network' في نظام BSS؟", a: "Connection date"},
-            {q: "العروض الترويجية والإعلامية في نظرة عامة على BSS تظهر بناءً على:", a: "حسب أهلية العميل"},
-            {q: "سعر استخدام الرسائل المحلية في باقات الدفع الآجل (خارج الباقة) هو:", a: "20 فلس / للرسالة"},
-            {q: "في باقة 25 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية؟", a: "1000 رسالة"},
-            {q: "في باقة 35 د.ك خليك-ON صوتية، يحصل العميل على كم رسالة محلية؟", a: "1000 رسالة (باقة 35)"},
-            {q: "توفر باقة التميز 75 دينار للدفع الآجل كم رسالة محلية؟", a: "2000 رسالة محلية"},
-            {q: "ما هي رسوم باقة التجوال الخاصة (7 أيام) بين السعودية والبحرين؟", a: "KD 8"},
-            {q: "في باقة التجوال المميزة بقيمة 12 د.ك يحصل العميل على رسائل تجوال:", a: "SMS 30"},
-            {q: "يتم تفعيل باقة 12 د.ك المميزة للتجوال عبر إرسال كود:", a: "p1 to 102"},
-            {q: "بأي توقيت تُحسب صلاحية باقات التجوال؟", a: "توقيت دولة الكويت المحلي"},
-            {q: "مدة الانتظار المسموحة؟", a: "لا يتعدى 30 ثانية"},
-            {q: "لإلغاء خدمة الـ Budget Control نستخدم الرمز:", a: "#550#"},
-            {q: "عند التسجيل في برنامج قطاف بخط دفع آجل، يحصل العميل على نقاط ترحيبية:", a: "30 نقطة"},
-            {q: "صلاحية النقاط في برنامج قطاف هي:", a: "12 شهر"},
-            {q: "كم تبلغ تكلفة الدقيقة المحلية في باقات الدفع الآجل الصوتية؟", a: "39 فلس"},
-            {q: "ماهي المدة من انتقال MEDIUM-risk إلى Low-risk profile؟", a: "شهر واحد"},
-            {q: "أي من التطبيقات التالية غير مشمول في سعة التواصل الاجتماعي المجانية؟", a: "زوم (Zoom)"},
-            {q: "أين تتم عملية نقل ملكية الخط (دفع آجل أو مسبق صوتي)؟", a: "من خلال زيارة الفرع"},
-            {q: "في حال وفاة صاحب الخط، ما الإجراء المطلوب؟", a: "مراجعة ذوي المتوفى للفرع"},
-            {q: "عميل مهتم بالصحة واللياقة البدنية، ما المنتج الأنسب له؟", a: "ساعة آبل"},
-            {q: "عميل من فئة الأعمال يريد رقماً مميزاً، ما هو الخيار الأنسب؟", a: "رقم سوبر gold / بلاتيني"},
-            {q: "كم دقيقة محلية في باقة go المسبقة الأسبوعية بقيمة 6 د.ك؟", a: "100 دقيقة"},
-            {q: "كيف يستعلم عميل الدفع الآجل عن استهلاكه للإنترنت؟", a: "إرسال الكود Q إلى 567"},
-            {q: "باقة التجوال المميزة بقيمة 12 د.ك تتيح للعميل استخدام...دقائق للاتصال بالكويت:", a: "30 دقيقة"},
-            {q: "كيف يتم عملية اعادة التعبئة لخطوط دفع المسبق من خلال نظام ال BSS؟", a: "Service Request button / Recharge"},
-            {q: "ما هي سعة الانترنت المتاحة للتجوال الخاص بين السعودية والبحرين (ليوم واحد)؟", a: "3GB"},
-            {q: "وظيفة جهاز Plume Mesh هي:", a: "توسيع نطاق تغطية WI-FI لاجهزة Router"},
-            {q: "ماذا تعني كلمة Upfront charges؟", a: "دفعة مقدمة"},
-            {q: "استخدام الإنترنت الليلي (150GB) في باقات go للدفع المسبق هو من:", a: "من 1 صباحاً إلى 7 صباحاً"},
-            {q: "في باقة 16 د.ك للدفع الآجل للإنترنت، سعة الاستخدام الشهرية هي:", a: "10 TB"},
-            {q: "بعد استهلاك السعة المجانية لباقة 16 د.ك آجل تنخفض السرعة إلى:", a: "256 Kbps"},
-            {q: "سياسة الاستخدام العادل في باقة 12 KD للدفع الآجل للإنترنت هي:", a: "2TB"},
-            {q: "هل تتوفر خطة مشاركة الشريحة مع خط الإنترنت الدفع الآجل بقيمة 12 د.ك؟", a: "لا"},
-            {q: "عميل يسافر كثيراً ويريد البقاء متصلاً، ما الخدمة الأنسب؟", a: "باقة بيانات تجوال"},
-            {q: "هل يمكن التجديد التلقائي في باقة التجوال المميزة بقيمة 12 د.ك؟", a: "نعم"},
-            {q: "كم عدد الأجهزة التي يمكن إضافتها مع باقات الإنترنت؟", a: "2"},
-            {q: "مدة الالتزام لإضافة أجهزة لعملاء إنترنت الدفع الآجل الجديد:", a: "24 شهر"},
-            {q: "يستطيع العميل استخدام أكثر من جهاز واحد في عملية Trade In:", a: "صح"},
-            {q: "في باقة الدفع الآجل 25 د.ك، يحصل العميل على دقائق محلية:", a: "2000 دقيقة"},
-            {q: "أي باقة خليك-ON توفر دقائق غير محدودة؟", a: "KD 35"},
-            {q: "تتوفر باقة الدفع الآجل 35 د.ك إنترنت محلي بسعة:", a: "500GB"},
-            {q: "ما هو نوع الاجهزة المسموح بها عمل Trade in؟", a: "الهاتف المحمول / الجهاز اللوحي"},
-            {q: "ما هي سعة الإنترنت في باقة الـ 25 الصوتية؟", a: "100 GB"},
-            {q: "عميل خط التعبئة go القديم ينتقل لباقات الرسائل عبر كود:", a: "510"},
-            {q: "عند رغبة العميل بدفع المبالغ المستحقة، ما هي الإجابة الخاطئة؟", a: "تحويل العميل للدعم الفني"},
-            {q: "كم مدة الاستعداد للمكالمة؟", a: "أقل من 3 ثوان"},
-            {q: "خيارات لا تتطلب توجيه العميل للفرع:", a: "الاستفسار عن الفاتورة"},
-            {q: "يتم ترحيل الدقائق والرسائل غير المستخدمة للشهر التالي في الآجل؟", a: "خطأ"},
-            {q: "الانترنت الاضافي المتاح في باقة الانترنت KD7 مسبق الدفع هو ل:", a: "3 KD"},
-            {q: "باقة go المسبقة بقيمة 9 د.ك توفر دقائق وتواصل اجتماعي:", a: "صح (كل ما ذكر)"},
-            {q: "تتوفر ميزة الـ Social Media بسعة 150GB مع خط 30/35 د.ك:", a: "خطأ"},
-            {q: "يساعدنا شريط البحث في العثور على الملف الشخصي بواسطة (BSS):", a: "جميع ما سبق"},
-            {q: "المنتج الأنسب للمهتم بالصحة والرياضة البدنية:", a: "ساعة آبل"},
-            {q: "باقة التميز 50 د.ك للدفع الاجل الصوتي تحتوي على انترنت بسعة:", a: "6TB"},
-            {q: "باقة التميز 90/100 د.ك للدفع الاجل الصوتي تحتوي على انترنت تجوال بسعة:", a: "150 GB"},
-            {q: "ماهي المدة من انتقال High-risk إلى MEDIUM-risk profile؟", a: "3 اشهر"},
-            {q: "رسوم الاتصال الى الكويت بالتجوال من اي دولة اوربية:", a: "KD 1.250"},
-            {q: "لتغيير إعدادات الخصوصية في خدمة Plume، نستخدم ميزة:", a: "Home Pass"},
-            {q: "سيحصل عملاء باقة 45 د.ك على (...) GB انترنت أثناء التجوال", a: "10GB"},
-            {q: "قبل إجراء Trade in، يجب على الموظف أن يطلب من العميل ما يلي:", a: "عمل نسخة احتياطية من الجهاز القديم وحذف البيانات الشخصية"},
-            {q: "ماذا يعني الاسم الكامل لـ VAS؟", a: "Value-added services"},
-            {q: "ما هو نوع الاجهزة المسموح بها عمل Trade in؟", a: "الهاتف المحمول / الجهاز اللوحي"},
-            {q: "عند التحقق من اسم الموظف الذي أجرى أي معاملة على الخط، فعلينا الانتقال إلى (BSS System):", a: "Requests"},
-            {q: "يستطيع العميل ان يستخدم اكثر من جهاز واحد في عملية Trade-in:", a: "صح"},
-            {q: "يحصل العملاء على كبل مجاني يصل طوله إلى ... متر مع باقة بيتي G5", a: "50 متر"},
-            {q: "ما هي باقات Baity 5G التي تقدم شريحة SIM للمشاركة مجاناً؟", a: "KD 19"},
-            {q: "هل تقدم باقات Baity 5G شريحة SIM للمشاركة مجاناً؟", a: "نعم"},
-            {q: "يحصل عميل الدفع الاجل 45 د.ك مع التزام على:", a: "هاتف ذكي وراوتر"},
-            {q: "قبل إجراء Tarde in، يجب على الموظف أن يطلب من العميل ما يلي:", a: "عمل نسخة احتياطية من الجهاز القديم وحذف البيانات الشخصية"},
-            {q: "خدمة الانترنت الاضافي لباقات الدفع الالجل الانترنت KD 5 تمنح العميل:", a: "GB 250"},
-            {q: "سيتمكن العملاء الذين لديهم خط دفع الالجل للإنترنت الجديد من إضافة أجهزة بناءً على مدة التزام:", a: "24 شهر"},
-            {q: "كم هي تكلفة خدمة الايقاف المؤقت لمدة شهر؟", a: "لا شيء من المذكور"},
-            {q: "توفر خدمة Device Care Essential للعميل:", a: "تمديد لمصنععة الجهاز"},
-            {q: "يمكن استخدام المبلغ المحصل عليه الذي تم الحصول عليه عن طريق Trade in من أجل:", a: "الفواتير المتأخرة"},
-            {q: "كم عدد الرسائل المحلية المجانية المتوفرة على باقة 25 د.ك خلك ON للدفع الالجل الصوتية؟", a: "1000 رسالة (باقة 25)"},
-            {q: "في باقة 35 د.ك خلك ON، يحصل العميل على ... دقيقة محلية:", a: "دقائق غير محدودة"},
-            {q: "ما هي تكلفة خدمة FOZ للألعاب الإضافية على باقات Baity 5G؟", a: "5KD"},
-            {q: "كيف يمكن للعميل الاستفسار عن استخدام الإنترنت لخطوط الدفع الآجل؟", a: "ارسل كود Q الى رقم 567"},
-            {q: "ما هي خيارات الاشتراك المتاحة لخدمات بيتي 5G؟", a: "سنتان / 3 سنوات /18 شهرا"},
-            {q: "سياسة الاستخدام العادل الموجودة في باقة 15 KD للدفع الآجل للإنترنت هي:", a: "لأنترنت: غير محدود (استخدام عادل: 10 TB)"},
-            {q: "يمكن للعملاء استخدام رصيد 8 د.ك في باقة 10 د.ك خلك-ON من أجل:", a: "جميع ما سبق"},
-            {q: "الحصول على اشتراكين ترفيهيين مقابل Baity 5G يحق لعملاء؟", a: "6 أشهر"},
-            {q: "ما هو خيار Auto Port-In (BSS system) ؟", a: "خيار يتيح تنفيذ عملية نقل الرقم فورًا دون انتظار موافقة الشركة المحوّل منها"},
-            {q: "ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "ثلاث أشهر"}
-        ];
+    {q: "How many days the Prepaid line will stay on Grace? / كم يوم يبقى الخط في Grace؟", a: "30 days / 30 يوم", options: ["60 days / 60 يوم", "30 days / 30 يوم", "20 days / 20 يوم", "45 days / 45 يوم"]},
+    {q: "What is internet capacity in 25 KD voice package? / ما هي سعة الانترنت في باقة ال 25 الصوتية؟", a: "100 GB / 100 GB", options: ["10 GB / 10 GB", "25 GB / 25 GB", "50 GB / 50 GB", "100 GB / 100 GB"]},
+    {q: "How much does a temporary suspension service cost for a month (summer suspension)? / كم هي تكلفة خدمة الايقاف المؤقت لمدة شهر؟", a: "None of the mentioned / ليس أي مما سبق", options: ["15 KD / 15 KD", "20 KD / 20 KD", "25 KD / 25 KD", "None of the mentioned / ليس أي مما سبق"]},
+    {q: "The validity of points in qitaf program is? / صلاحية النقاط في برنامج قطاف هي؟", a: "12 months / 12 شهر", options: ["3 months / 3 أشهر", "12 months / 12 شهر", "18 months / 18 شهر", "24 months / 24 شهر"]},
+    {q: "The cost for transfer ownership for postpaid line: / كم تكلفة نقل الملكية لخطوط الدفع الآجل؟", a: "5 KD / 5 KD", options: ["5 KD / 5 KD", "10 KD / 10 KD", "15 KD / 15 KD", "20 KD / 20 KD"]},
+    {q: "To cancel Budget control service: / لإلغاء خدمة ال Budget Control:", a: "#550# / #550#", options: ["#550# / #550#", "#505# / #505#", "*550# / *550#", "*505# / *505#"]},
+    {q: "Postpaid data customer will get .....GBs with 5KD booster: / خدمة الانترنت الاضافي لباقات الدفع الآجل الانترنت تمنح 5 KD (...) GBs:", a: "250 GB / 250 GB", options: ["100 GB / 100 GB", "500 GB / 500 GB", "250 GB / 250 GB"]},
+    {q: "To get Prepaid line, the age limit for Kuwaiti/Non Kuwaiti should not be less than: / العمر المسموح للحصول على خط التعبئة للعميل الكويتي/غيرالكويتي يجب ان لا يكون اقل من:", a: "18 years / 18 سنة", options: ["21 years / 21 سنة", "18 years / 18 سنة", "20 years / 20 سنة", "19 years / 19 سنة"]},
+    {q: "The charges to call to Kuwait from any Europian country on roaming are: / رسوم الاتصال الى الكويت بالتجوال من اي دولة اوربية:", a: "1.250 KD / 1.250 KD", options: ["1.250 KD / 1.250 KD", "1.000 KD / 1.000 KD", "0.900 KD / 0.900 KD", "0.600 KD / 0.600 KD"]},
+    {q: "Old prepaid plans can migrate to \"go\" plan by sending sms go to ..... / عميل خط التعبئة للباقات( go ) القديمة يستطيع الانتقال الى go باقات ارسال الرساله محتوها :", a: "510 / 510", options: ["567 / 567", "585 / 585", "999 / 999", "510 / 510"]},
+    {q: "Postpaid voice 45 KD customers get ....GB of data on Roaming: / سيحصل عملاء باقة 45 د.ك انترنت أثناء التجوال على (...) GB:", a: "10 GB / 10 GB", options: ["10 GB / 10 GB", "5 GB / 5 GB", "3 GB / 3 GB", "1 GB / 1 GB"]},
+    {q: "12 kd premimum roaming bundle is activated by: / يتم تفعيل باقة 12 د.ك المميزة للتجوال من خلال:", a: "p1 to 102 / p1 to 102", options: ["p1 to 102 / p1 to 102", "i2 to 102 / i2 to 102", "i3 to 102 / i3 to 102", "i4 to 102 / i4 to 102"]},
+    {q: "The hotline number for Fiber services is: / رقم الخط المباشر لخدمة الفايبر:", a: "1827827 / 1827827", options: ["1827278 / 1827278", "1827287 / 1827287", "1827827 / 1827827"]},
+    {q: "The customer will be on High-risk profile for any new activation after ......... , becoming medium if the line is not disconnected during this period? / ماهي المدة من انتقال High-risk profile الى MEDIUM-risk profile في حال عدم انقطاع الخط خلال هذه الفترة؟", a: "Three months / 3 أشهر", options: ["One month / شهر واحد", "Two months / شهرين", "Three months / 3 أشهر", "Six months / 6 أشهر"]},
+    {q: "MEDIUM-risk profile becomes low after.....? / ماهي المدة من انتقال MEDIUM-risk profile الى Low-risk profile في حال عدم انقطاع الخط خلال هذه الفترة؟", a: "One month / شهر واحد", options: ["One month / شهر واحد", "Two month / شهرين", "Three month / 3 أشهر", "Six month / 6 أشهر"]},
+    {q: "Is auto renewal available for 12 KD premium roaming bundle for postpaid voice? / هل يمكن التجديد التلقائي في باقة التجوال المميزة بقيمة 12 د.ك للدفع الأجل الصوتي؟", a: "Yes / صح", options: ["Yes / صح", "No / خطأ"]},
+    {q: "Deactivation Code for 12 KD premium Roaming bundle is: / لإلغاء باقة التجوال المميزة بقيمة 12 د.ك ارسال رساله نصيه هي:", a: "D to 102 / إلى 102 D", options: ["0p1 to 102 / إلى 102 0p1", "0p1 to 567 / إلى 567 0p1", "D to 102 / إلى 102 D", "012 to 102 / إلى 102 012"]},
+    {q: "In 12 KD premium roaming bundle, customer can have roaming SMS's: / في باقة التجوال المميزة بقيمة 12 د.ك يمكن للعميل الحصول على رسائل التجوال القصيرة:", a: "30 SMS / 30 SMS", options: ["100 SMS / 100 SMS", "50 SMS / 50 SMS", "30 SMS / 30 SMS", "25 SMS / 25 SMS"]},
+    {q: "What are the requirements for making Device Care claim? / ما هي متطلبات تقديم مطالبة Device Care؟", a: "All of the mentioned / كل ما سبق", options: ["Civil Id/Excess Fee / البطاقة المدنية / الرسوم الزائدة", "Device Care contract Form / نموذج عقد رعاية الجهاز", "All of the mentioned / كل ما سبق", "None of the mentioned / ليس اين مما سبق"]},
+    {q: "Device Care Essential service provide customer: / توفر خدمة Device Care Essential للعميل:", a: "Extended Manufacturer Warranty / تمديد لمصنعية الجهاز", options: ["Extended Manufacturer Warranty / تمديد لمصنعية الجهاز", "Screen Damage only / تلف الشاشة فقط", "Full Smartphone change / التغيير الكامل للهاتف الذكي"]},
+    {q: "The premium category of stc TV customers get Video Quality of: / يحصل العميل جودة الفيديومن خدمة stc TV: premium باقة", a: "4 K / 4 K", options: ["HD / HD", "Full HD / Full HD", "4 K / 4 K", "8 K / 8 K"]},
+    {q: "Can stc Postpaid customers use payment service in the Chatbot? / هل يستطيعون عملاء stc للدفع الآجل استخدام خاصية الدفع من خلال نظام المساعد الآلي؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
+    {q: "9 kd go prepaid plan provides: / توفر خط الدفع المسبق 9 د.ك:", a: "All of the mentioned / كل ما ذكر", options: ["Unlimited On-net minutes / دقائق غير محدودة داخل الشبكة", "Unlimited Social Media / وسائل التواصل الاجتماعي غير المحدودة", "All of the mentioned / كل ما ذكر", "None of the mentioned / لا شيء من المذكور"]},
+    {q: "How long does it take to get ready for a call? / كم مدة الاستعداد للمكالمة:", a: "less than 3 seconds / أقل من 3 ثوان", options: ["less than 3 seconds / أقل من 3 ثوان", "less than 5 seconds / أقل من 5 ثوان", "less than 7 seconds / أقل من 7 ثوان", "None of the above / ليس أيا مما سبق"]},
+    {q: "In a call the number of times the customer's name is used: / عدد مرات استخدام اسم العميل:", a: "Thrice or more / ثلاث مرات و اكثر", options: ["Once / مرة", "Twicw / مرتين", "Thrice or more / ثلاث مرات و اكثر", "Not important / غير مهم"]},
+    {q: "Allowed waiting time is: / مدة الانتظار المسموحه:", a: "It does not exceed 30 seconds, renewable / لا يتعدى 30 ثانيه قابلة للتجديد", options: ["Waiting is not allowed / الانتظار غير مسموح", "It does not exceed 30 seconds, renewable / لا يتعدى 30 ثانيه قابلة للتجديد", "It does not exceed 40 seconds, renewable / لا يتعدى 40 ثانيه قابلة للتجديد", "It does not exceed 45 seconds, renewable / لا يتعدى 45 ثانيه قابلة للتجديد"]},
+    {q: "What is the right way of ending call: / كيف تكون نهاية المكالمة الصحيحة:", a: "Marketing, Offer to provide another service , Greeting at the end of the call / التسويق, العرض لتقديم خدمة أخرى, تحية ختام المكالمة", options: ["Offer to provide another service, Marketing, Greeting at the end of the call / العرض لتقديم خدمة أخرى, التسويق, تحية ختام المكالمة", "Greeting at the end of the call , Offer to provide another service 3- Marketing / تحية ختام المكالمة , العرض لتقديم خدمة أخرى, -التسويق", "Greeting at the end of the call , Marketing , Offer to provide another service / تحية ختام المكالمة , التسويق, العرض لتقديم خدمة أخرى", "Marketing, Offer to provide another service , Greeting at the end of the call / التسويق, العرض لتقديم خدمة أخرى, تحية ختام المكالمة"]},
+    {q: "Postpaid 75KD Tamayouz package provides: / توفر باقة التميز 75 دينار للدفع الأجل :", a: "2000 Local SMS / رسالة محلية 2000", options: ["1000 Local SMS / رسالة محلية 1000", "2000 Local SMS / رسالة محلية 2000", "Unlimited Local SMS / رسائل محلية غير محدودة", "None of the mentioned / ليس اين مما سبق"]},
+    {q: "Internet allowance for 12 KD Postpaid Data line is: / سياسة الاستخدام العادل الموجودة في باقة 12 KD للدفع الآجل للإنترنت هي:", a: "2TB / 2TB", options: ["10 TB / 10 TB", "2TB / 2TB", "1TB / 1TB"]},
+    {q: "Customers with the new Postpaid Data line will be able to add devices based on: / سيتمكن العملاء الذين لديهم خط دفع الآجل للإنترنت الجديد من إضافة أجهزة بناءً على مدة التزام:", a: "24 months commitment / شهر 24", options: ["24 months commitment / شهر 24", "12 months commitment / شهر 12", "18 months commitment / شهر 18"]},
+    {q: "Credit obtained by Trade In service can be used for: / يمكن استخدام المبلغ المحصل الذي تم الحصول عليه عن طريق Trade in من أجل:", a: "Overdue bills / الفواتير المتأخرة", options: ["Overdue bills / الفواتير المتأخرة", "Advance rental payment / الدفع مقدما", "Prepaid recharge / إعادة تعبئة خط دفع مسبق"]},
+    {q: "What type of devices are eligible for Trade In? / ما هو نوع الاجهزة المسموح بها عمل Trade in؟", a: "Mobile/Tablet / الهاتف المحمول/الجهاز اللوحي", options: ["Mobile/Smart Watch / الهاتف المحمول/الساعة الذكية", "Mobile/Charger / الهاتف المحمول /شاحن", "Mobile/Tablet / الهاتف المحمول/الجهاز اللوحي"]},
+    {q: "Customers can Trade in multiple devices: / يستطيع العميل ان يستخدم اكثر من جهاز واحد في عملية Trade In:", a: "Yes / صح", options: ["Yes / صح", "No / خطأ"]},
+    {q: "Before making any Trade In deal, agent should ask the customer to: / يجب على الموظف أن يطلب من العميل ما يلي قبل إجراء Tarde in:", a: "Back up old device and delete personal data / عمل نسخة احتياطية من الجهاز القديم وحذف البيانات الشخصية", options: ["Back up old device and delete personal data / عمل نسخة احتياطية من الجهاز القديم وحذف البيانات الشخصية", "Pay all previous bills / سداد جميع الفواتير السابقة", "Fix the device damage / إصلاح الجهاز التالف", "All of the mentioned / جميع ما سبق"]},
+    {q: "In order to get Postpaid line, the customer’s age should not be less than: / من أجل الحصول على خط دفع آجل، يجب أن لا يكون عُمر العميل أقل من:", a: "21 years / سنه 21", options: ["22 years / سنه 22", "21 years / سنه 21", "18 years / سنه 18", "16 years / سنه 16"]},
+    {q: "In qitaf program, Postpaid voice and data line customer will get ...... points as welcome gift: / عند التسجيل في برنامج قطاف بإستخدام خط دفع آجل صوتي و انترنت , يحصل العميل على ......... نقطة ترحيبية مجانيه", a: "30 / 30", options: ["30 / 30", "50 / 50", "100 / 100", "200 / 200"]},
+    {q: "The search bar helps us to find customer’s profile by (BSS System): / يساعدنا شريط البحث في العثور على الملف الشخصي للعميل (BSS System):من خلال", a: "All of the mentioned / جميع ما سبق", options: ["Civil ID number / رقم البطاقة المدنية", "Line number / رقم الاشتراك", "Contract Number / رقم العقد", "All of the mentioned / جميع ما سبق"]},
+    {q: "\"Age On Network\" is the line (BSS System): / ترمز مقولة \" Age On Network\" إلى؟ (BSS System)", a: "Connection Date / Connection Date", options: ["Connection Date / Connection Date", "Disabled Date / Disabled Date", "Termination Date / Termination Date"]},
+    {q: "\"In progress\" status shows (BSS System): / ماذا تظهر حالة \"In progress\":(BSS System)", a: "The task is under process / المعاملة جارية", options: ["The task is done / تم إنجاز المعاملة", "The task is failed / فشلت المعاملة", "The task is under process / المعاملة جارية"]},
+    {q: "What does VAS full form stands for? / ماذا يعني الاسم الكامل ل VAS؟", a: "Value-Added Service / Value-Added Service", options: ["Value-Added Service / Value-Added Service", "Value-Activated Sign / Value-Activated Sign", "Voice-Activation Service / Voice-Activation Service"]},
+    {q: "We can check Transaction History from (BSS System): / كيف يستطيع الموظف مشاهدة تاريخ المعاملات؟ (BSS System):", a: "Requests / Requests", options: ["Notifications / Notifications", "Requests / Requests", "Overview / Overview"]},
+    {q: "In BSS system customer can pay: / يستطيع العميل في برنامج BSS الدفع عن طريق؟", a: "Cash/Debit/Credit / Cash/Debit/Credit", options: ["Cash Only / Cash Only", "Cash/Debit/Credit / Cash/Debit/Credit", "Credit/SMS Pay / Credit/SMS Pay", "Debit/SMS Pay/Credit / Debit/SMS Pay/Credit", "None of mentioned / ليس مما سبق"]},
+    {q: "Customer’s balance can be checked from (BSS System): / أين يمكنك التحقق من رصيد العميل؟(BSS System)", a: "Overview / Overview", options: ["Requests / Requests", "Overview / Overview", "Financials / Financials", "Invoices / Invoices"]},
+    {q: "(BSS System) A new line can be created by selecting / يمكن تفعيل خط جديد عن طريق اختيار:(BSS System)", a: "Add Service / Add Service", options: ["Add Service / Add Service", "Add VAS / Add VAS", "Overview / Overview"]},
+    {q: "Termination Liability Cost in Overview means (BSS System): / في تكلفة عقد الإنهاء في خانة نظرة عامة تعني:(BSS System)", a: "All of the mentioned / جميع ماسبق", options: ["Penalty fee / رسوم جزائية", "Cancellation Fee / رسوم الإلغاء", "All of the mentioned / جميع ماسبق", "None of the mentioned / ليس أين مما سبق"]},
+    {q: "(BSS system) We can check Credit limit from: / يمكننا التحقق من حد الائتمان من خلال:(BSS system)", a: "Overview / Overview", options: ["Offering / Offering", "Usage / Usage", "Wallet / Wallet", "Overview / Overview"]},
+    {q: "(BSS System) If we want to check the name of the agent done any transaction on the line, we need to go to: / إذا أردنا التحقق من اسم الموظف الذي أجرى أي معاملة على الخط ، فعلينا الانتقال إلى:(BSS System)", a: "Requests / Requests", options: ["Requests / Requests", "Over view / Over view", "Offering / Offering", "VAS / VAS"]},
+    {q: "In BSS system Upfront charges means: / ماذا تعني كلمة Upfront charges في نظام BSS :", a: "Advance Payment / دفعه مقدمه", options: ["Monthly Charges / الرسوم الشهرية", "Advance Payment / دفعه مقدمه", "Termination Fee / رسوم الإلغاء"]},
+    {q: "Promotional & Informational Offers in BSS Overview shows: / العروض الترويجية والإعلامية في نظرة عامة على BSS تظهر:", a: "Offers as per customer eligibility / العروض حسب أهلية العميل", options: ["Recently launched offers / العروض التي تم إطلاقها مؤخرًا", "Offers as per customer eligibility / العروض حسب أهلية العميل"]},
+    {q: "50 KD postpaid voice line provides unlimited internet with FUP of: / باقة تميز 50 د.ك للدفع الأجل الصوتي تحتوي على انترنت غير محدود بسعة إستهلاك شهري:", a: "6TB / 6 TB", options: ["2 GB / 2 GB", "3 GB / 3 GB", "2 TB / 2 TB", "6TB / 6 TB"]},
+    {q: "100 KD Postpaid voice line customer can use ... of Roaming Data: / يمكن للعملاء اللذين لديهم باقة تميز 100 د.ك للدفع الأجل الصوتي استخدام... إنترنت:", a: "150 GB / 150 GB", options: ["60 GB / 60 GB", "90 GB / 90 GB", "150 GB / 150 GB"]},
+    {q: "Sharing Sim plan is available with 12 KD Postpaid Data line: / تتوفر خطة مشاركة الشريحة مع خط الإنترنت الدفع الأجل بقيمة 12 د.ك:", a: "No / لا", options: ["Yes / نعم", "No / لا"]},
+    {q: "12 Kd Premium Roaming bundle allow customer to use...minutes to call to Kuwait: / باقة التجوال المميزة بقيمة 12 د.ك تتيح للعميل استخدام...دقائق للاتصال بالكويت:", a: "30 minutes / دقيقة 30", options: ["15 minutes / دقيقة 15", "30 minutes / دقيقة 30", "Unlimited minutes / دقائق غير محدودة", "None of the mentioned. / ليس مما سبق"]},
+    {q: "Is the Fiber only available for specific areas in Kuwait? / هل الفايبر متوفر لمناطق معينه في الكويت؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
+    {q: "In 16 KD postpaid data line, unlimited FUP is ...... / في باقة 16 د.ك للدفع الأجل للإنترنت, سعة الإستخدام الشهرية هي ......", a: "10 TB / 10 TB", options: ["1 TB / 1 TB", "2 TB / 2 TB", "10 TB / 10 TB", "15 TB / 15 TB"]},
+    {q: "After consuming free Data in 16KD postpaid line the speed go down to: / بعد استهلاك العميل للسعة المجانية لباقة 16 د.ك للدفع الأجل تنخفض السرعة إلى:", a: "256 Kbps / 256 Kbps", options: ["265 Kbps / 265 Kbps", "260 Kbps / 260 Kbps", "256 Kbps / 256 Kbps", "250 Kbps / 250 Kbps"]},
+    {q: "150GB Social Media Internet benefit is available with 30KD/35KD postpaid line: / تتوفر ميزة إنترنت لوسائط التواصل الاجتماعي بسعة 150GB مع خط الدفع الأجل بقيمة 30 د.ك /35 د.ك:", a: "No / خطأ", options: ["Yes / صح", "No / خطأ"]},
+    {q: "Regarding Trade In program, one of the below conditions is not included in device (Smartphone or Tablet) evaluation: / فيما يتعلق ببرنامج Trade In، لا يتم تضمين أحد الشروط التالية في تقييم الجهاز (الهاتف الذكي أو الجهاز اللوحي):", a: "Need of box, & charger / الحاجة إلى علبة ، وشاحن", options: ["Device functionality / وظائف الجهاز", "Battery functionality / وظيفة البطارية", "Screen intactness / سلامة الشاشة", "Need of box, & charger / الحاجة إلى علبة ، وشاحن", "Scratches and dents on the body / الخدوش والخدوش على الجهاز"]},
+    {q: "Night 150GB internet usage in Prepaid go packages is from : / استخدام الإنترنت الليلي بسعة 150 جيجابايت في باقات go للدفع المسبق هو من:", a: "1 AM to 7 AM / من 1 صباحًا إلى 7 صباحًا", options: ["1 AM to 7 AM / من 1 صباحًا إلى 7 صباحًا", "12 AM to 7 AM / من 12 صباحًا إلى 7 صباحًا", "1 AM to 8 AM / من 1 صباحًا إلى 8 صباحًا", "12 AM to 8 AM / من 12 صباحًا إلى 8 صباحًا"]},
+    {q: "What happens when the full internet capacity of the \"Always-ON\" service is used? / ماذا يحصل عند استخدام كامل سعة الإنترنت في خدمة \"خليك ON\"؟", a: "The speed is reduced to 256 Kbps / يتم تقليل السرعة إلى 256 كيلوبت", options: ["The service is disconnected / يتم قطع الخدمة", "The speed is reduced to 256 Kbps / يتم تقليل السرعة إلى 256 كيلوبت", "Additional charges are applied / يتم إضافة رسوم إضافية", "The package is temporarily suspended / يتم إيقاف الباقة مؤقتًا"]},
+    {q: "How much is the fee for transferring ownership of postpaid lines? / كم تبلغ رسوم نقل ملكية خطوط الدفع الأجل؟", a: "5 KWD / 5 د.ك", options: ["2 KWD / 2 د.ك", "3 KWD / 3 د.ك", "5 KWD / 5 د.ك", "7 KWD / 7 د.ك"]},
+    {q: "Unused minutes and messages are carried over to the next month in postpaid packages / يتم ترحيل الدقائق والرسائل غير المستخدمة إلى الشهر التالي في باقات الدفع الأجل.", a: "False / خطأ", options: ["False / خطأ", "True / صح"]},
+    {q: "How can a customer inquire about internet usage for Postpaid voice lines? / كيف يمكن للعميل الاستفسار عن استخدام الإنترنت لخطوط الدفع الأجل؟", a: "Send the code Q to 567 / إرسال الكود Q إلى الرقم 567", options: ["Send the code QA to 567 / إرسال الكود QA إلى الرقم 567", "Send the code Q to 567 / إرسال الكود Q إلى الرقم 567", "Send the code QA to 102 / إرسال الكود 124 إلى 567", "Send the code Q to 102 / إرسال الكود 127 إلى الرقم 567"]},
+    {q: "What is the cost of a local minute in postpaid voice plans? / كم تبلغ تكلفة الدقيقة المحلية في باقات الدفع الأجل الصوتية؟", a: "39 fils / 39 فلس", options: ["30 fils / 30 فلس", "25 fils / 25 فلس", "39 fils / 39 فلس", "50 fils / 50 فلس"]},
+    {q: "Which app is NOT included in the free social media quota? / أي من التطبيقات التالية غير مشمول في سعة التواصل الاجتماعي المجانية؟", a: "Zoom / زووم", options: ["Instagram / انستغرام", "WhatsApp / واتساب", "Zoom / زووم", "TikTok / تيك توك"]},
+    {q: "How many devices can be provided with internet bundles? / كم عدد الأجهزة التي يمكن إضافتها مع باقات الإنترنت؟", a: "2 / 2", options: ["1 / 1", "2 / 2", "3 / 3", "Unlimited / غير محدود"]},
+    {q: "Customers can use 8KD credit in 10KD Always-ON plan for: / يمكن للعملاء استخدام رصيد 8 د.ك في باقة 10 د.ك خليك ON من أجل:", a: "All of the mentioned / جميع ما سبق", options: ["International Calls / المكالمات الدولية", "Local Calls / المكالمات المحلية", "Local SMS / الرسائل المحلية", "All of the mentioned / جميع ما سبق"]},
+    {q: "In 35KD Always-ON plan, customer will get ......local SMS: / في باقة 35 د.ك خليك ON، يحصل العميل على ...... رسالة محلية:", a: "1000 SMS / رسالة 1000", options: ["100 SMS / رسالة 100", "500 SMS / رسالة 500", "1000 SMS / رسالة 1000", "Unlimited SMS / رسائل غير محدودة"]},
+    {q: "Local SMS consumption price in Postpaid plan is: / سعر استخدام الرسائل المحلية في باقات الدفع الأجل هو:", a: "20 fils/SMS / 20 فلس/لرسالة", options: ["10 fils/SMS / 10 فلوس/لرسالة", "20 fils/SMS / 20 فلس/لرسالة", "30 fils/SMS / 30 فلس/لرسالة", "45 fils/SMS / 45 فلس/لرسالة"]},
+    {q: "In 25 KD postpaid plan customer will get .........local minutes: / في باقة الدفع الأجل 25 د.ك، يحصل العميل على ......... دقيقة محلية:", a: "2000 minutes / دقيقة 2000", options: ["500 minutes / دقيقة 500", "1000 minutes / دقيقة 1000", "2000 minutes / دقيقة 2000", "Unlimited / غير محدود"]},
+    {q: "35 KD postpaid plan provides.......GB of local internet: / توفر باقة الدفع الأجل 35 د.ك ......... جيجابايت من الإنترنت المحلي:", a: "500 GB / 500 GB", options: ["25 GB / 25 GB", "50 GB / 50 GB", "100 GB / 100 GB", "500 GB / 500 GB"]},
+    {q: "45 KD Postpaid customer with commitment will get: / يحصل عميل الدفع الأجل 45 د.ك مع التزام على:", a: "Smartphone & Router / هاتف ذكي وراوتر", options: ["Smartphone / هاتف ذكي", "Router / راوتر", "Smartphone & Router / هاتف ذكي وراوتر", "Router & Tablet / راوتر وجهاز لوحي"]},
+    {q: "When a customer wants to (transfer ownership) of a postpaid or prepaid voice line, where must this be done? / عند رغبة العميل في نقل ملكية خط دفع آجل أو دفع مسبق صوتي، أين تتم هذه العملية؟", a: "By visiting the branch / من خلال زيارة الفرع", options: ["Through the mobile app only / من خلال التطبيق فقط", "By the call center agent directly / عبر موظف خدمة العملاء بالهاتف", "Through email / عبر البريد الإلكتروني", "By visiting the branch / من خلال زيارة الفرع"]},
+    {q: "In the case of the death of a line owner, what is the required procedure? / في حال وفاة صاحب الخط، ما هو الإجراء المطلوب؟", a: "The family must visit the branch and submit the required documents / يجب على ذوي المتوفى مراجعة الفرع لتقديم المستندات اللازمة", options: ["No action is required / لا حاجة لأي إجراء", "Contact technical support / يتم التواصل مع الدعم الفني", "The family must visit the branch and submit the required documents / يجب على ذوي المتوفى مراجعة الفرع لتقديم المستندات اللازمة", "Ownership is automatically transferred to heirs / يتم تحويل الخط تلقائياً لورثة المتوفى"]},
+    {q: "If the customer wants to pay the due amounts, which answer is incorrect? / في حال رغبه العميل دفع المبالغ المستحقة، ما هى الإجابة الخاطئة؟", a: "The customer will be transferred to the technical support department / يتم تحويل العميل لقسم الدعم الفني.", options: ["Payment can be made through a branch / يمكن الدفع عبر الفرع.", "Payment can be made through the stc website / يمكن الدفع عبر موقع stc الإلكتروني.", "The customer will be transferred to the technical support department / يتم تحويل العميل لقسم الدعم الفني.", "Payment can be made via the stc app / يمكن الدفع عبر تطبيق stc."]},
+    {q: "Which of the following does NOT require directing the customer to the branch? / أي من الخيارات التالية لا يتطلب توجيه العميل للفرع؟", a: "Inquiring about bill details / الاستفسار عن تفاصيل الفاتورة", options: ["Canceling of a prepaid line / إلغاء خط دفع مسبق", "Inquiring about bill details / الاستفسار عن تفاصيل الفاتورة", "Ownership transfer of a postpaid line / نقل ملكية خط دفع آجل", "Blacklisted customer's payment / تسوية الدفعات المستحقة المديونية"]},
+    {q: "A customer uses hotspot for a tablet, what can you cross-sell? / عميل يستخدم خاصية نقطة الاتصال (Hotspot) مع جهازه اللوحي. ما هو المنتج الأنسب له؟", a: "Data SIM / شريحة الإنترنت", options: ["Extra SMS / رسائل إضافية", "Data SIM / شريحة الإنترنت", "OTT App / تطبيق ترفيهي", "Roaming add-on / إضافة تجوال"]},
+    {q: "A customer wants a second Internet device for the family, which post-paid voice plan includes router + smartphone? / عميل يريد جهاز إنترنت إضافي للعائلة، أي باقة دفع آجل صوتي تشمل راوتر + هاتف ذكي؟", a: "KD 45 / KD 45", options: ["KD 10 / KD 10", "KD 25 / KD 25", "KD 45 / KD 45", "KD 16 / KD 16"]},
+    {q: "A customer is into fitness and health tracking, what should you offer? / عميل مهتم بالصحة واللياقة البدنية، ما المنتج الأنسب له؟", a: "Apple Watch / ساعة أبل", options: ["Router / راوتر", "Extra minutes / دقائق إضافية", "Apple Watch / ساعة أبل", "Data SIM / شريحة بيانات"]},
+    {q: "A frequent traveler asks how to stay connected abroad, what can you add? / عميل يسافر كثيراً ويريد البقاء متصلاً، ما الخدمة الأنسب؟", a: "Roaming data Package / باقة بيانات تجوال", options: ["Extra SMS / رسائل إضافية", "Roaming data Package / باقة بيانات تجوال", "Entertainment app / تطبيق ترفيهي", "Share Data SIM / شريحة مشاركة"]},
+    {q: "A customer from the business category wants a premium number. What is the best option? / عميل من فئة الأعمال يريد رقماً مميزاً، ما هو الخيار الأنسب؟", a: "Super Gold / Platinum Number / بلاتيني / gold رقم سوبر", options: ["Regular SIM / رقم عادي", "Super Gold / Platinum Number / بلاتيني / gold رقم سوبر", "Extra SMS / رسائل إضافية", "eSIM / eSIM"]},
+    {q: "A customer makes too many calls and wants unlimited calls, which Always-ON plan should you upsell? / عميل يجري مكالمات كثيرة ويريد دقائق غير محدودة، أي باقة خليك-ON توفر ذلك؟", a: "KD 35 / KD 35", options: ["KD 16 / KD 16", "KD 25 / KD 25", "KD 35 / KD 35", "KD 10 / KD 10"]},
+    {q: "What is Prepaid Universal Un-subscription code? / ماهو رمز الغاء الاشتراك الموحد الجديد لباقات الدفع المسبق ؟", a: "send (D) to (510) / إرسال ( D ) إلى (510)", options: ["send (D) to (510) / إرسال ( D ) إلى (510)", "send (D) to (102) / إرسال ( D ) إلى (102)", "send (D) to (567) / إرسال ( D ) إلى (567)", "None of the mentioned / ليس مما سبق"]},
+    {q: "With 16 KD Postpaid Voice line customer can use 1000 minutes: / مع خط الهاتف للدفع الأجل الصوتية بقيمة 16 دينار كويتي، يمكن للعميل استخدام 1000 دقيقة:", a: "Local / المحلية", options: ["Local / المحلية", "International / الدولية", "stc to stc only / داخل شبكة من stc إلى stc", "Local & International / محلي و دولي"]},
+    {q: "Which time zone is used to calculate roaming package validity? / بأي توقيت تُحسب صلاحية باقات التجوال؟", a: "Kuwait local time / توقيت دولة الكويت المحلي", options: ["Destination country time / توقيت الدولة التي يتواجد فيها العميل", "UTC time / توقيت UTC (العالمي)", "Kuwait local time / توقيت دولة الكويت المحلي", "Foreign operator time / توقيت مشغل الشبكة الأجنبي"]},
+    {q: "How many free local SMS are available in the 25 KD always-ON postpaid voice plan? / كم عدد الرسائل المحلية المجانية المتوفرة على باقة 25 د.ك للدفع الأجل دائما-ON الصوتية؟", a: "1000 SMS / رسالة 1000", options: ["100 SMS / رسالة 100", "500 SMS / رسالة 500", "1000 SMS / رسالة 1000", "None of the mentioned / ليس مما سبق"]},
+    {q: "What is the Local minutes capacity in the 6 KD weekly go prepaid voice plan? / كم دقيقة محلية تشملها باقة \"go\" الدفع المسبق الصوتية الأسبوعية بقيمة 6 د.ك؟", a: "100 minutes / دقيقة 100", options: ["100 minutes / دقيقة 100", "200 minutes / دقيقة 200", "500 minutes / دقيقة 500", "1000 minutes / دقيقة 1000"]},
+    {q: "Does the 15 KD Always ON postpaid voice plan include a data sharing SIM? / هل يوجد شريحة مشاركة البيانات في باقة 15 د.ك الصوتية للدفع الأجل \"ON-خليك\"؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
+    {q: "In 35KD Always on plan, customer will get ......local calls: / في باقة 35 د.ك خليك ON، يحصل العميل على ...... دقيقة محلية:", a: "Unlimited mins / دقائق غير محدودة", options: ["200 mins / دقيقة 200", "500 mins / دقيقة 500", "1000 mins / دقيقة 1000", "Unlimited mins / دقائق غير محدودة", "- / -"]},
+    {q: "In 7.5KD postpaid data line, the data allowance is ...... / في باقة 7.5 د.ك للدفع الأجل للإنترنت، سعة الاستخدام الشهرية هي ......", a: "500 GB / 500 GB", options: ["500 GB / 500 GB", "1 TB / 1 TB", "2 TB / 2 TB", "10 TB / 10 TB"]},
+    {q: "Internet allowance for 15 KD Postpaid Data line is: / سياسة الاستخدام العادل الموجودة في باقة 15 KD للدفع الأجل للإنترنت هي:", a: "Unlimited (FUP: 10 TB) / انترنت: غير محدود (استخدام عادل: 10 TB)", options: ["Unlimited (FUP: 10 TB) / انترنت: غير محدود (استخدام عادل: 10 TB)", "Unlimited (FUP: 20 TB) / انترنت: غير محدود (استخدام عادل: 20 TB)", "Unlimited (FUP: 50 TB) / انترنت: غير محدود (استخدام عادل: 50 TB)", "Unlimited (FUP: 100 TB) / انترنت: غير محدود (استخدام عادل: 100 TB)"]},
+    {q: "Is 5G-advanced network available in all areas of Kuwait? / هل تتوفر شبكة 5G-advanced في جميع مناطق الكويت؟", a: "No / لا", options: ["Yes / نعم", "No / لا"]},
+    {q: "What are the available commitment options for Baity 5G Plans? / ما هي خيارات الالتزام المتاحة لخدمات Baity 5G؟", a: "18 months/2 years/3 years / 18 شهرًا/سنتان/3 سنوات", options: ["6 months / 6 أشهر", "1year/2 years/3 years / سنة/سنتان/3 سنوات", "18 months/2 years/3 years / 18 شهرًا/سنتان/3 سنوات", "without any commitment / بدون أي التزام"]},
+    {q: "What is the FUP for unlimited Baity 5G plans? / ما هي سعة الانترنت المسموح بها في باقات \"Baity 5G\" غير المحدودة؟", a: "Unlimited (10TB) / غير محدود (10TB)", options: ["2 TB / 2 TB", "4 TB / 4 TB", "5 TB / 5 TB", "Unlimited (10TB) / غير محدود (10TB)"]},
+    {q: "Which Baity 5G plans offer a free Sharing SIM card? / أي باقات Baity 5G تقدم شريحة SIM للمشاركة مجاناً؟", a: "19 KD plan / باقة 19 KD", options: ["12 KD plan / باقة 12 KD", "15 KD plan / باقة 15 KD", "19 KD plan / باقة 19 KD", "All the options mentioned / جميع المذكور"]},
+    {q: "Does Baity5G Outdoor router (ODU) contain a SIM card? / هل يحتوي جهاز الخارجي (ODU) على Baity5G بطاقة SIM؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
+    {q: "What is the name of the app for Plume's SuperPods (Baity 5G)? / ما اسم التطبيق الخاص بـ SuperPods من Plume (Baity 5G)؟", a: "HomePass app / تطبيق HomePass", options: ["HomePass app / تطبيق HomePass", "Ookla / Ookla", "SafeCam / SafeCam", "Mystc Kuwait / Mystc Kuwait"]},
+    {q: "Baity 5G Customers are eligible to get 2 Entertainment subscriptions for: / يحق لعملاء Baity 5G الحصول على اشتراكي ترفيهين لمدة:", a: "6 months / 6 أشهر", options: ["6 months / 6 أشهر", "12 months / 12 شهرًا", "18 months / 18 شهرًا", "24 months / 24 شهرًا"]},
+    {q: "What is the cost for the Foz Gaming IP Add-on with Baity 5G plan? / ما هي تكلفة خدمة FOZ للألعاب الإضافية مع باقات Baity 5G؟", a: "5KD / 5KD", options: ["2KD / 2KD", "3KD / 3KD", "5KD / 5KD", "6KD / 6KD"]},
+    {q: "Customers will get up to .... meters of free cable with Baity 5G plan: / سيحصل العملاء على كبل مجاني يصل طوله إلى .... متر مع باقة Baity 5G:", a: "50 meters / 50 متراً", options: ["10 meters / 10 متراً", "20 meters / 20 متراً", "50 meters / 50 متراً", "As per customers need / حسب احتياجات العميل"]},
+    {q: "What is the Auto Port-In option? (BSS system) / ما هو خيار Auto Port-In (BSS system)؟", a: "An option that allows the number to be transfer immediately for approval from the company it is being transferred. / خيار يتيح تنفيذ عملية نقل الرقم فوراً دون انتظار موافقة الشركة المحول منها", options: ["An option to cancel the line service permanently / خيار يُستخدم لإلغاء خدمة الخط بشكل نهائي", "An option that allows the number to be transfer immediately for approval from the company it is being transferred. / خيار يتيح تنفيذ عملية نقل الرقم فوراً دون انتظار موافقة الشركة المحول منها", "An option dedicated to change the internet plan only / خيار مخصص لتغيير باقة الإنترنت فقط"]},
+    {q: "What are the allowed months to transfer the line from prepaid to postpaid? / ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "Three months / ثلاث أشهر", options: ["One month / شهر", "Two months / إثنان شهر", "Three months / ثلاث أشهر", "None of the mentioned / ليس مما سبق"]}
+];
+
 
         const telesalesKnowledge = [
             {q: "قواعد الحصول ع جهاز اضافي زييد", a: "كل ماسبق"},
@@ -396,7 +405,6 @@
             {q: "في اجراء TRADE IN يجب من الموظف ان يطلب من العميل مايلي", a: "عمل نسخه احتياطيه من الجهاز القديم"}
         ];
 
-        // Combine all knowledge for the global "Main Flow" search
         const allKnowledge = [...originalKnowledge, ...telesalesKnowledge];
 
         let botKnowledge = []; 
@@ -471,7 +479,7 @@
 
         function showFlowSelection() {
             isQuizMode = false;
-            botKnowledge = []; // resets to use allKnowledge on main screen
+            botKnowledge = []; 
             const chatBox = document.getElementById('chat-box');
             chatBox.innerHTML = ''; 
             
@@ -621,6 +629,7 @@
             if(analytics.errors.length > 50) analytics.errors.pop();
         }
 
+        // --- EXPLICIT EXACT MCQ QUIZ ENGINE ---
         function toggleQuizMode() {
             let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
             if(activePool.length === 0) return; 
@@ -647,38 +656,39 @@
             const randomIndex = Math.floor(Math.random() * activePool.length);
             currentQuizItem = activePool[randomIndex];
             
-            let questionWords = currentQuizItem.q.split(' ').filter(w => w.length > 4);
-            let similarItems = activePool.filter(item => {
-                return questionWords.some(qw => item.q.includes(qw)) && item.a !== currentQuizItem.a;
-            });
-
-            let choices = [currentQuizItem.a];
-            let attempts = 0;
+            let choices = [];
             
-            while(choices.length < 4 && similarItems.length > 0 && attempts < 50) {
-                let rIdx = Math.floor(Math.random() * similarItems.length);
-                let wAns = similarItems[rIdx].a;
-                let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
-                
-                if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) { 
-                    choices.push(wAns); 
-                }
-                attempts++;
-            }
+            // Check if this specific question has explicit preset options (like the 102 list)
+            if (currentQuizItem.options && currentQuizItem.options.length > 0) {
+                // Use the exact A,B,C,D options provided in exactly the same order
+                choices = [...currentQuizItem.options];
+            } else {
+                // Fallback for telesales or items without explicit options (Smart random generation)
+                choices = [currentQuizItem.a];
+                let questionWords = currentQuizItem.q.split(' ').filter(w => w.length > 4);
+                let similarItems = activePool.filter(item => {
+                    return questionWords.some(qw => item.q.includes(qw)) && item.a !== currentQuizItem.a;
+                });
 
-            attempts = 0;
-            while(choices.length < 4 && attempts < 100) {
-                let randomWrongIndex = Math.floor(Math.random() * activePool.length);
-                let wAns = activePool[randomWrongIndex].a;
-                let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
-                
-                if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) {
-                    choices.push(wAns);
+                let attempts = 0;
+                while(choices.length < 4 && similarItems.length > 0 && attempts < 50) {
+                    let rIdx = Math.floor(Math.random() * similarItems.length);
+                    let wAns = similarItems[rIdx].a;
+                    let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
+                    if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) { choices.push(wAns); }
+                    attempts++;
                 }
-                attempts++;
+
+                attempts = 0;
+                while(choices.length < 4 && attempts < 100) {
+                    let randomWrongIndex = Math.floor(Math.random() * activePool.length);
+                    let wAns = activePool[randomWrongIndex].a;
+                    let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
+                    if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) { choices.push(wAns); }
+                    attempts++;
+                }
+                choices.sort(() => Math.random() - 0.5); // Shuffle only if they were randomly generated
             }
-            
-            choices.sort(() => Math.random() - 0.5);
             
             let quizHtml = `<div class="text-xl font-bold opacity-90 mb-5 text-white">${currentQuizItem.q}</div>`;
             quizHtml += `<div class="flex flex-col gap-3 w-full">`;
@@ -729,7 +739,6 @@
             const typingDiv = showThinking();
             let query = userQuery.toLowerCase().trim();
             
-            // --- 1. CHIT CHAT INTERCEPTOR ---
             for(let cat of chitChatCategories) {
                 if(cat.words.some(w => query.includes(w))) {
                     setTimeout(() => { typingDiv.remove(); printBotMessage(cat.reply, false); }, 800);
@@ -737,11 +746,9 @@
                 }
             }
 
-            // --- 2. YES/NO SYSTEM INTERCEPTORS ---
             const yesWords = ['yes', 'yeah', 'yep', 'y', 'sure', 'of course', 'نعم', 'اي', 'إي', 'أكيد', 'اكيد', 'يلا', 'جاهز', 'يب', 'اي نعم', 'اكيد جاهز'];
             const noWords = ['no', 'nope', 'n', 'لا', 'كلا', 'سلامتك', 'مو الحين'];
             
-            // Check standalone match so it doesn't accidentally trigger if embedded in a long question
             if (yesWords.includes(query)) {
                 setTimeout(() => { typingDiv.remove(); printBotMessage(uiText['ar'].yesReply, false); }, 800);
                 return;
@@ -751,7 +758,6 @@
                 return;
             }
 
-            // --- 3. DYNAMIC INTENT TRIGGERS ---
             const quizWords = ['test', 'quiz', 'اختبار', 'كويز', 'امتحان', 'تست', 'جربني', 'اختبرني'];
             if (quizWords.some(w => query.includes(w))) {
                 setTimeout(() => {
@@ -762,7 +768,6 @@
                 return;
             }
 
-            // Flow selection by typing
             if (query.includes('e-channels') || query.includes('قنوات')) { setTimeout(() => { typingDiv.remove(); selectFlow('E-Channels'); }, 800); return; }
             if (query.includes('call center') || query.includes('كول سنتر') || query.includes('اتصال')) { setTimeout(() => { typingDiv.remove(); selectFlow('Call Center'); }, 800); return; }
             if (query.includes('resolutions') || query.includes('حلول')) { setTimeout(() => { typingDiv.remove(); selectFlow('Resolutions'); }, 800); return; }
@@ -771,13 +776,11 @@
 
             if (query.includes("زيد") || query.includes("zeed")) query += " زييد";
 
-            // --- 4. DATA SEARCH PATTERN ---
             setTimeout(() => {
                 typingDiv.remove();
                 let queryWords = query.split(" ").filter(w => w.length > 2);
                 if(queryWords.length === 0) queryWords = [query]; 
 
-                // Search in active pool (selected flow OR all combined if on main screen)
                 let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
                 
                 let matches = [];
@@ -818,7 +821,7 @@
         function handleSend() {
             const inputField = document.getElementById('user-input');
             const text = inputField.value.trim();
-            if(!text) return; // Note: We removed the check for botKnowledge.length === 0 so main screen works
+            if(!text) return; 
 
             addUserMessage(text);
             inputField.value = '';
@@ -833,3 +836,4 @@
     </script>
 </body>
 </html>
+
