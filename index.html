@@ -10,27 +10,27 @@
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
         
         :root {
-            /* APPLE STYLE WITH DEEP NEON PURPLE */
-            --bg-main: #0B001A; /* Deep Neon Purple Base */
-            --bg-glass: rgba(60, 10, 100, 0.4); /* Purple Frosted Glass */
-            --bg-glass-lighter: rgba(90, 20, 140, 0.5); /* Lighter Purple Glass */
+            /* DEEP NEON PURPLE + APPLE GLASSMORPHISM */
+            --bg-main: #070012; 
+            --bg-glass: rgba(25, 5, 45, 0.65);
+            --bg-glass-lighter: rgba(45, 10, 75, 0.75);
             --text-main: #F5F5F7;
-            --text-muted: #E9D5FF; /* Soft purple text */
-            --border-glass: rgba(191, 90, 242, 0.3); /* Neon purple borders */
+            --text-muted: #D8B4FE;
+            --border-glass: rgba(191, 90, 242, 0.25);
             --stc-purple: #4F008C;
-            --ios-purple: #BF5AF2; /* Neon Purple Glow */
-            --bot-bubble: rgba(191, 90, 242, 0.15); /* Purple tinted bubble */
-            --user-bubble: rgba(79, 0, 140, 0.6); /* STC Purple bubble */
+            --neon-purple: #BF5AF2;
+            --bot-bubble: rgba(191, 90, 242, 0.12);
+            --user-bubble: rgba(79, 0, 140, 0.7);
         }
 
         .light-mode {
-            --bg-main: #F2F2F7; /* iOS System Light Gray */
-            --bg-glass: rgba(255, 255, 255, 0.8);
-            --bg-glass-lighter: rgba(255, 255, 255, 0.9);
+            --bg-main: #F2F2F7;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+            --bg-glass-lighter: rgba(255, 255, 255, 0.95);
             --text-main: #1C1C1E;
             --text-muted: #8E8E93;
-            --border-glass: rgba(0, 0, 0, 0.05);
-            --bot-bubble: rgba(191, 90, 242, 0.1);
+            --border-glass: rgba(0, 0, 0, 0.08);
+            --bot-bubble: rgba(88, 86, 214, 0.08);
             --user-bubble: #ffffff;
         }
 
@@ -39,33 +39,28 @@
             background-color: var(--bg-main); 
             color: var(--text-main); 
             transition: background-color 0.4s ease; 
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden; 
+            margin: 0; padding: 0; overflow: hidden; 
             -webkit-font-smoothing: antialiased;
         }
         
-        /* Glassmorphism Utilities */
         .glass-panel {
             background: var(--bg-glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             border: 1px solid var(--border-glass);
-            box-shadow: 0 10px 30px rgba(79, 0, 140, 0.2);
+            box-shadow: 0 12px 40px rgba(79, 0, 140, 0.25);
         }
         
         .header-bg { 
             background: var(--bg-glass);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
             border-bottom: 1px solid var(--border-glass); 
-            box-shadow: 0 4px 20px rgba(79, 0, 140, 0.15);
         }
 
         .bot-msg { 
             background: var(--bot-bubble);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border-glass);
             color: var(--text-main); 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -73,69 +68,47 @@
         
         .user-msg { 
             background: var(--user-bubble); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border-glass);
             color: var(--text-main); 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* Scrollbar Hidden for cleaner iOS look */
         ::-webkit-scrollbar { width: 0px; background: transparent; }
+        .chat-container { height: calc(100vh - 80px); scroll-behavior: smooth; padding-bottom: 120px !important; }
+        .message { animation: springUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes springUp { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        .chat-container { 
-            height: calc(100vh - 80px); /* Account for header */
-            scroll-behavior: smooth; 
-            padding-bottom: 120px !important; /* Space for floating input */
-        }
-        
-        .message { animation: springUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-
-        @keyframes springUp { 
-            from { opacity: 0; transform: translateY(20px) scale(0.98); } 
-            to { opacity: 1; transform: translateY(0) scale(1); } 
-        }
-
-        /* Apple Style Typing Indicator */
         .typing-indicator { display: flex; gap: 4px; padding: 14px 18px; align-items: center; width: fit-content; }
-        .dot { width: 6px; height: 6px; background-color: var(--ios-purple); border-radius: 50%; animation: iosBounce 1.4s infinite ease-in-out both; }
+        .dot { width: 6px; height: 6px; background-color: var(--neon-purple); border-radius: 50%; animation: iosBounce 1.4s infinite ease-in-out both; }
         .dot:nth-child(1) { animation-delay: -0.32s; } .dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes iosBounce { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-4px); opacity: 1; } }
         
-        /* Floating Pill Input */
-        .input-dock {
-            background: linear-gradient(to top, var(--bg-main) 60%, transparent);
-        }
-        
+        .input-dock { background: linear-gradient(to top, var(--bg-main) 60%, transparent); }
         .pill-input-wrapper {
             background: var(--bg-glass-lighter);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
             border: 1px solid var(--border-glass);
-            box-shadow: 0 8px 32px rgba(79,0,140,0.3);
+            box-shadow: 0 8px 32px rgba(79,0,140,0.35);
         }
 
         .pill-btn { 
             background: var(--bg-glass-lighter); 
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             color: var(--text-main); 
             border: 1px solid var(--border-glass); 
             border-radius: 9999px; 
-            padding: 10px 24px; 
-            font-weight: 500; 
+            padding: 12px 24px; 
+            font-weight: 600; 
             font-size: 0.95rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
             cursor: pointer;
         }
         .pill-btn:hover { 
-            background: var(--ios-purple); 
+            background: var(--neon-purple); 
             color: #ffffff; 
-            border-color: var(--ios-purple);
-            box-shadow: 0 0 20px rgba(191, 90, 242, 0.4);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 25px rgba(191, 90, 242, 0.5);
             transform: scale(1.02); 
         }
         
@@ -143,61 +116,64 @@
             background: var(--bg-glass-lighter);
             border: 1px solid var(--border-glass);
             color: var(--text-main);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
         .action-icon:hover {
-            background: var(--ios-purple);
-            border-color: var(--ios-purple);
+            background: var(--neon-purple);
+            border-color: var(--neon-purple);
             color: #ffffff;
-            box-shadow: 0 0 15px rgba(191, 90, 242, 0.5);
-            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(191, 90, 242, 0.6);
+            transform: scale(1.1);
         }
 
-        .send-btn-ios { 
-            background-color: var(--ios-purple); 
-            box-shadow: 0 0 15px rgba(191, 90, 242, 0.4);
-            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
-        }
-        .send-btn-ios:hover:not(:disabled) { 
-            transform: scale(1.05); 
-            background-color: #D57FF5; 
-            box-shadow: 0 0 25px rgba(191, 90, 242, 0.8);
-        }
-        .send-btn-ios:disabled {
-            background-color: var(--bg-glass);
-            box-shadow: none;
-            border: 1px solid var(--border-glass);
-            color: var(--text-muted);
-        }
+        .send-btn-ios { background-color: var(--neon-purple); box-shadow: 0 0 15px rgba(191, 90, 242, 0.5); transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .send-btn-ios:hover:not(:disabled) { transform: scale(1.08); background-color: #D57FF5; box-shadow: 0 0 25px rgba(191, 90, 242, 0.9); }
+        .send-btn-ios:disabled { background-color: var(--bg-glass); box-shadow: none; border: 1px solid var(--border-glass); color: var(--text-muted); }
         
-        .live-indicator { width: 8px; height: 8px; background-color: #FF453A; border-radius: 50%; display: inline-block; animation: pulseRed 2s infinite; }
-        @keyframes pulseRed { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .live-indicator { width: 8px; height: 8px; background-color: #32D74B; border-radius: 50%; display: inline-block; animation: pulseGreen 2s infinite; }
+        .live-indicator.red { background-color: #FF453A; animation: pulseRed 2s infinite; }
+        .live-indicator.orange { background-color: #FF9F0A; animation: pulseOrange 2s infinite; }
+        @keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(50, 215, 75, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(50, 215, 75, 0); } 100% { box-shadow: 0 0 0 0 rgba(50, 215, 75, 0); } }
+        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(255, 69, 58, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 69, 58, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 69, 58, 0); } }
+        @keyframes pulseOrange { 0% { box-shadow: 0 0 0 0 rgba(255, 159, 10, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 159, 10, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 159, 10, 0); } }
+
+        .timer-badge {
+            background: rgba(255, 69, 58, 0.15);
+            border: 1px solid rgba(255, 69, 58, 0.4);
+            color: #FF453A;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
     </style>
 </head>
 <body class="flex flex-col h-screen" onload="initApp()">
 
-    <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0B001A]/80 backdrop-blur-2xl transition-opacity duration-700">
+    <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#070012]/85 backdrop-blur-3xl transition-opacity duration-700">
         <div class="glass-panel rounded-3xl p-10 max-w-sm w-full mx-4 flex flex-col gap-6 items-center text-center">
             <div class="h-20 w-24 bg-white/10 rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 mb-2 p-3 shadow-inner">
                 <img src="image_9004c3.jpg" alt="STC Quiz Logo" class="h-full object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert');">
             </div>
             
             <div>
-                <h2 class="text-2xl font-bold mb-1 tracking-wide" style="color: var(--ios-purple); text-shadow: 0 0 15px rgba(191,90,242,0.5);">STC Portal</h2>
-                <p class="text-sm opacity-80" style="color: var(--text-muted);">Restricted Access</p>
+                <h2 class="text-2xl font-bold mb-1 tracking-wide" style="color: var(--neon-purple); text-shadow: 0 0 15px rgba(191,90,242,0.5);">STC Portal</h2>
+                <p class="text-sm opacity-80" style="color: var(--text-muted);">أدخل اسمك للبدء / Enter your name</p>
             </div>
             
             <div class="w-full flex flex-col gap-3">
-                <input type="text" id="login-user" class="w-full rounded-xl px-5 py-4 focus:outline-none transition text-left bg-black/40 border border-[#BF5AF2]/30 text-white placeholder-[#E9D5FF]/50 focus:border-[#BF5AF2] focus:shadow-[0_0_15px_rgba(191,90,242,0.3)]" placeholder="Username" dir="ltr">
-                <input type="password" id="login-pass" class="w-full rounded-xl px-5 py-4 focus:outline-none transition text-left bg-black/40 border border-[#BF5AF2]/30 text-white placeholder-[#E9D5FF]/50 focus:border-[#BF5AF2] focus:shadow-[0_0_15px_rgba(191,90,242,0.3)]" placeholder="Password" dir="ltr" onkeypress="if(event.key === 'Enter') attemptLogin()">
+                <input type="text" id="login-user" class="w-full rounded-xl px-5 py-4 focus:outline-none transition text-center bg-black/40 border border-[#BF5AF2]/30 text-white placeholder-[#E9D5FF]/50 focus:border-[#BF5AF2] focus:shadow-[0_0_15px_rgba(191,90,242,0.3)] font-bold text-lg" placeholder="Your Name" onkeypress="if(event.key === 'Enter') attemptLogin()">
             </div>
             
             <p id="login-error" class="text-[#FF453A] text-xs hidden font-medium tracking-wide">
-                Invalid Credentials. Please try again.
+                الرجاء إدخال اسمك / Please enter your name.
             </p>
             
             <button onclick="attemptLogin()" class="w-full bg-[#BF5AF2] hover:bg-[#D57FF5] text-white py-4 rounded-xl font-bold text-md transition-all active:scale-95 mt-2 shadow-[0_0_20px_rgba(191,90,242,0.4)]">
-                Unlock
+                Start Session
             </button>
         </div>
     </div>
@@ -212,30 +188,36 @@
                 </div>
                 <div class="flex flex-col">
                     <h1 class="text-lg font-bold tracking-wide" style="color: var(--text-main); text-shadow: 0 0 10px rgba(191,90,242,0.3);">STC Assistant</h1>
-                    <p class="text-[10px] uppercase tracking-wider" style="color: var(--ios-purple);" id="mode-subtitle">General AI</p>
+                    <div class="flex items-center gap-2">
+                        <p class="text-[10px] uppercase tracking-wider" style="color: var(--neon-purple);" id="mode-subtitle">General AI</p>
+                        <div id="quiz-timer" class="timer-badge"><i class="fa-regular fa-clock"></i> <span id="time-display">15:00</span></div>
+                    </div>
                 </div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="showFlowSelection()" class="action-icon w-9 h-9 rounded-full flex items-center justify-center" title="Home">
+            <div class="flex gap-2 items-center">
+                <button onclick="toggleLanguage()" id="lang-btn" class="action-icon w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold" title="Change Language">
+                    EN
+                </button>
+                <button onclick="handleNavigation('home')" class="action-icon w-9 h-9 rounded-full flex items-center justify-center" title="Home">
                     <i class="fa-solid fa-layer-group text-sm"></i>
                 </button>
-                <button onclick="toggleAdmin()" class="action-icon w-9 h-9 rounded-full flex items-center justify-center" title="Dashboard">
+                <button onclick="handleNavigation('admin')" class="action-icon w-9 h-9 rounded-full flex items-center justify-center" title="Dashboard">
                     <i class="fa-solid fa-chart-simple text-sm"></i>
                 </button>
-                <button onclick="toggleQuizMode()" class="action-icon w-9 h-9 rounded-full flex items-center justify-center" title="Quiz" id="quiz-btn">
+                <button onclick="handleNavigation('quiz')" class="action-icon w-9 h-9 rounded-full flex items-center justify-center" title="Test Me" id="quiz-btn">
                     <i class="fa-solid fa-graduation-cap text-sm"></i>
                 </button>
             </div>
         </header>
 
-        <main class="flex-grow flex justify-center relative w-full pt-20">
+        <main class="flex-grow flex justify-center relative w-full pt-24">
             <div class="w-full max-w-4xl flex flex-col relative h-full">
                 <div id="chat-box" class="chat-container p-4 sm:p-6 flex flex-col gap-4 overflow-y-auto w-full"></div>
                 
                 <div class="absolute bottom-0 w-full p-4 input-dock z-40 pb-6">
                     <div class="pill-input-wrapper rounded-full flex items-center p-1.5 gap-2 max-w-3xl mx-auto">
-                        <input type="text" id="user-input" class="flex-grow bg-transparent border-none text-white px-5 py-2 focus:outline-none placeholder-[#E9D5FF]/40 text-md" placeholder="اكتب سؤالك أو 'اختبار' هنا..." disabled>
-                        <button onclick="handleSend()" id="send-btn" class="send-btn-ios w-9 h-9 rounded-full flex items-center justify-center text-white shrink-0" disabled>
+                        <input type="text" id="user-input" class="flex-grow bg-transparent border-none text-white px-5 py-2 focus:outline-none placeholder-[#E9D5FF]/40 text-md font-medium" placeholder="اكتب سؤالك هنا..." disabled>
+                        <button onclick="handleSend()" id="send-btn" class="send-btn-ios w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0" disabled>
                             <i class="fa-solid fa-arrow-up"></i>
                         </button>
                     </div>
@@ -243,41 +225,48 @@
             </div>
         </main>
 
-        <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4 bg-[#0B001A]/80 backdrop-blur-2xl">
-            <div class="glass-panel rounded-3xl p-8 max-w-4xl w-full max-h-[90vh] flex flex-col">
-                <div class="flex justify-between items-center mb-6 border-b border-[#BF5AF2]/30 pb-4">
-                    <h2 class="text-xl font-bold" style="color: var(--ios-purple); text-shadow: 0 0 15px rgba(191,90,242,0.5);">
-                        Terminal <span class="live-indicator ml-2"></span>
+        <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4 bg-[#070012]/85 backdrop-blur-3xl">
+            <div class="glass-panel rounded-3xl p-8 max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl">
+                <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                    <h2 class="text-xl font-bold" style="color: var(--neon-purple); text-shadow: 0 0 15px rgba(191,90,242,0.5);">
+                        Admin Terminal <span class="live-indicator orange ml-2" id="db-indicator" title="Local Mode"></span>
                     </h2>
                     <button onclick="toggleAdmin()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#BF5AF2] hover:text-white transition border border-white/10"><i class="fa-solid fa-xmark text-sm"></i></button>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-5 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
-                        <p class="text-xs text-[#E9D5FF] uppercase tracking-widest mb-1">Queries</p>
-                        <p class="text-3xl font-light text-white" id="stat-total">0</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-4 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
+                        <p class="text-[10px] text-[#E9D5FF] uppercase tracking-widest mb-1">Total Queries</p>
+                        <p class="text-2xl font-light text-white" id="stat-total">0</p>
                     </div>
-                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-5 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
-                        <p class="text-xs text-[#E9D5FF] uppercase tracking-widest mb-1">Accuracy</p>
-                        <p class="text-3xl font-light text-[#32D74B]" id="stat-success" style="text-shadow: 0 0 10px rgba(50,215,75,0.4);">0%</p>
+                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-4 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
+                        <p class="text-[10px] text-[#E9D5FF] uppercase tracking-widest mb-1">Total Quiz Attempts</p>
+                        <p class="text-2xl font-light text-[#32D74B]" id="stat-attempts" style="text-shadow: 0 0 10px rgba(50,215,75,0.4);">0</p>
                     </div>
-                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-5 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
-                        <p class="text-xs text-[#E9D5FF] uppercase tracking-widest mb-1">Misses</p>
-                        <p class="text-3xl font-light text-[#FF453A]" id="stat-failed" style="text-shadow: 0 0 10px rgba(255,69,58,0.4);">0</p>
+                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-4 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
+                        <p class="text-[10px] text-[#E9D5FF] uppercase tracking-widest mb-1">Average Score</p>
+                        <p class="text-2xl font-light text-[#FFD60A]" id="stat-avg" style="text-shadow: 0 0 10px rgba(255,214,10,0.4);">0%</p>
+                    </div>
+                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-4 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
+                        <p class="text-[10px] text-[#E9D5FF] uppercase tracking-widest mb-1">Violations / Misses</p>
+                        <p class="text-2xl font-light text-[#FF453A]" id="stat-failed" style="text-shadow: 0 0 10px rgba(255,69,58,0.4);">0</p>
                     </div>
                 </div>
 
                 <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
                     <div class="flex flex-col overflow-hidden">
-                        <h3 class="text-xs font-bold text-[#E9D5FF] uppercase tracking-widest mb-3 pl-1">Live Feed</h3>
-                        <ul id="analytics-log" class="bg-black/30 border border-[#BF5AF2]/20 rounded-2xl p-4 text-sm text-gray-300 flex flex-col gap-3 overflow-y-auto flex-grow h-48 scroll-smooth">
-                            <li class="opacity-40 italic font-light text-center mt-10">Awaiting input...</li>
-                        </ul>
+                        <h3 class="text-xs font-bold text-[#E9D5FF] uppercase tracking-widest mb-3 pl-1"><i class="fa-solid fa-graduation-cap"></i> Quiz History</h3>
+                        <div class="bg-black/30 border border-[#BF5AF2]/20 rounded-2xl p-2 flex flex-col gap-2 overflow-y-auto flex-grow h-48 scroll-smooth" id="attempt-log">
+                            <p class="opacity-40 italic font-light text-center mt-10 text-sm text-white">No attempts recorded yet.</p>
+                        </div>
                     </div>
                     <div class="flex flex-col overflow-hidden">
-                        <h3 class="text-xs font-bold text-[#FF453A] uppercase tracking-widest mb-3 pl-1">Exceptions</h3>
+                        <div class="flex justify-between items-center mb-3 pl-1">
+                            <h3 class="text-xs font-bold text-[#FF453A] uppercase tracking-widest"><i class="fa-solid fa-bug"></i> Security Log</h3>
+                            <span class="text-[9px] text-[#FF9F0A] uppercase tracking-wider px-2 py-1 bg-[#FF9F0A]/10 border border-[#FF9F0A]/20 rounded-full">Scaling Ready: Connect Backend (e.g. Firebase) for Global 500+ View</span>
+                        </div>
                         <ul id="error-log" class="bg-[#FF453A]/10 border border-[#FF453A]/20 rounded-2xl p-4 text-sm text-gray-300 flex flex-col gap-3 overflow-y-auto flex-grow h-48 scroll-smooth">
-                            <li class="opacity-40 italic font-light text-center mt-10 text-[#FF453A]">No exceptions.</li>
+                            <li class="opacity-40 italic font-light text-center mt-8 text-[#FF453A]">System stable.</li>
                         </ul>
                     </div>
                 </div>
@@ -286,12 +275,248 @@
     </div>
 
     <script>
-        // --- LOGIN LOGIC ---
+        // --- DATA & STATE ---
+        let currentUserName = "";
+        let botKnowledge = []; 
+        let currentLang = 'ar';
+        let isDarkMode = true;
+        
+        let isQuizMode = false;
+        let currentQuizItem = null;
+        let quizScore = 0;
+        let quizAttempts = 0;
+        let quizQuestionsPool = [];
+        let cheatWarnings = 0;
+        let quizTimerInterval;
+        let timeLeft = 900; 
+        
+        let analytics = { total: 0, hits: 0, misses: 0, logs: [], errors: [], attemptsHistory: [] };
+
+        function l(text) {
+            if (!text) return "";
+            let parts = text.split(" / ");
+            if (parts.length === 1) return parts[0].trim();
+            return currentLang === 'en' ? parts[0].trim() : parts[1].trim();
+        }
+
+        const uiText = {
+            ar: {
+                placeholder: "اكتب سؤالك، أو 'اختبار' للتدريب...",
+                send: "إرسال",
+                notFound: "عذراً يا بطل، ما لقيت إجابة دقيقة في قاعدة بياناتي. ياليت توضح سؤالك أكثر أو تصيغه بطريقة ثانية عشان أقدر أساعدك! 💜",
+                multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
+                anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--neon-purple);'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>",
+                quizStart: "🎓 <strong style='color: var(--neon-purple);'>بدأ الاختبار!</strong> أمامك 15 دقيقة و 25 سؤال.<br><br>إليك السؤال الأول:",
+                quizEnd: "تم إنهاء الاختبار. عدنا إلى وضع المساعد العادي! 🚀",
+                useOptions: "يرجى اختيار إحدى الإجابات من الخيارات أعلاه للتقدم في الاختبار.",
+                cheatWarn: "⚠️ <strong>تحذير!</strong> يا بطل، الخروج أو تحديث الصفحة أثناء الاختبار ممنوع. إذا سويتها مرة ثانية بتسقط تلقائياً! 👀",
+                cheatFail: "❌ <strong>تم إلغاء الاختبار!</strong> لقد قمت بمخالفة القوانين وتم تسجيل رسوبك.",
+                excellent: "🌟 <strong>ممتاز! (Passed)</strong> إبداع يا بطل، نتيجة ترفع الراس!",
+                good: "👍 <strong>جيد! (Passed)</strong> وحش، مبروك النجاح!",
+                fail: "💔 <strong>رسوب (Failed)</strong> معوض خير يا بطل، حاول مرة ثانية وركز أكثر!"
+            },
+            en: {
+                placeholder: "Type your question, or 'test' to train...",
+                send: "Send",
+                notFound: "Sorry hero, I couldn't find an exact match in my database. Could you clarify your question? 💜",
+                multipleFound: "I found multiple questions related to your search. Please choose one:",
+                anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--neon-purple);'>Is there anything else I can help you with? 😊</span>",
+                quizStart: "🎓 <strong style='color: var(--neon-purple);'>Quiz Started!</strong> You have 15 mins and 25 questions.<br><br>Here is your first question:",
+                quizEnd: "Quiz ended. Back to normal assistant mode! 🚀",
+                useOptions: "Please select an answer from the multiple choice options above.",
+                cheatWarn: "⚠️ <strong>Warning!</strong> Leaving or refreshing the page during a quiz is not allowed. Do it again and you will fail! 👀",
+                cheatFail: "❌ <strong>Quiz Terminated!</strong> You violated the rules and have failed the attempt.",
+                excellent: "🌟 <strong>Excellent! (Passed)</strong> Amazing job hero, a score to be proud of!",
+                good: "👍 <strong>Good! (Passed)</strong> Great work, congratulations on passing!",
+                fail: "💔 <strong>Failed!</strong> Better luck next time, review the materials and try again!"
+            }
+        };
+
+        const chitChatCategories = [
+            {
+                name: 'mixed_thanks_yes',
+                words: ['thank you yes', 'yes thank you', 'نعم شكرا', 'شكرا نعم', 'اي شكرا', 'ok thanks', 'اوكي شكرا'],
+                reply: 'العفو يا بطل! 💜 يلا دامك جاهز ومتحمس، خلنا نكمل.. قط سؤالك أو اكتب (اختبار) نكسر الدنيا! 🔥'
+            },
+            {
+                name: 'love',
+                words: ['أحبك', 'احبك', 'i love you', 'love u', 'do you love me', 'do u love me', 'تحبني', 'اعشقك', 'اموت فيك', 'يازينك'],
+                reply: 'يا بعد راسي والله! 💜 حبتك العافية، بس ترى أنا مجرد "كود" مبرمج لخدمتك في STC... خلنا نركز في الكويز لا يفصل علينا السيرفر 😂🏃‍♂️'
+            },
+            {
+                name: 'thanks',
+                words: ['شكرا', 'يعطيك العافية', 'يعطيك العافيه', 'ما قصرت', 'تسلم', 'بيض الله وجهك', 'thank you', 'thanks', 'thx', 'مشكور', 'كفو'],
+                reply: 'حاضرين للطيبين! ما سوينا إلا الواجب يا بطل 😎💜.. جاهز نكسر الدنيا بسؤال ثاني؟'
+            },
+            {
+                name: 'greetings',
+                words: ['السلام عليكم', 'هلا', 'مرحبا', 'hello', 'hi', 'hey', 'صباح الخير', 'مساء الخير', 'صباح النور', 'مساء النور', 'أهلا', 'شلونك', 'كيفك', 'شخبارك', 'كيف الحال', 'how are you', 'how r u', 'how are u', 'howru', 'hru', 'whats up', 'whatsup', 'عامل ايه', 'أخبارك'],
+                reply: 'يا هلا وغلا بطلنا! 🌟 بخير الله يسلمك دامك بخير. السيرفرات عال العال ومستعدين لأسئلتك 🔥'
+            },
+            {
+                name: 'kuwaiti_slang',
+                words: ['يمعود', 'يا ريال', 'تكفا', 'تكفى', 'انزين', 'يوبا', 'يا خوي', 'يبا', 'شالسالفه', 'شالسالفة'],
+                reply: 'أبشر بعزك وتدلل! 💜 قط سؤالك وأنا أضبطك بأسرع من الفايف جي 🚀'
+            },
+            {
+                name: 'frustration',
+                words: ['مليت', 'تعبت', 'صعب', 'معقد', 'قهر', 'زهقت', 'hard', 'tired', 'boring'],
+                reply: 'هانت هانت! لا توقف الحين، أنت قدها وبتجيب الفل مارك! 🎓💪'
+            },
+            {
+                name: 'praise',
+                words: ['حلو', 'بطل', 'عاش', 'nice', 'good', 'awesome', 'great', 'ممتاز', 'perfect', 'thats cool', 'that is cool', 'cool', 'wow', 'واو', 'عجيب', 'رهيب', 'خرافي', 'شاطر', 'ذكي', 'smart', 'good bot', 'اسطوره', 'أسطورة'],
+                reply: 'أنت الأسطورة وكفوك الطيب! 😎✨ نكبر بدعمكم، وهدفنا دايماً وياكم نروح أبعد 🚀 جاهز للسؤال الجاي؟'
+            },
+            {
+                name: 'agreement',
+                words: ['okay', 'ok', 'تمام', 'اوكي', 'أوكي', 'صح', 'بالضبط', 'exactly', 'agree', 'اتفق', '100%', 'ماشي', 'حسنا', 'زين'],
+                reply: 'حلوين وعال العال! 👍 دامنا متفقين وعلى خط واحد، الكيبورد كيبوردك.. اسألني أي شي بخصوص الأنظمة والباقات! 🔥'
+            },
+            {
+                name: 'insults',
+                words: ['dumb', 'stupid', 'غبي', 'سيء', 'فاشل', 'bad', 'idiot', 'زفت', 'خايس'],
+                reply: 'مسموح يا غالي! 😅 المساعد الذكي يتعلم كل يوم من أبطال STC. عطني فرصة ثانية وقط سؤالك بوضوح وتشوف كيف أضبطك! 💜'
+            }
+        ];
+
+        // --- KNOWLEDGE BASE ---
+        const originalKnowledge = [
+            {q: "How many days the Prepaid line will stay on Grace? / كم يوم يبقى الخط في Grace؟", a: "30 days / 30 يوم", options: ["60 days / 60 يوم", "30 days / 30 يوم", "20 days / 20 يوم", "45 days / 45 يوم"]},
+            {q: "What is internet capacity in 25 KD voice package? / ما هي سعة الانترنت في باقة ال 25 الصوتية؟", a: "100 GB / 100 GB", options: ["10 GB / 10 GB", "25 GB / 25 GB", "50 GB / 50 GB", "100 GB / 100 GB"]},
+            {q: "How much does a temporary suspension service cost for a month (summer suspension)? / كم هي تكلفة خدمة الايقاف المؤقت لمدة شهر؟", a: "None of the mentioned / ليس أي مما سبق", options: ["15 KD / 15 KD", "20 KD / 20 KD", "25 KD / 25 KD", "None of the mentioned / ليس أي مما سبق"]},
+            {q: "The validity of points in qitaf program is? / صلاحية النقاط في برنامج قطاف هي؟", a: "12 months / 12 شهر", options: ["3 months / 3 أشهر", "12 months / 12 شهر", "18 months / 18 شهر", "24 months / 24 شهر"]},
+            {q: "The cost for transfer ownership for postpaid line: / كم تكلفة نقل الملكية لخطوط الدفع الآجل؟", a: "5 KD / 5 KD", options: ["5 KD / 5 KD", "10 KD / 10 KD", "15 KD / 15 KD", "20 KD / 20 KD"]},
+            {q: "To cancel Budget control service: / لإلغاء خدمة ال Budget Control:", a: "#550# / #550#", options: ["#550# / #550#", "#505# / #505#", "*550# / *550#", "*505# / *505#"]},
+            {q: "Postpaid data customer will get .....GBs with 5KD booster: / خدمة الانترنت الاضافي لباقات الدفع الآجل الانترنت تمنح 5 KD (...) GBs:", a: "250 GB / 250 GB", options: ["100 GB / 100 GB", "500 GB / 500 GB", "250 GB / 250 GB"]},
+            {q: "To get Prepaid line, the age limit for Kuwaiti/Non Kuwaiti should not be less than: / العمر المسموح للحصول على خط التعبئة للعميل الكويتي/غيرالكويتي يجب ان لا يكون اقل من:", a: "18 years / 18 سنة", options: ["21 years / 21 سنة", "18 years / 18 سنة", "20 years / 20 سنة", "19 years / 19 سنة"]},
+            {q: "The charges to call to Kuwait from any Europian country on roaming are: / رسوم الاتصال الى الكويت بالتجوال من اي دولة اوربية:", a: "1.250 KD / 1.250 KD", options: ["1.250 KD / 1.250 KD", "1.000 KD / 1.000 KD", "0.900 KD / 0.900 KD", "0.600 KD / 0.600 KD"]},
+            {q: "Old prepaid plans can migrate to \"go\" plan by sending sms go to ..... / عميل خط التعبئة للباقات( go ) القديمة يستطيع الانتقال الى go باقات ارسال الرساله محتوها :", a: "510 / 510", options: ["567 / 567", "585 / 585", "999 / 999", "510 / 510"]},
+            {q: "Postpaid voice 45 KD customers get ....GB of data on Roaming: / سيحصل عملاء باقة 45 د.ك انترنت أثناء التجوال على (...) GB:", a: "10 GB / 10 GB", options: ["10 GB / 10 GB", "5 GB / 5 GB", "3 GB / 3 GB", "1 GB / 1 GB"]},
+            {q: "12 kd premimum roaming bundle is activated by: / يتم تفعيل باقة 12 د.ك المميزة للتجوال من خلال:", a: "p1 to 102 / p1 to 102", options: ["p1 to 102 / p1 to 102", "i2 to 102 / i2 to 102", "i3 to 102 / i3 to 102", "i4 to 102 / i4 to 102"]},
+            {q: "The hotline number for Fiber services is: / رقم الخط المباشر لخدمة الفايبر:", a: "1827827 / 1827827", options: ["1827278 / 1827278", "1827287 / 1827287", "1827827 / 1827827"]},
+            {q: "The customer will be on High-risk profile for any new activation after ......... , becoming medium if the line is not disconnected during this period? / ماهي المدة من انتقال High-risk profile الى MEDIUM-risk profile في حال عدم انقطاع الخط خلال هذه الفترة؟", a: "Three months / 3 أشهر", options: ["One month / شهر واحد", "Two months / شهرين", "Three months / 3 أشهر", "Six months / 6 أشهر"]},
+            {q: "MEDIUM-risk profile becomes low after.....? / ماهي المدة من انتقال MEDIUM-risk profile الى Low-risk profile في حال عدم انقطاع الخط خلال هذه الفترة؟", a: "One month / شهر واحد", options: ["One month / شهر واحد", "Two month / شهرين", "Three month / 3 أشهر", "Six month / 6 أشهر"]},
+            {q: "Is auto renewal available for 12 KD premium roaming bundle for postpaid voice? / هل يمكن التجديد التلقائي في باقة التجوال المميزة بقيمة 12 د.ك للدفع الأجل الصوتي؟", a: "Yes / صح", options: ["Yes / صح", "No / خطأ"]},
+            {q: "Deactivation Code for 12 KD premium Roaming bundle is: / لإلغاء باقة التجوال المميزة بقيمة 12 د.ك ارسال رساله نصيه هي:", a: "D to 102 / إلى 102 D", options: ["0p1 to 102 / إلى 102 0p1", "0p1 to 567 / إلى 567 0p1", "D to 102 / إلى 102 D", "012 to 102 / إلى 102 012"]},
+            {q: "In 12 KD premium roaming bundle, customer can have roaming SMS's: / في باقة التجوال المميزة بقيمة 12 د.ك يمكن للعميل الحصول على رسائل التجوال القصيرة:", a: "30 SMS / 30 SMS", options: ["100 SMS / 100 SMS", "50 SMS / 50 SMS", "30 SMS / 30 SMS", "25 SMS / 25 SMS"]},
+            {q: "What are the requirements for making Device Care claim? / ما هي متطلبات تقديم مطالبة Device Care؟", a: "All of the mentioned / كل ما سبق", options: ["Civil Id/Excess Fee / البطاقة المدنية / الرسوم الزائدة", "Device Care contract Form / نموذج عقد رعاية الجهاز", "All of the mentioned / كل ما سبق", "None of the mentioned / ليس اين مما سبق"]},
+            {q: "Device Care Essential service provide customer: / توفر خدمة Device Care Essential للعميل:", a: "Extended Manufacturer Warranty / تمديد لمصنعية الجهاز", options: ["Extended Manufacturer Warranty / تمديد لمصنعية الجهاز", "Screen Damage only / تلف الشاشة فقط", "Full Smartphone change / التغيير الكامل للهاتف الذكي"]},
+            {q: "The premium category of stc TV customers get Video Quality of: / يحصل العميل جودة الفيديومن خدمة stc TV: premium باقة", a: "4 K / 4 K", options: ["HD / HD", "Full HD / Full HD", "4 K / 4 K", "8 K / 8 K"]},
+            {q: "Can stc Postpaid customers use payment service in the Chatbot? / هل يستطيعون عملاء stc للدفع الآجل استخدام خاصية الدفع من خلال نظام المساعد الآلي؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
+            {q: "9 kd go prepaid plan provides: / توفر خط الدفع المسبق 9 د.ك:", a: "All of the mentioned / كل ما ذكر", options: ["Unlimited On-net minutes / دقائق غير محدودة داخل الشبكة", "Unlimited Social Media / وسائل التواصل الاجتماعي غير المحدودة", "All of the mentioned / كل ما ذكر", "None of the mentioned / لا شيء من المذكور"]},
+            {q: "How long does it take to get ready for a call? / كم مدة الاستعداد للمكالمة:", a: "less than 3 seconds / أقل من 3 ثوان", options: ["less than 3 seconds / أقل من 3 ثوان", "less than 5 seconds / أقل من 5 ثوان", "less than 7 seconds / أقل من 7 ثوان", "None of the above / ليس أيا مما سبق"]},
+            {q: "In a call the number of times the customer's name is used: / عدد مرات استخدام اسم العميل:", a: "Thrice or more / ثلاث مرات و اكثر", options: ["Once / مرة", "Twicw / مرتين", "Thrice or more / ثلاث مرات و اكثر", "Not important / غير مهم"]},
+            {q: "Allowed waiting time is: / مدة الانتظار المسموحه:", a: "It does not exceed 30 seconds, renewable / لا يتعدى 30 ثانيه قابلة للتجديد", options: ["Waiting is not allowed / الانتظار غير مسموح", "It does not exceed 30 seconds, renewable / لا يتعدى 30 ثانيه قابلة للتجديد", "It does not exceed 40 seconds, renewable / لا يتعدى 40 ثانيه قابلة للتجديد", "It does not exceed 45 seconds, renewable / لا يتعدى 45 ثانيه قابلة للتجديد"]},
+            {q: "What is the right way of ending call: / كيف تكون نهاية المكالمة الصحيحة:", a: "Marketing, Offer to provide another service , Greeting at the end of the call / التسويق, العرض لتقديم خدمة أخرى, تحية ختام المكالمة", options: ["Offer to provide another service, Marketing, Greeting at the end of the call / العرض لتقديم خدمة أخرى, التسويق, تحية ختام المكالمة", "Greeting at the end of the call , Offer to provide another service 3- Marketing / تحية ختام المكالمة , العرض لتقديم خدمة أخرى, -التسويق", "Greeting at the end of the call , Marketing , Offer to provide another service / تحية ختام المكالمة , التسويق, العرض لتقديم خدمة أخرى", "Marketing, Offer to provide another service , Greeting at the end of the call / التسويق, العرض لتقديم خدمة أخرى, تحية ختام المكالمة"]},
+            {q: "Postpaid 75KD Tamayouz package provides: / توفر باقة التميز 75 دينار للدفع الأجل :", a: "2000 Local SMS / رسالة محلية 2000", options: ["1000 Local SMS / رسالة محلية 1000", "2000 Local SMS / رسالة محلية 2000", "Unlimited Local SMS / رسائل محلية غير محدودة", "None of the mentioned / ليس اين مما سبق"]},
+            {q: "Internet allowance for 12 KD Postpaid Data line is: / سياسة الاستخدام العادل الموجودة في باقة 12 KD للدفع الآجل للإنترنت هي:", a: "2TB / 2TB", options: ["10 TB / 10 TB", "2TB / 2TB", "1TB / 1TB"]},
+            {q: "Customers with the new Postpaid Data line will be able to add devices based on: / سيتمكن العملاء الذين لديهم خط دفع الآجل للإنترنت الجديد من إضافة أجهزة بناءً على مدة التزام:", a: "24 months commitment / شهر 24", options: ["24 months commitment / شهر 24", "12 months commitment / شهر 12", "18 months commitment / شهر 18"]},
+            {q: "Credit obtained by Trade In service can be used for: / يمكن استخدام المبلغ المحصل الذي تم الحصول عليه عن طريق Trade in من أجل:", a: "Overdue bills / الفواتير المتأخرة", options: ["Overdue bills / الفواتير المتأخرة", "Advance rental payment / الدفع مقدما", "Prepaid recharge / إعادة تعبئة خط دفع مسبق"]},
+            {q: "What type of devices are eligible for Trade In? / ما هو نوع الاجهزة المسموح بها عمل Trade in؟", a: "Mobile/Tablet / الهاتف المحمول/الجهاز اللوحي", options: ["Mobile/Smart Watch / الهاتف المحمول/الساعة الذكية", "Mobile/Charger / الهاتف المحمول /شاحن", "Mobile/Tablet / الهاتف المحمول/الجهاز اللوحي"]},
+            {q: "Customers can Trade in multiple devices: / يستطيع العميل ان يستخدم اكثر من جهاز واحد في عملية Trade In:", a: "Yes / صح", options: ["Yes / صح", "No / خطأ"]},
+            {q: "Before making any Trade In deal, agent should ask the customer to: / يجب على الموظف أن يطلب من العميل ما يلي قبل إجراء Tarde in:", a: "Back up old device and delete personal data / عمل نسخة احتياطية من الجهاز القديم وحذف البيانات الشخصية", options: ["Back up old device and delete personal data / عمل نسخة احتياطية من الجهاز القديم وحذف البيانات الشخصية", "Pay all previous bills / سداد جميع الفواتير السابقة", "Fix the device damage / إصلاح الجهاز التالف", "All of the mentioned / جميع ما سبق"]},
+            {q: "In order to get Postpaid line, the customer’s age should not be less than: / من أجل الحصول على خط دفع آجل، يجب أن لا يكون عُمر العميل أقل من:", a: "21 years / سنه 21", options: ["22 years / سنه 22", "21 years / سنه 21", "18 years / سنه 18", "16 years / سنه 16"]},
+            {q: "In qitaf program, Postpaid voice and data line customer will get ...... points as welcome gift: / عند التسجيل في برنامج قطاف بإستخدام خط دفع آجل صوتي و انترنت , يحصل العميل على ......... نقطة ترحيبية مجانيه", a: "30 / 30", options: ["30 / 30", "50 / 50", "100 / 100", "200 / 200"]},
+            {q: "The search bar helps us to find customer’s profile by (BSS System): / يساعدنا شريط البحث في العثور على الملف الشخصي للعميل (BSS System):من خلال", a: "All of the mentioned / جميع ما سبق", options: ["Civil ID number / رقم البطاقة المدنية", "Line number / رقم الاشتراك", "Contract Number / رقم العقد", "All of the mentioned / جميع ما سبق"]},
+            {q: "\"Age On Network\" is the line (BSS System): / ترمز مقولة \" Age On Network\" إلى؟ (BSS System)", a: "Connection Date / Connection Date", options: ["Connection Date / Connection Date", "Disabled Date / Disabled Date", "Termination Date / Termination Date"]},
+            {q: "\"In progress\" status shows (BSS System): / ماذا تظهر حالة \"In progress\":(BSS System)", a: "The task is under process / المعاملة جارية", options: ["The task is done / تم إنجاز المعاملة", "The task is failed / فشلت المعاملة", "The task is under process / المعاملة جارية"]},
+            {q: "What does VAS full form stands for? / ماذا يعني الاسم الكامل ل VAS؟", a: "Value-Added Service / Value-Added Service", options: ["Value-Added Service / Value-Added Service", "Value-Activated Sign / Value-Activated Sign", "Voice-Activation Service / Voice-Activation Service"]},
+            {q: "We can check Transaction History from (BSS System): / كيف يستطيع الموظف مشاهدة تاريخ المعاملات؟ (BSS System):", a: "Requests / Requests", options: ["Notifications / Notifications", "Requests / Requests", "Overview / Overview"]},
+            {q: "In BSS system customer can pay: / يستطيع العميل في برنامج BSS الدفع عن طريق؟", a: "Cash/Debit/Credit / Cash/Debit/Credit", options: ["Cash Only / Cash Only", "Cash/Debit/Credit / Cash/Debit/Credit", "Credit/SMS Pay / Credit/SMS Pay", "Debit/SMS Pay/Credit / Debit/SMS Pay/Credit", "None of mentioned / ليس مما سبق"]},
+            {q: "Customer’s balance can be checked from (BSS System): / أين يمكنك التحقق من رصيد العميل؟(BSS System)", a: "Overview / Overview", options: ["Requests / Requests", "Overview / Overview", "Financials / Financials", "Invoices / Invoices"]},
+            {q: "(BSS System) A new line can be created by selecting / يمكن تفعيل خط جديد عن طريق اختيار:(BSS System)", a: "Add Service / Add Service", options: ["Add Service / Add Service", "Add VAS / Add VAS", "Overview / Overview"]},
+            {q: "Termination Liability Cost in Overview means (BSS System): / في تكلفة عقد الإنهاء في خانة نظرة عامة تعني:(BSS System)", a: "All of the mentioned / جميع ماسبق", options: ["Penalty fee / رسوم جزائية", "Cancellation Fee / رسوم الإلغاء", "All of the mentioned / جميع ماسبق", "None of the mentioned / ليس أين مما سبق"]},
+            {q: "(BSS system) We can check Credit limit from: / يمكننا التحقق من حد الائتمان من خلال:(BSS system)", a: "Overview / Overview", options: ["Offering / Offering", "Usage / Usage", "Wallet / Wallet", "Overview / Overview"]},
+            {q: "(BSS System) If we want to check the name of the agent done any transaction on the line, we need to go to: / إذا أردنا التحقق من اسم الموظف الذي أجرى أي معاملة على الخط ، فعلينا الانتقال إلى:(BSS System)", a: "Requests / Requests", options: ["Requests / Requests", "Over view / Over view", "Offering / Offering", "VAS / VAS"]},
+            {q: "In BSS system Upfront charges means: / ماذا تعني كلمة Upfront charges في نظام BSS :", a: "Advance Payment / دفعه مقدمه", options: ["Monthly Charges / الرسوم الشهرية", "Advance Payment / دفعه مقدمه", "Termination Fee / رسوم الإلغاء"]},
+            {q: "Promotional & Informational Offers in BSS Overview shows: / العروض الترويجية والإعلامية في نظرة عامة على BSS تظهر:", a: "Offers as per customer eligibility / العروض حسب أهلية العميل", options: ["Recently launched offers / العروض التي تم إطلاقها مؤخرًا", "Offers as per customer eligibility / العروض حسب أهلية العميل"]},
+            {q: "50 KD postpaid voice line provides unlimited internet with FUP of: / باقة تميز 50 د.ك للدفع الأجل الصوتي تحتوي على انترنت غير محدود بسعة إستهلاك شهري:", a: "6TB / 6 TB", options: ["2 GB / 2 GB", "3 GB / 3 GB", "2 TB / 2 TB", "6TB / 6 TB"]},
+            {q: "100 KD Postpaid voice line customer can use ... of Roaming Data: / يمكن للعملاء اللذين لديهم باقة تميز 100 د.ك للدفع الأجل الصوتي استخدام... إنترنت:", a: "150 GB / 150 GB", options: ["60 GB / 60 GB", "90 GB / 90 GB", "150 GB / 150 GB"]},
+            {q: "Sharing Sim plan is available with 12 KD Postpaid Data line: / تتوفر خطة مشاركة الشريحة مع خط الإنترنت الدفع الأجل بقيمة 12 د.ك:", a: "No / لا", options: ["Yes / نعم", "No / لا"]},
+            {q: "12 Kd Premium Roaming bundle allow customer to use...minutes to call to Kuwait: / باقة التجوال المميزة بقيمة 12 د.ك تتيح للعميل استخدام...دقائق للاتصال بالكويت:", a: "30 minutes / دقيقة 30", options: ["15 minutes / دقيقة 15", "30 minutes / دقيقة 30", "Unlimited minutes / دقائق غير محدودة", "None of the mentioned. / ليس مما سبق"]},
+            {q: "Is the Fiber only available for specific areas in Kuwait? / هل الفايبر متوفر لمناطق معينه في الكويت؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
+            {q: "In 16 KD postpaid data line, unlimited FUP is ...... / في باقة 16 د.ك للدفع الأجل للإنترنت, سعة الإستخدام الشهرية هي ......", a: "10 TB / 10 TB", options: ["1 TB / 1 TB", "2 TB / 2 TB", "10 TB / 10 TB", "15 TB / 15 TB"]},
+            {q: "After consuming free Data in 16KD postpaid line the speed go down to: / بعد استهلاك العميل للسعة المجانية لباقة 16 د.ك للدفع الأجل تنخفض السرعة إلى:", a: "256 Kbps / 256 Kbps", options: ["265 Kbps / 265 Kbps", "260 Kbps / 260 Kbps", "256 Kbps / 256 Kbps", "250 Kbps / 250 Kbps"]},
+            {q: "150GB Social Media Internet benefit is available with 30KD/35KD postpaid line: / تتوفر ميزة إنترنت لوسائط التواصل الاجتماعي بسعة 150GB مع خط الدفع الأجل بقيمة 30 د.ك /35 د.ك:", a: "No / خطأ", options: ["Yes / صح", "No / خطأ"]},
+            {q: "Regarding Trade In program, one of the below conditions is not included in device (Smartphone or Tablet) evaluation: / فيما يتعلق ببرنامج Trade In، لا يتم تضمين أحد الشروط التالية في تقييم الجهاز (الهاتف الذكي أو الجهاز اللوحي):", a: "Need of box, & charger / الحاجة إلى علبة ، وشاحن", options: ["Device functionality / وظائف الجهاز", "Battery functionality / وظيفة البطارية", "Screen intactness / سلامة الشاشة", "Need of box, & charger / الحاجة إلى علبة ، وشاحن", "Scratches and dents on the body / الخدوش والخدوش على الجهاز"]},
+            {q: "Night 150GB internet usage in Prepaid go packages is from : / استخدام الإنترنت الليلي بسعة 150 جيجابايت في باقات go للدفع المسبق هو من:", a: "1 AM to 7 AM / من 1 صباحًا إلى 7 صباحًا", options: ["1 AM to 7 AM / من 1 صباحًا إلى 7 صباحًا", "12 AM to 7 AM / من 12 صباحًا إلى 7 صباحًا", "1 AM to 8 AM / من 1 صباحًا إلى 8 صباحًا", "12 AM to 8 AM / من 12 صباحًا إلى 8 صباحًا"]},
+            {q: "What happens when the full internet capacity of the \"Always-ON\" service is used? / ماذا يحصل عند استخدام كامل سعة الإنترنت في خدمة \"خليك ON\"؟", a: "The speed is reduced to 256 Kbps / يتم تقليل السرعة إلى 256 كيلوبت", options: ["The service is disconnected / يتم قطع الخدمة", "The speed is reduced to 256 Kbps / يتم تقليل السرعة إلى 256 كيلوبت", "Additional charges are applied / يتم إضافة رسوم إضافية", "The package is temporarily suspended / يتم إيقاف الباقة مؤقتًا"]},
+            {q: "How much is the fee for transferring ownership of postpaid lines? / كم تبلغ رسوم نقل ملكية خطوط الدفع الأجل؟", a: "5 KWD / 5 د.ك", options: ["2 KWD / 2 د.ك", "3 KWD / 3 د.ك", "5 KWD / 5 د.ك", "7 KWD / 7 د.ك"]},
+            {q: "Unused minutes and messages are carried over to the next month in postpaid packages / يتم ترحيل الدقائق والرسائل غير المستخدمة إلى الشهر التالي في باقات الدفع الأجل.", a: "False / خطأ", options: ["False / خطأ", "True / صح"]},
+            {q: "How can a customer inquire about internet usage for Postpaid voice lines? / كيف يمكن للعميل الاستفسار عن استخدام الإنترنت لخطوط الدفع الأجل؟", a: "Send the code Q to 567 / إرسال الكود Q إلى الرقم 567", options: ["Send the code QA to 567 / إرسال الكود QA إلى الرقم 567", "Send the code Q to 567 / إرسال الكود Q إلى الرقم 567", "Send the code QA to 102 / إرسال الكود 124 إلى 567", "Send the code Q to 102 / إرسال الكود 127 إلى الرقم 567"]},
+            {q: "What is the cost of a local minute in postpaid voice plans? / كم تبلغ تكلفة الدقيقة المحلية في باقات الدفع الأجل الصوتية؟", a: "39 fils / 39 فلس", options: ["30 fils / 30 فلس", "25 fils / 25 فلس", "39 fils / 39 فلس", "50 fils / 50 فلس"]},
+            {q: "Which app is NOT included in the free social media quota? / أي من التطبيقات التالية غير مشمول في سعة التواصل الاجتماعي المجانية؟", a: "Zoom / زووم", options: ["Instagram / انستغرام", "WhatsApp / واتساب", "Zoom / زووم", "TikTok / تيك توك"]},
+            {q: "How many devices can be provided with internet bundles? / كم عدد الأجهزة التي يمكن إضافتها مع باقات الإنترنت؟", a: "2 / 2", options: ["1 / 1", "2 / 2", "3 / 3", "Unlimited / غير محدود"]},
+            {q: "Customers can use 8KD credit in 10KD Always-ON plan for: / يمكن للعملاء استخدام رصيد 8 د.ك في باقة 10 د.ك خليك ON من أجل:", a: "All of the mentioned / جميع ما سبق", options: ["International Calls / المكالمات الدولية", "Local Calls / المكالمات المحلية", "Local SMS / الرسائل المحلية", "All of the mentioned / جميع ما سبق"]},
+            {q: "In 35KD Always-ON plan, customer will get ......local SMS: / في باقة 35 د.ك خليك ON، يحصل العميل على ...... رسالة محلية:", a: "1000 SMS / رسالة 1000", options: ["100 SMS / رسالة 100", "500 SMS / رسالة 500", "1000 SMS / رسالة 1000", "Unlimited SMS / رسائل غير محدودة"]},
+            {q: "Local SMS consumption price in Postpaid plan is: / سعر استخدام الرسائل المحلية في باقات الدفع الأجل هو:", a: "20 fils/SMS / 20 فلس/لرسالة", options: ["10 fils/SMS / 10 فلوس/لرسالة", "20 fils/SMS / 20 فلس/لرسالة", "30 fils/SMS / 30 فلس/لرسالة", "45 fils/SMS / 45 فلس/لرسالة"]},
+            {q: "In 25 KD postpaid plan customer will get .........local minutes: / في باقة الدفع الأجل 25 د.ك، يحصل العميل على ......... دقيقة محلية:", a: "2000 minutes / دقيقة 2000", options: ["500 minutes / دقيقة 500", "1000 minutes / دقيقة 1000", "2000 minutes / دقيقة 2000", "Unlimited / غير محدود"]},
+            {q: "35 KD postpaid plan provides.......GB of local internet: / توفر باقة الدفع الأجل 35 د.ك ......... جيجابايت من الإنترنت المحلي:", a: "500 GB / 500 GB", options: ["25 GB / 25 GB", "50 GB / 50 GB", "100 GB / 100 GB", "500 GB / 500 GB"]},
+            {q: "45 KD Postpaid customer with commitment will get: / يحصل عميل الدفع الأجل 45 د.ك مع التزام على:", a: "Smartphone & Router / هاتف ذكي وراوتر", options: ["Smartphone / هاتف ذكي", "Router / راوتر", "Smartphone & Router / هاتف ذكي وراوتر", "Router & Tablet / راوتر وجهاز لوحي"]},
+            {q: "When a customer wants to (transfer ownership) of a postpaid or prepaid voice line, where must this be done? / عند رغبة العميل في نقل ملكية خط دفع آجل أو دفع مسبق صوتي، أين تتم هذه العملية؟", a: "By visiting the branch / من خلال زيارة الفرع", options: ["Through the mobile app only / من خلال التطبيق فقط", "By the call center agent directly / عبر موظف خدمة العملاء بالهاتف", "Through email / عبر البريد الإلكتروني", "By visiting the branch / من خلال زيارة الفرع"]},
+            {q: "In the case of the death of a line owner, what is the required procedure? / في حال وفاة صاحب الخط، ما هو الإجراء المطلوب؟", a: "The family must visit the branch and submit the required documents / يجب على ذوي المتوفى مراجعة الفرع لتقديم المستندات اللازمة", options: ["No action is required / لا حاجة لأي إجراء", "Contact technical support / يتم التواصل مع الدعم الفني", "The family must visit the branch and submit the required documents / يجب على ذوي المتوفى مراجعة الفرع لتقديم المستندات اللازمة", "Ownership is automatically transferred to heirs / يتم تحويل الخط تلقائياً لورثة المتوفى"]},
+            {q: "If the customer wants to pay the due amounts, which answer is incorrect? / في حال رغبه العميل دفع المبالغ المستحقة، ما هى الإجابة الخاطئة؟", a: "The customer will be transferred to the technical support department / يتم تحويل العميل لقسم الدعم الفني.", options: ["Payment can be made through a branch / يمكن الدفع عبر الفرع.", "Payment can be made through the stc website / يمكن الدفع عبر موقع stc الإلكتروني.", "The customer will be transferred to the technical support department / يتم تحويل العميل لقسم الدعم الفني.", "Payment can be made via the stc app / يمكن الدفع عبر تطبيق stc."]},
+            {q: "Which of the following does NOT require directing the customer to the branch? / أي من الخيارات التالية لا يتطلب توجيه العميل للفرع؟", a: "Inquiring about bill details / الاستفسار عن تفاصيل الفاتورة", options: ["Canceling of a prepaid line / إلغاء خط دفع مسبق", "Inquiring about bill details / الاستفسار عن تفاصيل الفاتورة", "Ownership transfer of a postpaid line / نقل ملكية خط دفع آجل", "Blacklisted customer's payment / تسوية الدفعات المستحقة المديونية"]},
+            {q: "A customer uses hotspot for a tablet, what can you cross-sell? / عميل يستخدم خاصية نقطة الاتصال (Hotspot) مع جهازه اللوحي. ما هو المنتج الأنسب له؟", a: "Data SIM / شريحة الإنترنت", options: ["Extra SMS / رسائل إضافية", "Data SIM / شريحة الإنترنت", "OTT App / تطبيق ترفيهي", "Roaming add-on / إضافة تجوال"]},
+            {q: "A customer wants a second Internet device for the family, which post-paid voice plan includes router + smartphone? / عميل يريد جهاز إنترنت إضافي للعائلة، أي باقة دفع آجل صوتي تشمل راوتر + هاتف ذكي؟", a: "KD 45 / KD 45", options: ["KD 10 / KD 10", "KD 25 / KD 25", "KD 45 / KD 45", "KD 16 / KD 16"]},
+            {q: "A customer is into fitness and health tracking, what should you offer? / عميل مهتم بالصحة واللياقة البدنية، ما المنتج الأنسب له؟", a: "Apple Watch / ساعة أبل", options: ["Router / راوتر", "Extra minutes / دقائق إضافية", "Apple Watch / ساعة أبل", "Data SIM / شريحة بيانات"]},
+            {q: "A frequent traveler asks how to stay connected abroad, what can you add? / عميل يسافر كثيراً ويريد البقاء متصلاً، ما الخدمة الأنسب؟", a: "Roaming data Package / باقة بيانات تجوال", options: ["Extra SMS / رسائل إضافية", "Roaming data Package / باقة بيانات تجوال", "Entertainment app / تطبيق ترفيهي", "Share Data SIM / شريحة مشاركة"]},
+            {q: "A customer from the business category wants a premium number. What is the best option? / عميل من فئة الأعمال يريد رقماً مميزاً، ما هو الخيار الأنسب؟", a: "Super Gold / Platinum Number / بلاتيني / gold رقم سوبر", options: ["Regular SIM / رقم عادي", "Super Gold / Platinum Number / بلاتيني / gold رقم سوبر", "Extra SMS / رسائل إضافية", "eSIM / eSIM"]},
+            {q: "A customer makes too many calls and wants unlimited calls, which Always-ON plan should you upsell? / عميل يجري مكالمات كثيرة ويريد دقائق غير محدودة، أي باقة خليك-ON توفر ذلك؟", a: "KD 35 / KD 35", options: ["KD 16 / KD 16", "KD 25 / KD 25", "KD 35 / KD 35", "KD 10 / KD 10"]},
+            {q: "What is Prepaid Universal Un-subscription code? / ماهو رمز الغاء الاشتراك الموحد الجديد لباقات الدفع المسبق ؟", a: "send (D) to (510) / إرسال ( D ) إلى (510)", options: ["send (D) to (510) / إرسال ( D ) إلى (510)", "send (D) to (102) / إرسال ( D ) إلى (102)", "send (D) to (567) / إرسال ( D ) إلى (567)", "None of the mentioned / ليس مما سبق"]},
+            {q: "With 16 KD Postpaid Voice line customer can use 1000 minutes: / مع خط الهاتف للدفع الأجل الصوتية بقيمة 16 دينار كويتي، يمكن للعميل استخدام 1000 دقيقة:", a: "Local / المحلية", options: ["Local / المحلية", "International / الدولية", "stc to stc only / داخل شبكة من stc إلى stc", "Local & International / محلي و دولي"]},
+            {q: "Which time zone is used to calculate roaming package validity? / بأي توقيت تُحسب صلاحية باقات التجوال؟", a: "Kuwait local time / توقيت دولة الكويت المحلي", options: ["Destination country time / توقيت الدولة التي يتواجد فيها العميل", "UTC time / توقيت UTC (العالمي)", "Kuwait local time / توقيت دولة الكويت المحلي", "Foreign operator time / توقيت مشغل الشبكة الأجنبي"]},
+            {q: "How many free local SMS are available in the 25 KD always-ON postpaid voice plan? / كم عدد الرسائل المحلية المجانية المتوفرة على باقة 25 د.ك للدفع الأجل دائما-ON الصوتية؟", a: "1000 SMS / رسالة 1000", options: ["100 SMS / رسالة 100", "500 SMS / رسالة 500", "1000 SMS / رسالة 1000", "None of the mentioned / ليس مما سبق"]},
+            {q: "What is the Local minutes capacity in the 6 KD weekly go prepaid voice plan? / كم دقيقة محلية تشملها باقة \"go\" الدفع المسبق الصوتية الأسبوعية بقيمة 6 د.ك؟", a: "100 minutes / دقيقة 100", options: ["100 minutes / دقيقة 100", "200 minutes / دقيقة 200", "500 minutes / دقيقة 500", "1000 minutes / دقيقة 1000"]},
+            {q: "Does the 15 KD Always ON postpaid voice plan include a data sharing SIM? / هل يوجد شريحة مشاركة البيانات في باقة 15 د.ك الصوتية للدفع الأجل \"ON-خليك\"؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
+            {q: "In 35KD Always on plan, customer will get ......local calls: / في باقة 35 د.ك خليك ON، يحصل العميل على ...... دقيقة محلية:", a: "Unlimited mins / دقائق غير محدودة", options: ["200 mins / دقيقة 200", "500 mins / دقيقة 500", "1000 mins / دقيقة 1000", "Unlimited mins / دقائق غير محدودة", "- / -"]},
+            {q: "In 7.5KD postpaid data line, the data allowance is ...... / في باقة 7.5 د.ك للدفع الأجل للإنترنت، سعة الاستخدام الشهرية هي ......", a: "500 GB / 500 GB", options: ["500 GB / 500 GB", "1 TB / 1 TB", "2 TB / 2 TB", "10 TB / 10 TB"]},
+            {q: "Internet allowance for 15 KD Postpaid Data line is: / سياسة الاستخدام العادل الموجودة في باقة 15 KD للدفع الأجل للإنترنت هي:", a: "Unlimited (FUP: 10 TB) / انترنت: غير محدود (استخدام عادل: 10 TB)", options: ["Unlimited (FUP: 10 TB) / انترنت: غير محدود (استخدام عادل: 10 TB)", "Unlimited (FUP: 20 TB) / انترنت: غير محدود (استخدام عادل: 20 TB)", "Unlimited (FUP: 50 TB) / انترنت: غير محدود (استخدام عادل: 50 TB)", "Unlimited (FUP: 100 TB) / انترنت: غير محدود (استخدام عادل: 100 TB)"]},
+            {q: "Is 5G-advanced network available in all areas of Kuwait? / هل تتوفر شبكة 5G-advanced في جميع مناطق الكويت؟", a: "No / لا", options: ["Yes / نعم", "No / لا"]},
+            {q: "What are the available commitment options for Baity 5G Plans? / ما هي خيارات الالتزام المتاحة لخدمات Baity 5G؟", a: "18 months/2 years/3 years / 18 شهرًا/سنتان/3 سنوات", options: ["6 months / 6 أشهر", "1year/2 years/3 years / سنة/سنتان/3 سنوات", "18 months/2 years/3 years / 18 شهرًا/سنتان/3 سنوات", "without any commitment / بدون أي التزام"]},
+            {q: "What is the FUP for unlimited Baity 5G plans? / ما هي سعة الانترنت المسموح بها في باقات \"Baity 5G\" غير المحدودة؟", a: "Unlimited (10TB) / غير محدود (10TB)", options: ["2 TB / 2 TB", "4 TB / 4 TB", "5 TB / 5 TB", "Unlimited (10TB) / غير محدود (10TB)"]},
+            {q: "Which Baity 5G plans offer a free Sharing SIM card? / أي باقات Baity 5G تقدم شريحة SIM للمشاركة مجاناً؟", a: "19 KD plan / باقة 19 KD", options: ["12 KD plan / باقة 12 KD", "15 KD plan / باقة 15 KD", "19 KD plan / باقة 19 KD", "All the options mentioned / جميع المذكور"]},
+            {q: "Does Baity5G Outdoor router (ODU) contain a SIM card? / هل يحتوي جهاز الخارجي (ODU) على Baity5G بطاقة SIM؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
+            {q: "What is the name of the app for Plume's SuperPods (Baity 5G)? / ما اسم التطبيق الخاص بـ SuperPods من Plume (Baity 5G)؟", a: "HomePass app / تطبيق HomePass", options: ["HomePass app / تطبيق HomePass", "Ookla / Ookla", "SafeCam / SafeCam", "Mystc Kuwait / Mystc Kuwait"]},
+            {q: "Baity 5G Customers are eligible to get 2 Entertainment subscriptions for: / يحق لعملاء Baity 5G الحصول على اشتراكي ترفيهين لمدة:", a: "6 months / 6 أشهر", options: ["6 months / 6 أشهر", "12 months / 12 شهرًا", "18 months / 18 شهرًا", "24 months / 24 شهرًا"]},
+            {q: "What is the cost for the Foz Gaming IP Add-on with Baity 5G plan? / ما هي تكلفة خدمة FOZ للألعاب الإضافية مع باقات Baity 5G؟", a: "5KD / 5KD", options: ["2KD / 2KD", "3KD / 3KD", "5KD / 5KD", "6KD / 6KD"]},
+            {q: "Customers will get up to .... meters of free cable with Baity 5G plan: / سيحصل العملاء على كبل مجاني يصل طوله إلى .... متر مع باقة Baity 5G:", a: "50 meters / 50 متراً", options: ["10 meters / 10 متراً", "20 meters / 20 متراً", "50 meters / 50 متراً", "As per customers need / حسب احتياجات العميل"]},
+            {q: "What is the Auto Port-In option? (BSS system) / ما هو خيار Auto Port-In (BSS system)؟", a: "An option that allows the number to be transfer immediately for approval from the company it is being transferred. / خيار يتيح تنفيذ عملية نقل الرقم فوراً دون انتظار موافقة الشركة المحول منها", options: ["An option to cancel the line service permanently / خيار يُستخدم لإلغاء خدمة الخط بشكل نهائي", "An option that allows the number to be transfer immediately for approval from the company it is being transferred. / خيار يتيح تنفيذ عملية نقل الرقم فوراً دون انتظار موافقة الشركة المحول منها", "An option dedicated to change the internet plan only / خيار مخصص لتغيير باقة الإنترنت فقط"]},
+            {q: "What are the allowed months to transfer the line from prepaid to postpaid? / ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "Three months / ثلاث أشهر", options: ["One month / شهر", "Two months / إثنان شهر", "Three months / ثلاث أشهر", "None of the mentioned / ليس مما سبق"]}
+        ];
+
+        const telesalesKnowledge = [
+            {q: "قواعد الحصول ع جهاز اضافي زييد / Telesales Rule 1", a: "كل ماسبق / All of the above"},
+            {q: "الاجهزه التي تكون متوافقه مع ال ESIM هي / ESIM compatible devices", a: "Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20 / Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20"},
+            {q: "في نظام BSS اجمالي الوقت المنقضي هو ل / BSS system total elapsed time is for", a: "رقم الخط / Line number"},
+            {q: "عدد مرات استخدام اسم العميل / Number of times customer name used", a: "ثلاث مرات واكثر / Thrice or more"},
+            {q: "كيف يستطيع الموظف مشاهدة تاريخ المعاملات / How to check transaction history", a: "Requests (سجل الطلبات) / Requests"},
+            {q: "في تكلفة عقد الانهاء خانة نظره عامه تعني / Termination liability cost means", a: "جميع ماسبق (النظرة العامة) / All of the mentioned"},
+            {q: "كم مش راوتر يمكن للعميل الحصول عليه في عرض بيتنا 5 جي / How many mesh routers in Baity 5G", a: "مش راوتر 3 / 3 Mesh routers"},
+            {q: "مدة الانتظار المسموحه / Allowed waiting time", a: "لايتعدى 30 ثانيه قابله للتجديد / Max 30 seconds renewable"}
+        ];
+
+        const allKnowledge = [...originalKnowledge, ...telesalesKnowledge];
+
+        // --- CORE FUNCTIONS ---
+        function initApp() {
+            const btn = document.getElementById('theme-btn');
+            btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            document.getElementById('login-user').focus();
+            
+            if(sessionStorage.getItem('quizActive') === 'true') {
+                sessionStorage.removeItem('quizActive');
+                logError("User refreshed the page during an active quiz.");
+                analytics.attemptsHistory.unshift({ name: sessionStorage.getItem('activeUser') || 'Unknown', score: 0, status: 'Failed (Cheating)', date: new Date().toLocaleTimeString() });
+            }
+        }
+
         function attemptLogin() {
             const user = document.getElementById('login-user').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
-            
-            if (user === 'zbibo' && pass === 'Stc123') {
+            if (user.length > 0) {
+                currentUserName = user;
+                sessionStorage.setItem('activeUser', currentUserName);
                 document.getElementById('login-error').classList.add('hidden');
                 const overlay = document.getElementById('login-overlay');
                 overlay.style.opacity = '0';
@@ -306,250 +531,18 @@
             }
         }
 
-        // --- KNOWLEDGE BASE (Exact 102 Options) ---
-        const originalKnowledge = [
-    {q: "How many days the Prepaid line will stay on Grace? / كم يوم يبقى الخط في Grace؟", a: "30 days / 30 يوم", options: ["60 days / 60 يوم", "30 days / 30 يوم", "20 days / 20 يوم", "45 days / 45 يوم"]},
-    {q: "What is internet capacity in 25 KD voice package? / ما هي سعة الانترنت في باقة ال 25 الصوتية؟", a: "100 GB / 100 GB", options: ["10 GB / 10 GB", "25 GB / 25 GB", "50 GB / 50 GB", "100 GB / 100 GB"]},
-    {q: "How much does a temporary suspension service cost for a month (summer suspension)? / كم هي تكلفة خدمة الايقاف المؤقت لمدة شهر؟", a: "None of the mentioned / ليس أي مما سبق", options: ["15 KD / 15 KD", "20 KD / 20 KD", "25 KD / 25 KD", "None of the mentioned / ليس أي مما سبق"]},
-    {q: "The validity of points in qitaf program is? / صلاحية النقاط في برنامج قطاف هي؟", a: "12 months / 12 شهر", options: ["3 months / 3 أشهر", "12 months / 12 شهر", "18 months / 18 شهر", "24 months / 24 شهر"]},
-    {q: "The cost for transfer ownership for postpaid line: / كم تكلفة نقل الملكية لخطوط الدفع الآجل؟", a: "5 KD / 5 KD", options: ["5 KD / 5 KD", "10 KD / 10 KD", "15 KD / 15 KD", "20 KD / 20 KD"]},
-    {q: "To cancel Budget control service: / لإلغاء خدمة ال Budget Control:", a: "#550# / #550#", options: ["#550# / #550#", "#505# / #505#", "*550# / *550#", "*505# / *505#"]},
-    {q: "Postpaid data customer will get .....GBs with 5KD booster: / خدمة الانترنت الاضافي لباقات الدفع الآجل الانترنت تمنح 5 KD (...) GBs:", a: "250 GB / 250 GB", options: ["100 GB / 100 GB", "500 GB / 500 GB", "250 GB / 250 GB"]},
-    {q: "To get Prepaid line, the age limit for Kuwaiti/Non Kuwaiti should not be less than: / العمر المسموح للحصول على خط التعبئة للعميل الكويتي/غيرالكويتي يجب ان لا يكون اقل من:", a: "18 years / 18 سنة", options: ["21 years / 21 سنة", "18 years / 18 سنة", "20 years / 20 سنة", "19 years / 19 سنة"]},
-    {q: "The charges to call to Kuwait from any Europian country on roaming are: / رسوم الاتصال الى الكويت بالتجوال من اي دولة اوربية:", a: "1.250 KD / 1.250 KD", options: ["1.250 KD / 1.250 KD", "1.000 KD / 1.000 KD", "0.900 KD / 0.900 KD", "0.600 KD / 0.600 KD"]},
-    {q: "Old prepaid plans can migrate to \"go\" plan by sending sms go to ..... / عميل خط التعبئة للباقات( go ) القديمة يستطيع الانتقال الى go باقات ارسال الرساله محتوها :", a: "510 / 510", options: ["567 / 567", "585 / 585", "999 / 999", "510 / 510"]},
-    {q: "Postpaid voice 45 KD customers get ....GB of data on Roaming: / سيحصل عملاء باقة 45 د.ك انترنت أثناء التجوال على (...) GB:", a: "10 GB / 10 GB", options: ["10 GB / 10 GB", "5 GB / 5 GB", "3 GB / 3 GB", "1 GB / 1 GB"]},
-    {q: "12 kd premimum roaming bundle is activated by: / يتم تفعيل باقة 12 د.ك المميزة للتجوال من خلال:", a: "p1 to 102 / p1 to 102", options: ["p1 to 102 / p1 to 102", "i2 to 102 / i2 to 102", "i3 to 102 / i3 to 102", "i4 to 102 / i4 to 102"]},
-    {q: "The hotline number for Fiber services is: / رقم الخط المباشر لخدمة الفايبر:", a: "1827827 / 1827827", options: ["1827278 / 1827278", "1827287 / 1827287", "1827827 / 1827827"]},
-    {q: "The customer will be on High-risk profile for any new activation after ......... , becoming medium if the line is not disconnected during this period? / ماهي المدة من انتقال High-risk profile الى MEDIUM-risk profile في حال عدم انقطاع الخط خلال هذه الفترة؟", a: "Three months / 3 أشهر", options: ["One month / شهر واحد", "Two months / شهرين", "Three months / 3 أشهر", "Six months / 6 أشهر"]},
-    {q: "MEDIUM-risk profile becomes low after.....? / ماهي المدة من انتقال MEDIUM-risk profile الى Low-risk profile في حال عدم انقطاع الخط خلال هذه الفترة؟", a: "One month / شهر واحد", options: ["One month / شهر واحد", "Two month / شهرين", "Three month / 3 أشهر", "Six month / 6 أشهر"]},
-    {q: "Is auto renewal available for 12 KD premium roaming bundle for postpaid voice? / هل يمكن التجديد التلقائي في باقة التجوال المميزة بقيمة 12 د.ك للدفع الأجل الصوتي؟", a: "Yes / صح", options: ["Yes / صح", "No / خطأ"]},
-    {q: "Deactivation Code for 12 KD premium Roaming bundle is: / لإلغاء باقة التجوال المميزة بقيمة 12 د.ك ارسال رساله نصيه هي:", a: "D to 102 / إلى 102 D", options: ["0p1 to 102 / إلى 102 0p1", "0p1 to 567 / إلى 567 0p1", "D to 102 / إلى 102 D", "012 to 102 / إلى 102 012"]},
-    {q: "In 12 KD premium roaming bundle, customer can have roaming SMS's: / في باقة التجوال المميزة بقيمة 12 د.ك يمكن للعميل الحصول على رسائل التجوال القصيرة:", a: "30 SMS / 30 SMS", options: ["100 SMS / 100 SMS", "50 SMS / 50 SMS", "30 SMS / 30 SMS", "25 SMS / 25 SMS"]},
-    {q: "What are the requirements for making Device Care claim? / ما هي متطلبات تقديم مطالبة Device Care؟", a: "All of the mentioned / كل ما سبق", options: ["Civil Id/Excess Fee / البطاقة المدنية / الرسوم الزائدة", "Device Care contract Form / نموذج عقد رعاية الجهاز", "All of the mentioned / كل ما سبق", "None of the mentioned / ليس اين مما سبق"]},
-    {q: "Device Care Essential service provide customer: / توفر خدمة Device Care Essential للعميل:", a: "Extended Manufacturer Warranty / تمديد لمصنعية الجهاز", options: ["Extended Manufacturer Warranty / تمديد لمصنعية الجهاز", "Screen Damage only / تلف الشاشة فقط", "Full Smartphone change / التغيير الكامل للهاتف الذكي"]},
-    {q: "The premium category of stc TV customers get Video Quality of: / يحصل العميل جودة الفيديومن خدمة stc TV: premium باقة", a: "4 K / 4 K", options: ["HD / HD", "Full HD / Full HD", "4 K / 4 K", "8 K / 8 K"]},
-    {q: "Can stc Postpaid customers use payment service in the Chatbot? / هل يستطيعون عملاء stc للدفع الآجل استخدام خاصية الدفع من خلال نظام المساعد الآلي؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
-    {q: "9 kd go prepaid plan provides: / توفر خط الدفع المسبق 9 د.ك:", a: "All of the mentioned / كل ما ذكر", options: ["Unlimited On-net minutes / دقائق غير محدودة داخل الشبكة", "Unlimited Social Media / وسائل التواصل الاجتماعي غير المحدودة", "All of the mentioned / كل ما ذكر", "None of the mentioned / لا شيء من المذكور"]},
-    {q: "How long does it take to get ready for a call? / كم مدة الاستعداد للمكالمة:", a: "less than 3 seconds / أقل من 3 ثوان", options: ["less than 3 seconds / أقل من 3 ثوان", "less than 5 seconds / أقل من 5 ثوان", "less than 7 seconds / أقل من 7 ثوان", "None of the above / ليس أيا مما سبق"]},
-    {q: "In a call the number of times the customer's name is used: / عدد مرات استخدام اسم العميل:", a: "Thrice or more / ثلاث مرات و اكثر", options: ["Once / مرة", "Twicw / مرتين", "Thrice or more / ثلاث مرات و اكثر", "Not important / غير مهم"]},
-    {q: "Allowed waiting time is: / مدة الانتظار المسموحه:", a: "It does not exceed 30 seconds, renewable / لا يتعدى 30 ثانيه قابلة للتجديد", options: ["Waiting is not allowed / الانتظار غير مسموح", "It does not exceed 30 seconds, renewable / لا يتعدى 30 ثانيه قابلة للتجديد", "It does not exceed 40 seconds, renewable / لا يتعدى 40 ثانيه قابلة للتجديد", "It does not exceed 45 seconds, renewable / لا يتعدى 45 ثانيه قابلة للتجديد"]},
-    {q: "What is the right way of ending call: / كيف تكون نهاية المكالمة الصحيحة:", a: "Marketing, Offer to provide another service , Greeting at the end of the call / التسويق, العرض لتقديم خدمة أخرى, تحية ختام المكالمة", options: ["Offer to provide another service, Marketing, Greeting at the end of the call / العرض لتقديم خدمة أخرى, التسويق, تحية ختام المكالمة", "Greeting at the end of the call , Offer to provide another service 3- Marketing / تحية ختام المكالمة , العرض لتقديم خدمة أخرى, -التسويق", "Greeting at the end of the call , Marketing , Offer to provide another service / تحية ختام المكالمة , التسويق, العرض لتقديم خدمة أخرى", "Marketing, Offer to provide another service , Greeting at the end of the call / التسويق, العرض لتقديم خدمة أخرى, تحية ختام المكالمة"]},
-    {q: "Postpaid 75KD Tamayouz package provides: / توفر باقة التميز 75 دينار للدفع الأجل :", a: "2000 Local SMS / رسالة محلية 2000", options: ["1000 Local SMS / رسالة محلية 1000", "2000 Local SMS / رسالة محلية 2000", "Unlimited Local SMS / رسائل محلية غير محدودة", "None of the mentioned / ليس اين مما سبق"]},
-    {q: "Internet allowance for 12 KD Postpaid Data line is: / سياسة الاستخدام العادل الموجودة في باقة 12 KD للدفع الآجل للإنترنت هي:", a: "2TB / 2TB", options: ["10 TB / 10 TB", "2TB / 2TB", "1TB / 1TB"]},
-    {q: "Customers with the new Postpaid Data line will be able to add devices based on: / سيتمكن العملاء الذين لديهم خط دفع الآجل للإنترنت الجديد من إضافة أجهزة بناءً على مدة التزام:", a: "24 months commitment / شهر 24", options: ["24 months commitment / شهر 24", "12 months commitment / شهر 12", "18 months commitment / شهر 18"]},
-    {q: "Credit obtained by Trade In service can be used for: / يمكن استخدام المبلغ المحصل الذي تم الحصول عليه عن طريق Trade in من أجل:", a: "Overdue bills / الفواتير المتأخرة", options: ["Overdue bills / الفواتير المتأخرة", "Advance rental payment / الدفع مقدما", "Prepaid recharge / إعادة تعبئة خط دفع مسبق"]},
-    {q: "What type of devices are eligible for Trade In? / ما هو نوع الاجهزة المسموح بها عمل Trade in؟", a: "Mobile/Tablet / الهاتف المحمول/الجهاز اللوحي", options: ["Mobile/Smart Watch / الهاتف المحمول/الساعة الذكية", "Mobile/Charger / الهاتف المحمول /شاحن", "Mobile/Tablet / الهاتف المحمول/الجهاز اللوحي"]},
-    {q: "Customers can Trade in multiple devices: / يستطيع العميل ان يستخدم اكثر من جهاز واحد في عملية Trade In:", a: "Yes / صح", options: ["Yes / صح", "No / خطأ"]},
-    {q: "Before making any Trade In deal, agent should ask the customer to: / يجب على الموظف أن يطلب من العميل ما يلي قبل إجراء Tarde in:", a: "Back up old device and delete personal data / عمل نسخة احتياطية من الجهاز القديم وحذف البيانات الشخصية", options: ["Back up old device and delete personal data / عمل نسخة احتياطية من الجهاز القديم وحذف البيانات الشخصية", "Pay all previous bills / سداد جميع الفواتير السابقة", "Fix the device damage / إصلاح الجهاز التالف", "All of the mentioned / جميع ما سبق"]},
-    {q: "In order to get Postpaid line, the customer’s age should not be less than: / من أجل الحصول على خط دفع آجل، يجب أن لا يكون عُمر العميل أقل من:", a: "21 years / سنه 21", options: ["22 years / سنه 22", "21 years / سنه 21", "18 years / سنه 18", "16 years / سنه 16"]},
-    {q: "In qitaf program, Postpaid voice and data line customer will get ...... points as welcome gift: / عند التسجيل في برنامج قطاف بإستخدام خط دفع آجل صوتي و انترنت , يحصل العميل على ......... نقطة ترحيبية مجانيه", a: "30 / 30", options: ["30 / 30", "50 / 50", "100 / 100", "200 / 200"]},
-    {q: "The search bar helps us to find customer’s profile by (BSS System): / يساعدنا شريط البحث في العثور على الملف الشخصي للعميل (BSS System):من خلال", a: "All of the mentioned / جميع ما سبق", options: ["Civil ID number / رقم البطاقة المدنية", "Line number / رقم الاشتراك", "Contract Number / رقم العقد", "All of the mentioned / جميع ما سبق"]},
-    {q: "\"Age On Network\" is the line (BSS System): / ترمز مقولة \" Age On Network\" إلى؟ (BSS System)", a: "Connection Date / Connection Date", options: ["Connection Date / Connection Date", "Disabled Date / Disabled Date", "Termination Date / Termination Date"]},
-    {q: "\"In progress\" status shows (BSS System): / ماذا تظهر حالة \"In progress\":(BSS System)", a: "The task is under process / المعاملة جارية", options: ["The task is done / تم إنجاز المعاملة", "The task is failed / فشلت المعاملة", "The task is under process / المعاملة جارية"]},
-    {q: "What does VAS full form stands for? / ماذا يعني الاسم الكامل ل VAS؟", a: "Value-Added Service / Value-Added Service", options: ["Value-Added Service / Value-Added Service", "Value-Activated Sign / Value-Activated Sign", "Voice-Activation Service / Voice-Activation Service"]},
-    {q: "We can check Transaction History from (BSS System): / كيف يستطيع الموظف مشاهدة تاريخ المعاملات؟ (BSS System):", a: "Requests / Requests", options: ["Notifications / Notifications", "Requests / Requests", "Overview / Overview"]},
-    {q: "In BSS system customer can pay: / يستطيع العميل في برنامج BSS الدفع عن طريق؟", a: "Cash/Debit/Credit / Cash/Debit/Credit", options: ["Cash Only / Cash Only", "Cash/Debit/Credit / Cash/Debit/Credit", "Credit/SMS Pay / Credit/SMS Pay", "Debit/SMS Pay/Credit / Debit/SMS Pay/Credit", "None of mentioned / ليس مما سبق"]},
-    {q: "Customer’s balance can be checked from (BSS System): / أين يمكنك التحقق من رصيد العميل؟(BSS System)", a: "Overview / Overview", options: ["Requests / Requests", "Overview / Overview", "Financials / Financials", "Invoices / Invoices"]},
-    {q: "(BSS System) A new line can be created by selecting / يمكن تفعيل خط جديد عن طريق اختيار:(BSS System)", a: "Add Service / Add Service", options: ["Add Service / Add Service", "Add VAS / Add VAS", "Overview / Overview"]},
-    {q: "Termination Liability Cost in Overview means (BSS System): / في تكلفة عقد الإنهاء في خانة نظرة عامة تعني:(BSS System)", a: "All of the mentioned / جميع ماسبق", options: ["Penalty fee / رسوم جزائية", "Cancellation Fee / رسوم الإلغاء", "All of the mentioned / جميع ماسبق", "None of the mentioned / ليس أين مما سبق"]},
-    {q: "(BSS system) We can check Credit limit from: / يمكننا التحقق من حد الائتمان من خلال:(BSS system)", a: "Overview / Overview", options: ["Offering / Offering", "Usage / Usage", "Wallet / Wallet", "Overview / Overview"]},
-    {q: "(BSS System) If we want to check the name of the agent done any transaction on the line, we need to go to: / إذا أردنا التحقق من اسم الموظف الذي أجرى أي معاملة على الخط ، فعلينا الانتقال إلى:(BSS System)", a: "Requests / Requests", options: ["Requests / Requests", "Over view / Over view", "Offering / Offering", "VAS / VAS"]},
-    {q: "In BSS system Upfront charges means: / ماذا تعني كلمة Upfront charges في نظام BSS :", a: "Advance Payment / دفعه مقدمه", options: ["Monthly Charges / الرسوم الشهرية", "Advance Payment / دفعه مقدمه", "Termination Fee / رسوم الإلغاء"]},
-    {q: "Promotional & Informational Offers in BSS Overview shows: / العروض الترويجية والإعلامية في نظرة عامة على BSS تظهر:", a: "Offers as per customer eligibility / العروض حسب أهلية العميل", options: ["Recently launched offers / العروض التي تم إطلاقها مؤخرًا", "Offers as per customer eligibility / العروض حسب أهلية العميل"]},
-    {q: "50 KD postpaid voice line provides unlimited internet with FUP of: / باقة تميز 50 د.ك للدفع الأجل الصوتي تحتوي على انترنت غير محدود بسعة إستهلاك شهري:", a: "6TB / 6 TB", options: ["2 GB / 2 GB", "3 GB / 3 GB", "2 TB / 2 TB", "6TB / 6 TB"]},
-    {q: "100 KD Postpaid voice line customer can use ... of Roaming Data: / يمكن للعملاء اللذين لديهم باقة تميز 100 د.ك للدفع الأجل الصوتي استخدام... إنترنت:", a: "150 GB / 150 GB", options: ["60 GB / 60 GB", "90 GB / 90 GB", "150 GB / 150 GB"]},
-    {q: "Sharing Sim plan is available with 12 KD Postpaid Data line: / تتوفر خطة مشاركة الشريحة مع خط الإنترنت الدفع الأجل بقيمة 12 د.ك:", a: "No / لا", options: ["Yes / نعم", "No / لا"]},
-    {q: "12 Kd Premium Roaming bundle allow customer to use...minutes to call to Kuwait: / باقة التجوال المميزة بقيمة 12 د.ك تتيح للعميل استخدام...دقائق للاتصال بالكويت:", a: "30 minutes / دقيقة 30", options: ["15 minutes / دقيقة 15", "30 minutes / دقيقة 30", "Unlimited minutes / دقائق غير محدودة", "None of the mentioned. / ليس مما سبق"]},
-    {q: "Is the Fiber only available for specific areas in Kuwait? / هل الفايبر متوفر لمناطق معينه في الكويت؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
-    {q: "In 16 KD postpaid data line, unlimited FUP is ...... / في باقة 16 د.ك للدفع الأجل للإنترنت, سعة الإستخدام الشهرية هي ......", a: "10 TB / 10 TB", options: ["1 TB / 1 TB", "2 TB / 2 TB", "10 TB / 10 TB", "15 TB / 15 TB"]},
-    {q: "After consuming free Data in 16KD postpaid line the speed go down to: / بعد استهلاك العميل للسعة المجانية لباقة 16 د.ك للدفع الأجل تنخفض السرعة إلى:", a: "256 Kbps / 256 Kbps", options: ["265 Kbps / 265 Kbps", "260 Kbps / 260 Kbps", "256 Kbps / 256 Kbps", "250 Kbps / 250 Kbps"]},
-    {q: "150GB Social Media Internet benefit is available with 30KD/35KD postpaid line: / تتوفر ميزة إنترنت لوسائط التواصل الاجتماعي بسعة 150GB مع خط الدفع الأجل بقيمة 30 د.ك /35 د.ك:", a: "No / خطأ", options: ["Yes / صح", "No / خطأ"]},
-    {q: "Regarding Trade In program, one of the below conditions is not included in device (Smartphone or Tablet) evaluation: / فيما يتعلق ببرنامج Trade In، لا يتم تضمين أحد الشروط التالية في تقييم الجهاز (الهاتف الذكي أو الجهاز اللوحي):", a: "Need of box, & charger / الحاجة إلى علبة ، وشاحن", options: ["Device functionality / وظائف الجهاز", "Battery functionality / وظيفة البطارية", "Screen intactness / سلامة الشاشة", "Need of box, & charger / الحاجة إلى علبة ، وشاحن", "Scratches and dents on the body / الخدوش والخدوش على الجهاز"]},
-    {q: "Night 150GB internet usage in Prepaid go packages is from : / استخدام الإنترنت الليلي بسعة 150 جيجابايت في باقات go للدفع المسبق هو من:", a: "1 AM to 7 AM / من 1 صباحًا إلى 7 صباحًا", options: ["1 AM to 7 AM / من 1 صباحًا إلى 7 صباحًا", "12 AM to 7 AM / من 12 صباحًا إلى 7 صباحًا", "1 AM to 8 AM / من 1 صباحًا إلى 8 صباحًا", "12 AM to 8 AM / من 12 صباحًا إلى 8 صباحًا"]},
-    {q: "What happens when the full internet capacity of the \"Always-ON\" service is used? / ماذا يحصل عند استخدام كامل سعة الإنترنت في خدمة \"خليك ON\"؟", a: "The speed is reduced to 256 Kbps / يتم تقليل السرعة إلى 256 كيلوبت", options: ["The service is disconnected / يتم قطع الخدمة", "The speed is reduced to 256 Kbps / يتم تقليل السرعة إلى 256 كيلوبت", "Additional charges are applied / يتم إضافة رسوم إضافية", "The package is temporarily suspended / يتم إيقاف الباقة مؤقتًا"]},
-    {q: "How much is the fee for transferring ownership of postpaid lines? / كم تبلغ رسوم نقل ملكية خطوط الدفع الأجل؟", a: "5 KWD / 5 د.ك", options: ["2 KWD / 2 د.ك", "3 KWD / 3 د.ك", "5 KWD / 5 د.ك", "7 KWD / 7 د.ك"]},
-    {q: "Unused minutes and messages are carried over to the next month in postpaid packages / يتم ترحيل الدقائق والرسائل غير المستخدمة إلى الشهر التالي في باقات الدفع الأجل.", a: "False / خطأ", options: ["False / خطأ", "True / صح"]},
-    {q: "How can a customer inquire about internet usage for Postpaid voice lines? / كيف يمكن للعميل الاستفسار عن استخدام الإنترنت لخطوط الدفع الأجل؟", a: "Send the code Q to 567 / إرسال الكود Q إلى الرقم 567", options: ["Send the code QA to 567 / إرسال الكود QA إلى الرقم 567", "Send the code Q to 567 / إرسال الكود Q إلى الرقم 567", "Send the code QA to 102 / إرسال الكود 124 إلى 567", "Send the code Q to 102 / إرسال الكود 127 إلى الرقم 567"]},
-    {q: "What is the cost of a local minute in postpaid voice plans? / كم تبلغ تكلفة الدقيقة المحلية في باقات الدفع الأجل الصوتية؟", a: "39 fils / 39 فلس", options: ["30 fils / 30 فلس", "25 fils / 25 فلس", "39 fils / 39 فلس", "50 fils / 50 فلس"]},
-    {q: "Which app is NOT included in the free social media quota? / أي من التطبيقات التالية غير مشمول في سعة التواصل الاجتماعي المجانية؟", a: "Zoom / زووم", options: ["Instagram / انستغرام", "WhatsApp / واتساب", "Zoom / زووم", "TikTok / تيك توك"]},
-    {q: "How many devices can be provided with internet bundles? / كم عدد الأجهزة التي يمكن إضافتها مع باقات الإنترنت؟", a: "2 / 2", options: ["1 / 1", "2 / 2", "3 / 3", "Unlimited / غير محدود"]},
-    {q: "Customers can use 8KD credit in 10KD Always-ON plan for: / يمكن للعملاء استخدام رصيد 8 د.ك في باقة 10 د.ك خليك ON من أجل:", a: "All of the mentioned / جميع ما سبق", options: ["International Calls / المكالمات الدولية", "Local Calls / المكالمات المحلية", "Local SMS / الرسائل المحلية", "All of the mentioned / جميع ما سبق"]},
-    {q: "In 35KD Always-ON plan, customer will get ......local SMS: / في باقة 35 د.ك خليك ON، يحصل العميل على ...... رسالة محلية:", a: "1000 SMS / رسالة 1000", options: ["100 SMS / رسالة 100", "500 SMS / رسالة 500", "1000 SMS / رسالة 1000", "Unlimited SMS / رسائل غير محدودة"]},
-    {q: "Local SMS consumption price in Postpaid plan is: / سعر استخدام الرسائل المحلية في باقات الدفع الأجل هو:", a: "20 fils/SMS / 20 فلس/لرسالة", options: ["10 fils/SMS / 10 فلوس/لرسالة", "20 fils/SMS / 20 فلس/لرسالة", "30 fils/SMS / 30 فلس/لرسالة", "45 fils/SMS / 45 فلس/لرسالة"]},
-    {q: "In 25 KD postpaid plan customer will get .........local minutes: / في باقة الدفع الأجل 25 د.ك، يحصل العميل على ......... دقيقة محلية:", a: "2000 minutes / دقيقة 2000", options: ["500 minutes / دقيقة 500", "1000 minutes / دقيقة 1000", "2000 minutes / دقيقة 2000", "Unlimited / غير محدود"]},
-    {q: "35 KD postpaid plan provides.......GB of local internet: / توفر باقة الدفع الأجل 35 د.ك ......... جيجابايت من الإنترنت المحلي:", a: "500 GB / 500 GB", options: ["25 GB / 25 GB", "50 GB / 50 GB", "100 GB / 100 GB", "500 GB / 500 GB"]},
-    {q: "45 KD Postpaid customer with commitment will get: / يحصل عميل الدفع الأجل 45 د.ك مع التزام على:", a: "Smartphone & Router / هاتف ذكي وراوتر", options: ["Smartphone / هاتف ذكي", "Router / راوتر", "Smartphone & Router / هاتف ذكي وراوتر", "Router & Tablet / راوتر وجهاز لوحي"]},
-    {q: "When a customer wants to (transfer ownership) of a postpaid or prepaid voice line, where must this be done? / عند رغبة العميل في نقل ملكية خط دفع آجل أو دفع مسبق صوتي، أين تتم هذه العملية؟", a: "By visiting the branch / من خلال زيارة الفرع", options: ["Through the mobile app only / من خلال التطبيق فقط", "By the call center agent directly / عبر موظف خدمة العملاء بالهاتف", "Through email / عبر البريد الإلكتروني", "By visiting the branch / من خلال زيارة الفرع"]},
-    {q: "In the case of the death of a line owner, what is the required procedure? / في حال وفاة صاحب الخط، ما هو الإجراء المطلوب؟", a: "The family must visit the branch and submit the required documents / يجب على ذوي المتوفى مراجعة الفرع لتقديم المستندات اللازمة", options: ["No action is required / لا حاجة لأي إجراء", "Contact technical support / يتم التواصل مع الدعم الفني", "The family must visit the branch and submit the required documents / يجب على ذوي المتوفى مراجعة الفرع لتقديم المستندات اللازمة", "Ownership is automatically transferred to heirs / يتم تحويل الخط تلقائياً لورثة المتوفى"]},
-    {q: "If the customer wants to pay the due amounts, which answer is incorrect? / في حال رغبه العميل دفع المبالغ المستحقة، ما هى الإجابة الخاطئة؟", a: "The customer will be transferred to the technical support department / يتم تحويل العميل لقسم الدعم الفني.", options: ["Payment can be made through a branch / يمكن الدفع عبر الفرع.", "Payment can be made through the stc website / يمكن الدفع عبر موقع stc الإلكتروني.", "The customer will be transferred to the technical support department / يتم تحويل العميل لقسم الدعم الفني.", "Payment can be made via the stc app / يمكن الدفع عبر تطبيق stc."]},
-    {q: "Which of the following does NOT require directing the customer to the branch? / أي من الخيارات التالية لا يتطلب توجيه العميل للفرع؟", a: "Inquiring about bill details / الاستفسار عن تفاصيل الفاتورة", options: ["Canceling of a prepaid line / إلغاء خط دفع مسبق", "Inquiring about bill details / الاستفسار عن تفاصيل الفاتورة", "Ownership transfer of a postpaid line / نقل ملكية خط دفع آجل", "Blacklisted customer's payment / تسوية الدفعات المستحقة المديونية"]},
-    {q: "A customer uses hotspot for a tablet, what can you cross-sell? / عميل يستخدم خاصية نقطة الاتصال (Hotspot) مع جهازه اللوحي. ما هو المنتج الأنسب له؟", a: "Data SIM / شريحة الإنترنت", options: ["Extra SMS / رسائل إضافية", "Data SIM / شريحة الإنترنت", "OTT App / تطبيق ترفيهي", "Roaming add-on / إضافة تجوال"]},
-    {q: "A customer wants a second Internet device for the family, which post-paid voice plan includes router + smartphone? / عميل يريد جهاز إنترنت إضافي للعائلة، أي باقة دفع آجل صوتي تشمل راوتر + هاتف ذكي؟", a: "KD 45 / KD 45", options: ["KD 10 / KD 10", "KD 25 / KD 25", "KD 45 / KD 45", "KD 16 / KD 16"]},
-    {q: "A customer is into fitness and health tracking, what should you offer? / عميل مهتم بالصحة واللياقة البدنية، ما المنتج الأنسب له؟", a: "Apple Watch / ساعة أبل", options: ["Router / راوتر", "Extra minutes / دقائق إضافية", "Apple Watch / ساعة أبل", "Data SIM / شريحة بيانات"]},
-    {q: "A frequent traveler asks how to stay connected abroad, what can you add? / عميل يسافر كثيراً ويريد البقاء متصلاً، ما الخدمة الأنسب؟", a: "Roaming data Package / باقة بيانات تجوال", options: ["Extra SMS / رسائل إضافية", "Roaming data Package / باقة بيانات تجوال", "Entertainment app / تطبيق ترفيهي", "Share Data SIM / شريحة مشاركة"]},
-    {q: "A customer from the business category wants a premium number. What is the best option? / عميل من فئة الأعمال يريد رقماً مميزاً، ما هو الخيار الأنسب؟", a: "Super Gold / Platinum Number / بلاتيني / gold رقم سوبر", options: ["Regular SIM / رقم عادي", "Super Gold / Platinum Number / بلاتيني / gold رقم سوبر", "Extra SMS / رسائل إضافية", "eSIM / eSIM"]},
-    {q: "A customer makes too many calls and wants unlimited calls, which Always-ON plan should you upsell? / عميل يجري مكالمات كثيرة ويريد دقائق غير محدودة، أي باقة خليك-ON توفر ذلك؟", a: "KD 35 / KD 35", options: ["KD 16 / KD 16", "KD 25 / KD 25", "KD 35 / KD 35", "KD 10 / KD 10"]},
-    {q: "What is Prepaid Universal Un-subscription code? / ماهو رمز الغاء الاشتراك الموحد الجديد لباقات الدفع المسبق ؟", a: "send (D) to (510) / إرسال ( D ) إلى (510)", options: ["send (D) to (510) / إرسال ( D ) إلى (510)", "send (D) to (102) / إرسال ( D ) إلى (102)", "send (D) to (567) / إرسال ( D ) إلى (567)", "None of the mentioned / ليس مما سبق"]},
-    {q: "With 16 KD Postpaid Voice line customer can use 1000 minutes: / مع خط الهاتف للدفع الأجل الصوتية بقيمة 16 دينار كويتي، يمكن للعميل استخدام 1000 دقيقة:", a: "Local / المحلية", options: ["Local / المحلية", "International / الدولية", "stc to stc only / داخل شبكة من stc إلى stc", "Local & International / محلي و دولي"]},
-    {q: "Which time zone is used to calculate roaming package validity? / بأي توقيت تُحسب صلاحية باقات التجوال؟", a: "Kuwait local time / توقيت دولة الكويت المحلي", options: ["Destination country time / توقيت الدولة التي يتواجد فيها العميل", "UTC time / توقيت UTC (العالمي)", "Kuwait local time / توقيت دولة الكويت المحلي", "Foreign operator time / توقيت مشغل الشبكة الأجنبي"]},
-    {q: "How many free local SMS are available in the 25 KD always-ON postpaid voice plan? / كم عدد الرسائل المحلية المجانية المتوفرة على باقة 25 د.ك للدفع الأجل دائما-ON الصوتية؟", a: "1000 SMS / رسالة 1000", options: ["100 SMS / رسالة 100", "500 SMS / رسالة 500", "1000 SMS / رسالة 1000", "None of the mentioned / ليس مما سبق"]},
-    {q: "What is the Local minutes capacity in the 6 KD weekly go prepaid voice plan? / كم دقيقة محلية تشملها باقة \"go\" الدفع المسبق الصوتية الأسبوعية بقيمة 6 د.ك؟", a: "100 minutes / دقيقة 100", options: ["100 minutes / دقيقة 100", "200 minutes / دقيقة 200", "500 minutes / دقيقة 500", "1000 minutes / دقيقة 1000"]},
-    {q: "Does the 15 KD Always ON postpaid voice plan include a data sharing SIM? / هل يوجد شريحة مشاركة البيانات في باقة 15 د.ك الصوتية للدفع الأجل \"ON-خليك\"؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
-    {q: "In 35KD Always on plan, customer will get ......local calls: / في باقة 35 د.ك خليك ON، يحصل العميل على ...... دقيقة محلية:", a: "Unlimited mins / دقائق غير محدودة", options: ["200 mins / دقيقة 200", "500 mins / دقيقة 500", "1000 mins / دقيقة 1000", "Unlimited mins / دقائق غير محدودة", "- / -"]},
-    {q: "In 7.5KD postpaid data line, the data allowance is ...... / في باقة 7.5 د.ك للدفع الأجل للإنترنت، سعة الاستخدام الشهرية هي ......", a: "500 GB / 500 GB", options: ["500 GB / 500 GB", "1 TB / 1 TB", "2 TB / 2 TB", "10 TB / 10 TB"]},
-    {q: "Internet allowance for 15 KD Postpaid Data line is: / سياسة الاستخدام العادل الموجودة في باقة 15 KD للدفع الأجل للإنترنت هي:", a: "Unlimited (FUP: 10 TB) / انترنت: غير محدود (استخدام عادل: 10 TB)", options: ["Unlimited (FUP: 10 TB) / انترنت: غير محدود (استخدام عادل: 10 TB)", "Unlimited (FUP: 20 TB) / انترنت: غير محدود (استخدام عادل: 20 TB)", "Unlimited (FUP: 50 TB) / انترنت: غير محدود (استخدام عادل: 50 TB)", "Unlimited (FUP: 100 TB) / انترنت: غير محدود (استخدام عادل: 100 TB)"]},
-    {q: "Is 5G-advanced network available in all areas of Kuwait? / هل تتوفر شبكة 5G-advanced في جميع مناطق الكويت؟", a: "No / لا", options: ["Yes / نعم", "No / لا"]},
-    {q: "What are the available commitment options for Baity 5G Plans? / ما هي خيارات الالتزام المتاحة لخدمات Baity 5G؟", a: "18 months/2 years/3 years / 18 شهرًا/سنتان/3 سنوات", options: ["6 months / 6 أشهر", "1year/2 years/3 years / سنة/سنتان/3 سنوات", "18 months/2 years/3 years / 18 شهرًا/سنتان/3 سنوات", "without any commitment / بدون أي التزام"]},
-    {q: "What is the FUP for unlimited Baity 5G plans? / ما هي سعة الانترنت المسموح بها في باقات \"Baity 5G\" غير المحدودة؟", a: "Unlimited (10TB) / غير محدود (10TB)", options: ["2 TB / 2 TB", "4 TB / 4 TB", "5 TB / 5 TB", "Unlimited (10TB) / غير محدود (10TB)"]},
-    {q: "Which Baity 5G plans offer a free Sharing SIM card? / أي باقات Baity 5G تقدم شريحة SIM للمشاركة مجاناً؟", a: "19 KD plan / باقة 19 KD", options: ["12 KD plan / باقة 12 KD", "15 KD plan / باقة 15 KD", "19 KD plan / باقة 19 KD", "All the options mentioned / جميع المذكور"]},
-    {q: "Does Baity5G Outdoor router (ODU) contain a SIM card? / هل يحتوي جهاز الخارجي (ODU) على Baity5G بطاقة SIM؟", a: "Yes / نعم", options: ["Yes / نعم", "No / لا"]},
-    {q: "What is the name of the app for Plume's SuperPods (Baity 5G)? / ما اسم التطبيق الخاص بـ SuperPods من Plume (Baity 5G)؟", a: "HomePass app / تطبيق HomePass", options: ["HomePass app / تطبيق HomePass", "Ookla / Ookla", "SafeCam / SafeCam", "Mystc Kuwait / Mystc Kuwait"]},
-    {q: "Baity 5G Customers are eligible to get 2 Entertainment subscriptions for: / يحق لعملاء Baity 5G الحصول على اشتراكي ترفيهين لمدة:", a: "6 months / 6 أشهر", options: ["6 months / 6 أشهر", "12 months / 12 شهرًا", "18 months / 18 شهرًا", "24 months / 24 شهرًا"]},
-    {q: "What is the cost for the Foz Gaming IP Add-on with Baity 5G plan? / ما هي تكلفة خدمة FOZ للألعاب الإضافية مع باقات Baity 5G؟", a: "5KD / 5KD", options: ["2KD / 2KD", "3KD / 3KD", "5KD / 5KD", "6KD / 6KD"]},
-    {q: "Customers will get up to .... meters of free cable with Baity 5G plan: / سيحصل العملاء على كبل مجاني يصل طوله إلى .... متر مع باقة Baity 5G:", a: "50 meters / 50 متراً", options: ["10 meters / 10 متراً", "20 meters / 20 متراً", "50 meters / 50 متراً", "As per customers need / حسب احتياجات العميل"]},
-    {q: "What is the Auto Port-In option? (BSS system) / ما هو خيار Auto Port-In (BSS system)؟", a: "An option that allows the number to be transfer immediately for approval from the company it is being transferred. / خيار يتيح تنفيذ عملية نقل الرقم فوراً دون انتظار موافقة الشركة المحول منها", options: ["An option to cancel the line service permanently / خيار يُستخدم لإلغاء خدمة الخط بشكل نهائي", "An option that allows the number to be transfer immediately for approval from the company it is being transferred. / خيار يتيح تنفيذ عملية نقل الرقم فوراً دون انتظار موافقة الشركة المحول منها", "An option dedicated to change the internet plan only / خيار مخصص لتغيير باقة الإنترنت فقط"]},
-    {q: "What are the allowed months to transfer the line from prepaid to postpaid? / ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "Three months / ثلاث أشهر", options: ["One month / شهر", "Two months / إثنان شهر", "Three months / ثلاث أشهر", "None of the mentioned / ليس مما سبق"]}
-];
-
-        const telesalesKnowledge = [
-            {q: "قواعد الحصول ع جهاز اضافي زييد", a: "كل ماسبق"},
-            {q: "الاجهزه التي تكون متوافقه مع ال ESIM هي", a: "Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20"},
-            {q: "في نظام BSS اجمالي الوقت المنقضي هو ل", a: "رقم الخط"},
-            {q: "عدد مرات استخدام اسم العميل", a: "ثلاث مرات واكثر"},
-            {q: "كيف يستطيع الموظف مشاهدة تاريخ المعاملات", a: "Requests (سجل الطلبات)"},
-            {q: "في تكلفة عقد الانهاء خانة نظره عامه تعني", a: "جميع ماسبق (النظرة العامة)"},
-            {q: "كم مش راوتر يمكن للعميل الحصول عليه في عرض بيتنا 5 جي", a: "مش راوتر 3"},
-            {q: "مدة الانتظار المسموحه", a: "لايتعدى 30 ثانيه قابله للتجديد"},
-            {q: "يحصل العميل ع 100 دقيقه دوليه وخصم 50% ع 3 اضعاف عدد الدقائق الدوليه", a: "75"},
-            {q: "ترمز مقولة AGE ON NETWORK الى", a: "conection date"},
-            {q: "ماذا تعني GO BACK TO DASHBOARD", a: "العوده الى الصفحه الرئيسيه"},
-            {q: "من اجل عمل TRADE IN يجب ع العميل احضار", a: "الجهاز القديم"},
-            {q: "توفر باقة التميز 75 دينار للدفع الاجل", a: "رساله محليه 2000"},
-            {q: "يدعم جهاز ايفون 15 بلس شرائح الكترونيه بحد اقصى", a: "شرائح الكترونيه 20"},
-            {q: "كم سعة الانترنت في باقة 25 دك", a: "100 GB"},
-            {q: "اذا كانت المطالبه الاولى للعميل الاستبدال في DEVICE CARE فانه لايكون مؤهل للحصول على", a: "كل ماسبق (في المطالبة)"},
-            {q: "يمكن الاستفاده من عرض 10 دك راوتر المشاركه شريحتين من خلال مدة التزام ..... فقط", a: "شهر 24"},
-            {q: "ل100 قيقا مجاني لمواقع التواصل الاجتماعي مع باقات خلك اون غير متوفر مع الباقات التاليه", a: "35 KD"},
-            {q: "ماهي متطلبات تقديم مطالبه DEVICE CARE", a: "كل ماسبق (المتطلبات)"},
-            {q: "عند التسجيل في برنامج قطاف ع خط دفع اجل صوتي او انترنت يحصل العميل ع ..... نقطه ترحيبيه ؟", a: "100"},
-            {q: "خطوات تجديد عقد العميل", a: "شرح العرض بالتفصيل-التاكد ع العنوان-تلخيص العرض"},
-            {q: "اذا اردنا التاكد من اسم الموظف الذي اجرى معامله ع الخط علينا الانتقال الى", a: "Requests"},
-            {q: "وظيفة جهاز PLUME MESH هي", a: "توسيع نطاق التغطيه لاجهزة WIFI"},
-            {q: "يمكن استخدام المبلع المحصل من TRADE IN من اجل", a: "الفواتير المتاخره"},
-            {q: "يمكن للعملاء الحصول ع حزمه واحده فقط بعد شراء PACK3 من اجهزة PLUME MESH", a: "نعم"},
-            {q: "يساعدنا شريط البحث في العثور ع الملف الشخصي للعميل من خلال", a: "رقم البطاقه المدنيه"},
-            {q: "ماهي نوع الاجهزه المسموح بها عمل TRADE IN", a: "الهاتف المحمول / الجهاز اللوحي"},
-            {q: "في برنامج (BSS) يستطيع العميل الدفع عن طريق ؟", a: "Cash/Debit/Credit"},
-            {q: "وظيفة شعار STC في نظام BSS هي الانتقال الى", a: "DASHBOARD"},
-            {q: "اذا كان لدى العميل عرض اجهزه كومبو (اساسيه وثانويه ) هل يكون مؤهل لاعاده الجدوله", a: "لا"},
-            {q: "اثناء اضافة VAS يجب تحديد خيار اختيار الكل", a: "تعم"},
-            {q: "العميل يمكنه ان يحصل ع فتره تجريبيه لخدمة ( STC TV ) ؟", a: "7 Days"},
-            {q: "من هم فئة (Group A) في سياسة الائتمان وقواعد العمل ؟", a: "Kuwaiti/Non Kuwaiti/GCC/USA/UK/CAN"},
-            {q: "هل يستطيع عملاء STC للدفع الاجل استخدام خاصية الدفع من خلال نظام المساعده الالي", a: "نعم"},
-            {q: "عند التسجيل في برنامج قطاف ع خط دفع مسبق صوتي  يحصل العميل ع ..... نقطه ترحيبيه ؟", a: "10"},
-            {q: "اعادة الجدوله لجهاز ايفون 14 تعني", a: "التجديد المبكر"},
-            {q: "الصوره تدل ع انتهاء الصلاحيه", a: "انتهاء صلاحية البطاقه المدنيه"},
-            {q: "مدة الاستعداد للمكالمه", a: "اقل من 3 ثوان"},
-            {q: "اين يمكنك التحقق من رصيد العميل", a: "OVERVEIW"},
-            {q: "العروض الترويجيه والاعلاميه في نظره عامه على (BSS) تظهر حسب ؟", a: "تظهر حسب اهلية العميل"},
-            {q: "هل تخفيض باقة العميل مؤهل مع اعادة الجدوله", a: "لا"},
-            {q: "من اجل الحصول ع خط دفع اجل يجب الايكون عمر العميل اقل من", a: "21 سنه"},
-            {q: "كم مستخدم ع راوتر كات 7", a: "32"},
-            {q: "يمكن تفعيل خط جديد عن طريق اختيار", a: "ADD SERVICE"},
-            {q: "من اجل تغيير الباقه يجب ع العميل اختيار", a: "PREPAID PLAN/VAS/ADD NEW SERVICE"},
-            {q: "سيحصل عملاء باقة ال 40 الصوتيه ع GB….. انترنت اثناء التجوال ؟", a: "10 GB"},
-            {q: "الرسوم المتكرره في نظام (BSS) هي الرسوم الشهريه ؟", a: "صح"},
-            {q: "ماهي المدة من انتقال (Medium Risk Profile) الى (Low Risk Profile) في حال عدم انقطاع الخط؟", a: "شهر واحد"},
-            {q: "ماهي المدة من انتقال (High Risk Profile) الى (Medium Risk Profile) في حال عدم انقطاع الخط؟", a: "3شهور"},
-            {q: "اذا كان العميل لديه باقة انترنت مشتركه فأنه غير مؤهل للحصول ع شريحه انترنت مشتركه مع باقة 45 الصوتيه ؟", a: "نعم"},
-            {q: "الرسوم الاوليه في نظام BSS هي الرسوم الشهريه", a: "لا"},
-            {q: "يحصل العميل جودة الفيديو من باقة (Premium) لخدمة (STC TV) ؟", a: "4K"},
-            {q: "اي من الباقات الصوتيه تحمل صفة خلك دائما ع تواصل", a: "كل ماسبق (صفة خلك)"},
-            {q: "كم دقيقه دوليه في باقة ال 40 الصوتيه ؟", a: "ليس مماسبق"},
-            {q: "كيف تتم التعبئه في برنامج ( BSS ) ؟", a: "Service Request Button / Recharge"},
-            {q: "يحصل عميل تيربونت ع امتار كيبل ..... مجانيه لاول مره ؟", a: "25متر"},
-            {q: "يدعم جهاز سامسونق ZFLIP5 شرائح الكترونيه بعدد", a: "5 شرائح"},
-            {q: "يظهر هذا التنبيه عندما نحاول", a: "حذف اي خدمه"},
-            {q: "يمكن مشاهدة هذه الصفحه بالضغط ع", a: "CART"},
-            {q: "عروض بدون جهاز لعملاء التجديد ع باقات الدفع الاجل الصوتيه مع التزام 12 شهر وخصم 20% يتوفر ل", a: "الترقيه فقط"},
-            {q: "كم دقيقه محليه في باقة ال20 الصوتيه", a: "2000"},
-            {q: "العملاء الانترنت الذين لديهم خطوط ثانويه يستطيعون التجديد", a: "نعم"},
-            {q: "كم سعة استخدام عميل تيربونت اشتراك شهري 35 دك ؟", a: "غير محدود"},
-            {q: "ماذا تظهر حالة INPROGRESS", a: "المعامله جاريه"},
-            {q: "في اجراء TRADE IN يجب من الموظف ان يطلب من العميل مايلي", a: "عمل نسخه احتياطيه من الجهاز القديم"}
-        ];
-
-        const allKnowledge = [...originalKnowledge, ...telesalesKnowledge];
-
-        let botKnowledge = []; 
-        let currentLang = 'ar';
-        let isDarkMode = true;
-        let isQuizMode = false;
-        let currentQuizItem = null;
-        let quizScore = 0;
-        let quizAttempts = 0;
-        let analytics = { total: 0, hits: 0, misses: 0, logs: [], errors: [] };
-
-        const uiText = {
-            ar: {
-                greeting: "🔥 هلا وغلا في STC Quiz Assistance!<br><br>تقدر تسألني أي شيء يخص باقات وأنظمة STC فوراً من هنا، أو تختار قسمك عشان نبدأ الكويز:",
-                flowSelected: "🔥 هلا والله!<br><br>اسأل أي سؤال بخاطرك أو اكتب <strong>(اختبار)</strong> وخلّنا نبلش تدريب الكويزات الجاية.<br><br>جاهز تجيب Full Marks؟",
-                comingSoon: "🚧 قريباً... مسار الفايبر (Fiber) سيكون متاحاً قريباً! 🚀",
-                placeholder: "اكتب سؤالك، أو 'اختبار' للتدريب...",
-                send: "إرسال",
-                notFound: "عذراً يا بطل، ما لقيت إجابة دقيقة في قاعدة بياناتي. ياليت توضح سؤالك أكثر أو تصيغه بطريقة ثانية عشان أقدر أساعدك! 💜",
-                multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
-                anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--ios-purple);'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>",
-                quizStart: "🎓 <strong style='color: var(--ios-purple);'>بدأ الاختبار المتعدد الخيارات!</strong><br><br>إليك السؤال الأول:",
-                quizEnd: "تم إنهاء الاختبار. عدنا إلى وضع المساعد العادي! 🚀",
-                useOptions: "يرجى اختيار إحدى الإجابات من الخيارات أعلاه للتقدم في الاختبار.",
-                yesReply: "حيّاك الله يا بطل 😎✨<br><br>يلا نبدأ، قطّ سؤالك وأنا بالخدمة 💜<br><br>أي استفسار عندك لا يردك إلا الكيبورد 😆👌<br><br>اكتب سؤالك الحين، وياك نروح أبعد.",
-                noReply: "نورتنا يا الغالي 🌟💜<br><br>إذا عندك أي استفسار ثاني لا تتردد، إحنا بالخدمة دائمًا 👌<br><br>سعدنا بتواصلك، وياك نروح أبعد 🚀✨"
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = currentLang;
+            
+            document.getElementById('lang-btn').innerText = currentLang === 'ar' ? 'EN' : 'AR';
+            document.getElementById('user-input').placeholder = uiText[currentLang].placeholder;
+            document.getElementById('send-text').innerText = uiText[currentLang].send;
+            
+            if(!isQuizMode) {
+                printBotMessage(uiText[currentLang].greeting, false);
             }
-        };
-
-        const chitChatCategories = [
-            {
-                name: 'mixed_thanks_yes',
-                words: ['thank you yes', 'yes thank you', 'نعم شكرا', 'شكرا نعم', 'اي شكرا', 'ok thanks', 'اوكي شكرا'],
-                reply: 'العفو يا بطل! 💜 يلا دامك جاهز ومتحمس، خلنا نكمل.. قط سؤالك أو اكتب (اختبار) نكسر الدنيا! 🔥'
-            },
-            {
-                name: 'greetings',
-                words: ['السلام عليكم', 'هلا', 'مرحبا', 'hello', 'hi', 'hey', 'صباح الخير', 'مساء الخير', 'صباح النور', 'مساء النور', 'أهلا', 'شلونك', 'كيفك', 'شخبارك', 'كيف الحال', 'how are you', 'how r u', 'how are u', 'howru', 'hru', 'whats up', 'whatsup', 'عامل ايه', 'أخبارك'],
-                reply: 'يا هلا وغلا بطلنا! 🌟 بخير الله يسلمك دامك منورنا اليوم.. آمرني وش الكلمة أو السؤال اللي حاب تفهمه؟'
-            },
-            {
-                name: 'affection',
-                words: ['احبك', 'أحبك', 'love you', 'i love u', 'i love you', 'حبيبي', 'يا عمري', 'يا بعد قلبي', 'غالي'],
-                reply: 'تسلم لي حبتك العافية يا بعد قلبي! 💜 غالي ومقامك عالي، بس لا تخليني أستحي الحين وركز بالكويز عشان تجيب Full Marks! 😉✨'
-            },
-            {
-                name: 'praise',
-                words: ['حلو', 'بطل', 'كفو', 'عاش', 'nice', 'good', 'awesome', 'great', 'ممتاز', 'perfect', 'thats cool', 'that is cool', 'cool', 'wow', 'واو', 'عجيب', 'رهيب', 'خرافي', 'شاطر', 'ذكي', 'smart', 'good bot', 'اسطوره', 'أسطورة'],
-                reply: 'أنت الأسطورة وكفوك الطيب! 😎✨ نكبر بدعمكم، وهدفنا دايماً وياكم نروح أبعد 🚀 جاهز للسؤال الجاي؟'
-            },
-            {
-                name: 'agreement',
-                words: ['okay', 'ok', 'تمام', 'اوكي', 'أوكي', 'صح', 'بالضبط', 'exactly', 'agree', 'اتفق', '100%', 'ماشي', 'حسنا', 'زين'],
-                reply: 'حلوين وعال العال! 👍 دامنا متفقين وعلى خط واحد، الكيبورد كيبوردك.. اسألني أي شي بخصوص الأنظمة والباقات! 🔥'
-            },
-            {
-                name: 'clarification',
-                words: ['شنو يعني', 'وش تقصد', 'what do you mean', 'لحظه', 'دقيقه', 'wait', 'hold on', 'اشرح لي', 'كيف', 'how', 'ما فهمت', 'شلون', 'ليش', 'why'],
-                reply: 'خذ راحتك ولا تستعجل أبداً! 💜 أنا هنا عشان أبسط لك الأمور المعقدة. إذا واجهتك أي صعوبة في الأنظمة، بس اكتب لي الكلمة الأساسية وأنا بشرحها لك بالتفصيل! 🎯'
-            },
-            {
-                name: 'insults',
-                words: ['dumb', 'stupid', 'غبي', 'سيء', 'فاشل', 'bad', 'idiot', 'زفت', 'خايس'],
-                reply: 'حصل خير يا غالي! 😅 المساعد الذكي يتعلم كل يوم من أبطال STC. عطني فرصة ثانية وقط سؤالك بوضوح وتشوف كيف أضبطك! 💜'
-            }
-        ];
-
-        function initApp() {
-            const btn = document.getElementById('theme-btn');
-            btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
         }
 
         function showFlowSelection() {
@@ -561,10 +554,13 @@
             document.getElementById('user-input').disabled = false;
             document.getElementById('send-btn').disabled = false;
             document.getElementById('quiz-btn').disabled = false;
-            document.getElementById('mode-subtitle').innerText = "المساعد الذكي العام";
-            document.getElementById('mode-subtitle').style.color = "";
+            document.getElementById('mode-subtitle').innerText = currentLang === 'ar' ? "المساعد الذكي العام" : "General AI";
             
-            printBotMessage(uiText['ar'].greeting, false);
+            let greeting = currentLang === 'ar' 
+                ? `يا هلا وغلا بـ <strong>${currentUserName}</strong>! نورتنا يا بطل 💜<br><br>اختار القسم اللي تبيه وخلنا نبدع، أو تقدر تسألني مباشرة:`
+                : `Welcome, <strong>${currentUserName}</strong>! Great to have you here 💜<br><br>Choose your flow or ask me anything directly:`;
+                
+            printBotMessage(greeting, false);
 
             const optionsHtml = `
                 <div class="flex flex-wrap gap-3 mt-4 justify-center sm:justify-start">
@@ -585,22 +581,23 @@
             if (flowName === 'Fiber') {
                 setTimeout(() => {
                     typingDiv.remove();
-                    printBotMessage(uiText['ar'].comingSoon, false);
+                    printBotMessage(uiText[currentLang].comingSoon, false);
                 }, 800);
                 return; 
             }
 
-            if (flowName === 'Telesales') {
-                botKnowledge = telesalesKnowledge;
-            } else {
-                botKnowledge = originalKnowledge; 
-            }
+            if (flowName === 'Telesales') botKnowledge = telesalesKnowledge;
+            else botKnowledge = originalKnowledge; 
             
-            document.getElementById('mode-subtitle').innerText = "مسار: " + flowName;
+            document.getElementById('mode-subtitle').innerText = (currentLang === 'ar' ? "مسار: " : "Flow: ") + flowName;
+            
+            let followUp = currentLang === 'ar'
+                ? `🔥 كفو يا ${currentUserName}!<br><br>اسأل أي سؤال بخاطرك بخصوص هذا المسار أو اكتب <strong>(اختبار)</strong> وخلّنا نبلش تدريب.<br><br>جاهز تجيب Full Marks؟`
+                : `🔥 Awesome, ${currentUserName}!<br><br>Ask me anything regarding this flow or type <strong>(test)</strong> to start your quiz.<br><br>Ready for full marks?`;
             
             setTimeout(() => {
                 typingDiv.remove();
-                printBotMessage(uiText['ar'].flowSelected, false);
+                printBotMessage(followUp, false);
             }, 800);
         }
 
@@ -610,13 +607,30 @@
             const btn = document.getElementById('theme-btn');
             if(isDarkMode) {
                 btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-                btn.className = "action-icon w-9 h-9 rounded-full flex items-center justify-center text-yellow-400";
             } else {
                 btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-                btn.className = "action-icon w-9 h-9 rounded-full flex items-center justify-center text-orange-500";
             }
         }
 
+        // --- NAVIGATION & ANTI-CHEAT ---
+        function handleNavigation(target) {
+            if (isQuizMode) {
+                if (cheatWarnings === 0) {
+                    cheatWarnings++;
+                    printBotMessage(uiText[currentLang].cheatWarn, false);
+                    return;
+                } else {
+                    failQuizByCheat();
+                    return;
+                }
+            }
+            
+            if (target === 'home') showFlowSelection();
+            if (target === 'admin') toggleAdmin();
+            if (target === 'quiz') toggleQuizMode();
+        }
+
+        // --- UI UTILS ---
         function scrollToBottom() {
             const chatBox = document.getElementById('chat-box');
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -625,7 +639,7 @@
         function addUserMessage(text) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
-            msgDiv.className = "message user-msg p-4 rounded-3xl rounded-tr-sm self-end max-w-[90%] sm:max-w-[80%] shadow-md leading-relaxed text-[1rem]";
+            msgDiv.className = `message user-msg p-4 rounded-3xl self-end max-w-[90%] sm:max-w-[80%] shadow-md leading-relaxed text-[1rem] ${currentLang === 'ar' ? 'rounded-tr-sm' : 'rounded-tl-sm'}`;
             msgDiv.innerText = text;
             chatBox.appendChild(msgDiv);
             scrollToBottom();
@@ -635,7 +649,7 @@
             const chatBox = document.getElementById('chat-box');
             const typingDiv = document.createElement('div');
             typingDiv.id = "thinking-indicator";
-            typingDiv.className = "message bot-msg p-4 rounded-3xl shadow-md typing-indicator self-start rounded-tl-sm";
+            typingDiv.className = `message bot-msg p-4 rounded-3xl shadow-md typing-indicator self-start ${currentLang === 'ar' ? 'rounded-tl-sm' : 'rounded-tr-sm'}`;
             typingDiv.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
             chatBox.appendChild(typingDiv);
             scrollToBottom();
@@ -645,65 +659,13 @@
         function printBotMessage(htmlContent, appendHelp = true) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
-            msgDiv.className = "message bot-msg p-5 rounded-3xl self-start max-w-[95%] sm:max-w-[85%] text-[1rem] leading-relaxed w-full rounded-tl-sm shadow-md";
-            msgDiv.innerHTML = htmlContent + (appendHelp ? uiText['ar'].anythingElse : "");
+            msgDiv.className = `message bot-msg p-5 rounded-3xl self-start max-w-[95%] sm:max-w-[85%] text-[1rem] leading-relaxed w-full shadow-md ${currentLang === 'ar' ? 'rounded-tl-sm' : 'rounded-tr-sm'}`;
+            msgDiv.innerHTML = htmlContent + (appendHelp ? uiText[currentLang].anythingElse : "");
             chatBox.appendChild(msgDiv);
             scrollToBottom();
         }
 
-        function toggleAdmin() {
-            const modal = document.getElementById('admin-modal');
-            if (modal.classList.contains('hidden')) {
-                document.getElementById('stat-total').innerText = analytics.total;
-                let rate = analytics.total > 0 ? Math.round((analytics.hits / analytics.total) * 100) : 0;
-                document.getElementById('stat-success').innerText = rate + "%";
-                document.getElementById('stat-failed').innerText = analytics.misses;
-                
-                const logUl = document.getElementById('analytics-log');
-                if(analytics.logs.length > 0) {
-                    logUl.innerHTML = analytics.logs.map(log => 
-                        `<li class="border-b border-white/5 pb-2 mb-2 flex items-center">
-                            <span class="${log.found ? 'text-[#32D74B]' : 'text-[#FFD60A]'} mr-3 text-lg">
-                                <i class="fa-solid ${log.found ? 'fa-check' : 'fa-magnifying-glass'}"></i>
-                            </span>
-                            <span class="text-white/80 font-light">Searched: "${log.query}"</span>
-                        </li>`
-                    ).join('');
-                } else {
-                    logUl.innerHTML = '<li class="opacity-40 italic font-light text-center mt-10">Awaiting input...</li>';
-                }
-
-                const errUl = document.getElementById('error-log');
-                if(analytics.errors.length > 0) {
-                    errUl.innerHTML = analytics.errors.map(err => 
-                        `<li class="border-b border-[#FF453A]/20 pb-2 mb-2 flex items-center text-[#FF453A]/80 font-light">
-                            <i class="fa-solid fa-triangle-exclamation mr-2"></i> ${err}
-                        </li>`
-                    ).join('');
-                }
-
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            } else {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-        }
-
-        function logAnalytics(query, found) {
-            analytics.total++;
-            if(found) analytics.hits++; 
-            analytics.logs.unshift({query: query, found: found}); 
-            if(analytics.logs.length > 50) analytics.logs.pop(); 
-        }
-
-        function logError(msg) {
-            analytics.misses++;
-            analytics.errors.unshift(msg);
-            if(analytics.errors.length > 50) analytics.errors.pop();
-        }
-
-        // --- NEW EXACT-MATCH QUIZ ENGINE ---
+        // --- QUIZ ENGINE ---
         function toggleQuizMode() {
             let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
             if(activePool.length === 0) return; 
@@ -712,65 +674,95 @@
             document.getElementById('chat-box').innerHTML = ''; 
             
             if(isQuizMode) {
-                document.getElementById('mode-subtitle').innerText = "وضع الاختبار 🎓";
-                document.getElementById('mode-subtitle').style.color = "var(--ios-purple)";
-                quizScore = 0; quizAttempts = 0;
-                printBotMessage(uiText['ar'].quizStart, false);
+                document.getElementById('mode-subtitle').innerText = currentLang === 'ar' ? "وضع الاختبار 🎓" : "Quiz Mode 🎓";
+                document.getElementById('mode-subtitle').style.color = "var(--neon-purple)";
+                
+                let shuffled = [...activePool].sort(() => 0.5 - Math.random());
+                quizQuestionsPool = shuffled.slice(0, 25);
+                
+                quizScore = 0; 
+                quizAttempts = 0;
+                cheatWarnings = 0;
+                
+                sessionStorage.setItem('quizActive', 'true');
+                startTimer();
+                
+                printBotMessage(uiText[currentLang].quizStart, false);
                 askNextMCQ();
             } else {
-                document.getElementById('mode-subtitle').innerText = botKnowledge.length > 0 ? "مسار فرعي" : "المساعد الذكي العام";
-                document.getElementById('mode-subtitle').style.color = "";
-                currentQuizItem = null;
-                printBotMessage(uiText['ar'].quizEnd, false);
+                endQuizCleanup();
             }
         }
 
-        function askNextMCQ() {
-            let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
-            const randomIndex = Math.floor(Math.random() * activePool.length);
-            currentQuizItem = activePool[randomIndex];
+        function startTimer() {
+            timeLeft = 900; 
+            document.getElementById('quiz-timer').style.display = 'flex';
+            updateTimerDisplay();
             
+            quizTimerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if(timeLeft <= 0) {
+                    clearInterval(quizTimerInterval);
+                    failQuizByCheat("Time is up!");
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            let m = Math.floor(timeLeft / 60);
+            let s = timeLeft % 60;
+            document.getElementById('time-display').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function failQuizByCheat(reason = "") {
+            endQuizCleanup();
+            logError(`User failed quiz automatically: ${reason || "Cheat warning triggered."}`);
+            analytics.attemptsHistory.unshift({ name: currentUserName, score: quizScore, status: 'Failed (Cheated/Timeout)', date: new Date().toLocaleTimeString() });
+            printBotMessage(uiText[currentLang].cheatFail, false);
+        }
+
+        function endQuizCleanup() {
+            isQuizMode = false;
+            sessionStorage.removeItem('quizActive');
+            clearInterval(quizTimerInterval);
+            document.getElementById('quiz-timer').style.display = 'none';
+            document.getElementById('mode-subtitle').innerText = botKnowledge.length > 0 ? (currentLang === 'ar' ? "مسار فرعي" : "Sub-Flow") : (currentLang === 'ar' ? "المساعد الذكي العام" : "General AI");
+            document.getElementById('mode-subtitle').style.color = "";
+        }
+
+        function askNextMCQ() {
+            if(quizAttempts >= quizQuestionsPool.length) {
+                finishQuiz();
+                return;
+            }
+
+            currentQuizItem = quizQuestionsPool[quizAttempts];
             let choices = [];
             
-            // Check if this specific question has exact preset options (from the new 102 list)
             if (currentQuizItem.options && currentQuizItem.options.length > 0) {
                 choices = [...currentQuizItem.options];
             } else {
-                // Fallback smart generation for Telesales
                 choices = [currentQuizItem.a];
-                let questionWords = currentQuizItem.q.split(' ').filter(w => w.length > 4);
-                let similarItems = activePool.filter(item => {
-                    return questionWords.some(qw => item.q.includes(qw)) && item.a !== currentQuizItem.a;
-                });
-
+                let questionWords = l(currentQuizItem.q).split(' ').filter(w => w.length > 4);
+                let similarItems = allKnowledge.filter(item => l(item.a) !== l(currentQuizItem.a));
                 let attempts = 0;
-                while(choices.length < 4 && similarItems.length > 0 && attempts < 50) {
+                while(choices.length < 4 && attempts < 100) {
                     let rIdx = Math.floor(Math.random() * similarItems.length);
                     let wAns = similarItems[rIdx].a;
-                    let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
-                    if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) { choices.push(wAns); }
-                    attempts++;
-                }
-
-                attempts = 0;
-                while(choices.length < 4 && attempts < 100) {
-                    let randomWrongIndex = Math.floor(Math.random() * activePool.length);
-                    let wAns = activePool[randomWrongIndex].a;
-                    let isTooSimilar = choices.some(c => c.includes(wAns) || wAns.includes(c));
-                    if(!choices.includes(wAns) && wAns.length > 1 && !isTooSimilar) { choices.push(wAns); }
+                    if(!choices.includes(wAns) && l(wAns).length > 1) { choices.push(wAns); }
                     attempts++;
                 }
                 choices.sort(() => Math.random() - 0.5); 
             }
             
-            let quizHtml = `<div class="text-[1.1rem] font-bold opacity-90 mb-5 text-white tracking-wide leading-relaxed">${currentQuizItem.q}</div>`;
+            let quizHtml = `<div class="text-[1.1rem] font-bold opacity-90 mb-5 text-white tracking-wide leading-relaxed">${quizAttempts + 1}. ${l(currentQuizItem.q)}</div>`;
             quizHtml += `<div class="flex flex-col gap-3 w-full">`;
             
             for(let i=0; i<choices.length; i++) {
                 let safeChoice = choices[i].replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                // Special check for exact matches
                 let isCorrect = (choices[i] === currentQuizItem.a);
-                quizHtml += `<button onclick="handleMCQSelection('${safeChoice}', ${isCorrect})" class="pill-btn w-full text-right p-4 rounded-2xl text-[0.95rem] cursor-pointer">${choices[i]}</button>`;
+                quizHtml += `<button onclick="handleMCQSelection('${safeChoice}', ${isCorrect})" class="pill-btn w-full text-right p-4 rounded-2xl text-[0.95rem] cursor-pointer" ${currentLang === 'en' ? 'dir="ltr" style="text-align:left;"' : ''}>${l(choices[i])}</button>`;
             }
             quizHtml += `</div>`;
 
@@ -778,34 +770,53 @@
         }
 
         window.handleMCQSelection = function(selectedText, isCorrect) {
-            addUserMessage(selectedText);
+            addUserMessage(l(selectedText));
             const typingDiv = showThinking();
             
             setTimeout(() => {
                 typingDiv.remove();
-                quizAttempts++;
                 
                 if(isCorrect) {
                     quizScore++;
-                    printBotMessage(`✅ <strong>إجابة صحيحة!</strong> 👏<br><br><span class="text-sm font-bold text-[#32D74B]">النتيجة: ${quizScore}/${quizAttempts}</span>`, false);
                 } else {
-                    printBotMessage(`❌ <strong>إجابة خاطئة.</strong><br><br>الجواب الصحيح هو:<br><span class="font-bold text-[1rem] p-2 bg-[#BF5AF2]/20 rounded block mt-2">${currentQuizItem.a}</span><br><span class="text-sm font-bold opacity-80 mt-2 block">النتيجة: ${quizScore}/${quizAttempts}</span>`, false);
+                    let msg = currentLang === 'ar' ? "الجواب الصحيح هو:" : "Correct answer was:";
+                    printBotMessage(`❌ <span class="font-bold text-[1rem] p-2 bg-[#BF5AF2]/20 rounded block mt-2">${msg} <br> ${l(currentQuizItem.a)}</span>`, false);
                 }
                 
-                setTimeout(() => { askNextMCQ(); }, 2500);
+                quizAttempts++;
+                setTimeout(() => { askNextMCQ(); }, 1500);
             }, 800);
         }
 
+        function finishQuiz() {
+            let percentage = (quizScore / quizAttempts) * 100;
+            let resultMsg = "";
+            let statusLog = "";
+            
+            if (percentage >= 96) { resultMsg = uiText[currentLang].excellent; statusLog = "Excellent (Passed)"; }
+            else if (percentage >= 80) { resultMsg = uiText[currentLang].good; statusLog = "Good (Passed)"; }
+            else { resultMsg = uiText[currentLang].fail; statusLog = "Failed"; }
+            
+            let scoreStr = `${quizScore} / ${quizAttempts} (${Math.round(percentage)}%)`;
+            resultMsg += `<br><br><div class="text-xl font-bold mt-2 bg-black/40 p-3 rounded-xl border border-white/10 text-center">${scoreStr}</div>`;
+            
+            analytics.attemptsHistory.unshift({ name: currentUserName, score: percentage, status: statusLog, date: new Date().toLocaleTimeString() });
+            
+            endQuizCleanup();
+            printBotMessage(resultMsg, false);
+        }
+
+        // --- SEARCH ENGINE & BOT ---
         window.forceAnswer = function(index, useAllPool = false) {
             let activePool = useAllPool ? allKnowledge : botKnowledge;
             const item = activePool[index];
-            addUserMessage(item.q);
-            logAnalytics(item.q, true);
+            addUserMessage(l(item.q));
+            logAnalytics(l(item.q), true);
             
             const typingDiv = showThinking();
             setTimeout(() => {
                 typingDiv.remove();
-                printBotMessage(`<div class="opacity-60 text-sm mb-3 pb-3 border-b border-white/10 font-light">${item.q}</div><strong class="text-white text-[1rem] leading-relaxed block">${item.a}</strong>`, true);
+                printBotMessage(`<div class="opacity-60 text-sm mb-3 pb-3 border-b border-white/10 font-light" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.q)}</div><strong class="text-white text-[1rem] leading-relaxed block" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.a)}</strong>`, true);
             }, 600);
         };
 
@@ -822,23 +833,19 @@
 
             const yesWords = ['yes', 'yeah', 'yep', 'y', 'sure', 'of course', 'نعم', 'اي', 'إي', 'أكيد', 'اكيد', 'يلا', 'جاهز', 'يب', 'اي نعم', 'اكيد جاهز'];
             const noWords = ['no', 'nope', 'n', 'لا', 'كلا', 'سلامتك', 'مو الحين'];
-            
-            if (yesWords.includes(query)) {
-                setTimeout(() => { typingDiv.remove(); printBotMessage(uiText['ar'].yesReply, false); }, 800);
-                return;
-            }
-            if (noWords.includes(query)) {
-                setTimeout(() => { typingDiv.remove(); printBotMessage(uiText['ar'].noReply, false); }, 800);
+            const quizWords = ['test', 'quiz', 'اختبار', 'كويز', 'امتحان', 'تست', 'جربني', 'اختبرني'];
+
+            if (quizWords.some(w => query.includes(w))) {
+                setTimeout(() => { typingDiv.remove(); handleNavigation('quiz'); }, 800);
                 return;
             }
 
-            const quizWords = ['test', 'quiz', 'اختبار', 'كويز', 'امتحان', 'تست', 'جربني', 'اختبرني'];
-            if (quizWords.some(w => query.includes(w))) {
-                setTimeout(() => {
-                    typingDiv.remove();
-                    if (!isQuizMode) toggleQuizMode();
-                    else printBotMessage(uiText['ar'].useOptions, false);
-                }, 800);
+            if (yesWords.includes(query)) {
+                setTimeout(() => { typingDiv.remove(); printBotMessage(uiText[currentLang].yesReply, false); }, 800);
+                return;
+            }
+            if (noWords.includes(query)) {
+                setTimeout(() => { typingDiv.remove(); printBotMessage(uiText[currentLang].noReply, false); }, 800);
                 return;
             }
 
@@ -860,9 +867,10 @@
                 let matches = [];
                 for (let i = 0; i < activePool.length; i++) {
                     let score = 0;
-                    let qText = activePool[i].q.toLowerCase();
+                    let qTextLocalized = l(activePool[i].q).toLowerCase();
+                    let qTextFull = activePool[i].q.toLowerCase(); 
                     for (let word of queryWords) {
-                        if (qText.includes(word)) score += 1;
+                        if (qTextLocalized.includes(word) || qTextFull.includes(word)) score += 1;
                     }
                     if (score > 0) matches.push({ index: i, score: score, item: activePool[i] });
                 }
@@ -871,20 +879,19 @@
 
                 if (matches.length === 0) {
                     logAnalytics(query, false);
-                    logError(`Zero matches for: '${query}'`);
-                    printBotMessage(uiText['ar'].notFound, false);
+                    printBotMessage(uiText[currentLang].notFound, false);
                 } 
                 else if (matches.length === 1 || matches[0].score > matches[1]?.score + 1) {
                     logAnalytics(query, true);
                     let item = matches[0].item;
-                    printBotMessage(`<div class="opacity-60 text-sm mb-3 pb-3 border-b border-white/10 font-light">${item.q}</div><strong class="text-white text-[1rem] leading-relaxed block">${item.a}</strong>`, true);
+                    printBotMessage(`<div class="opacity-60 text-sm mb-3 pb-3 border-b border-white/10 font-light" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.q)}</div><strong class="text-white text-[1rem] leading-relaxed block" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.a)}</strong>`, true);
                 } 
                 else {
                     logAnalytics(query, true);
                     let topMatches = matches.slice(0, 4); 
-                    let optionsHtml = `<p class="mb-4 font-bold text-[#BF5AF2]">${uiText['ar'].multipleFound}</p><div class="flex flex-col gap-3">`;
+                    let optionsHtml = `<p class="mb-4 font-bold text-[#BF5AF2]">${uiText[currentLang].multipleFound}</p><div class="flex flex-col gap-3">`;
                     for (let match of topMatches) {
-                        optionsHtml += `<button onclick="forceAnswer(${match.index}, ${botKnowledge.length === 0})" class="pill-btn w-full text-right p-4 rounded-2xl text-[0.95rem] cursor-pointer">${match.item.q}</button>`;
+                        optionsHtml += `<button onclick="forceAnswer(${match.index}, ${botKnowledge.length === 0})" class="pill-btn w-full text-right p-4 rounded-2xl text-[0.95rem] cursor-pointer" ${currentLang==='en'?'dir="ltr" style="text-align:left;"':''}>${l(match.item.q)}</button>`;
                     }
                     optionsHtml += `</div>`;
                     printBotMessage(optionsHtml, false);
@@ -901,7 +908,7 @@
             addUserMessage(text);
             inputField.value = '';
 
-            if(isQuizMode) printBotMessage(uiText['ar'].useOptions, false);
+            if(isQuizMode) printBotMessage(uiText[currentLang].useOptions, false);
             else processAndRespond(text);
         }
 
@@ -912,6 +919,61 @@
         document.getElementById('user-input').addEventListener('keypress', function(e) {
             if (e.key === 'Enter' && !document.getElementById('send-btn').disabled) handleSend();
         });
+
+        // --- DASHBOARD UPDATER ---
+        function toggleAdmin() {
+            if(isQuizMode) {
+                handleNavigation('admin'); // Triggers cheat catch
+                return;
+            }
+
+            const modal = document.getElementById('admin-modal');
+            if (modal.classList.contains('hidden')) {
+                document.getElementById('stat-total').innerText = analytics.total;
+                document.getElementById('stat-failed').innerText = analytics.misses;
+                document.getElementById('stat-attempts').innerText = analytics.attemptsHistory.length;
+                
+                let sumScores = 0;
+                analytics.attemptsHistory.forEach(a => sumScores += a.score);
+                let avg = analytics.attemptsHistory.length > 0 ? Math.round(sumScores / analytics.attemptsHistory.length) : 0;
+                document.getElementById('stat-avg').innerText = avg + "%";
+                
+                const logUl = document.getElementById('analytics-log');
+                const errUl = document.getElementById('error-log');
+                const attemptLog = document.getElementById('attempt-log');
+                
+                if(analytics.logs.length > 0) {
+                    logUl.innerHTML = analytics.logs.map(log => 
+                        `<li class="border-b border-white/5 pb-2 mb-2 flex items-center">
+                            <span class="${log.found ? 'text-[#32D74B]' : 'text-[#FFD60A]'} mr-3 text-lg"><i class="fa-solid ${log.found ? 'fa-check' : 'fa-magnifying-glass'}"></i></span>
+                            <span class="text-white/80 font-light">Searched: "${log.query}"</span>
+                        </li>`
+                    ).join('');
+                }
+                
+                if(analytics.errors.length > 0) {
+                    errUl.innerHTML = analytics.errors.map(err => 
+                        `<li class="border-b border-[#FF453A]/20 pb-2 mb-2 flex items-center text-[#FF453A]/80 font-light"><i class="fa-solid fa-triangle-exclamation mr-2"></i> ${err}</li>`
+                    ).join('');
+                }
+
+                if(analytics.attemptsHistory.length > 0) {
+                    attemptLog.innerHTML = analytics.attemptsHistory.map(a => {
+                        let color = a.score >= 80 ? 'text-[#32D74B]' : 'text-[#FF453A]';
+                        return `<div class="p-3 bg-black/40 rounded-xl border border-white/10 flex justify-between items-center mb-2">
+                            <div><p class="font-bold text-white">${a.name}</p><p class="text-xs text-gray-400">${a.date} | ${a.status}</p></div>
+                            <div class="text-xl font-bold ${color}">${Math.round(a.score)}%</div>
+                        </div>`;
+                    }).join('');
+                }
+
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
     </script>
 </body>
 </html>
