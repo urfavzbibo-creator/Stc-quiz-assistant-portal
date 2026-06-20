@@ -7,173 +7,204 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
         
         :root {
-            /* DEEP NEON PURPLE + APPLE GLASSMORPHISM */
-            --bg-main: #070012; 
-            --bg-glass: rgba(25, 5, 45, 0.65);
-            --bg-glass-lighter: rgba(45, 10, 75, 0.75);
-            --text-main: #F5F5F7;
-            --text-muted: #D8B4FE;
-            --border-glass: rgba(191, 90, 242, 0.25);
-            --stc-purple: #4F008C;
+            --bg-main: #040008; 
             --neon-purple: #BF5AF2;
-            --bot-bubble: rgba(191, 90, 242, 0.12);
-            --user-bubble: rgba(79, 0, 140, 0.7);
-        }
-
-        .light-mode {
-            --bg-main: #F2F2F7;
-            --bg-glass: rgba(255, 255, 255, 0.85);
-            --bg-glass-lighter: rgba(255, 255, 255, 0.95);
-            --text-main: #1C1C1E;
-            --text-muted: #8E8E93;
-            --border-glass: rgba(0, 0, 0, 0.08);
-            --bot-bubble: rgba(88, 86, 214, 0.08);
-            --user-bubble: #ffffff;
+            --neon-magenta: #FF29FF;
+            --text-main: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --apple-glass: rgba(20, 10, 30, 0.4);
+            --apple-border: rgba(255, 255, 255, 0.08);
         }
 
         body { 
             font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif; 
             background-color: var(--bg-main); 
             color: var(--text-main); 
-            transition: background-color 0.4s ease; 
             margin: 0; padding: 0; overflow: hidden; 
             -webkit-font-smoothing: antialiased;
         }
-        
-        .glass-panel {
-            background: var(--bg-glass);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid var(--border-glass);
-            box-shadow: 0 12px 40px rgba(79, 0, 140, 0.25);
+
+        /* AMBIENT BACKGROUND ORBS */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            overflow: hidden;
+            background: var(--bg-main);
+        }
+        .orb-1 {
+            position: absolute;
+            top: -10%; left: -10%;
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(191,90,242,0.3) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: float 15s ease-in-out infinite alternate;
+        }
+        .orb-2 {
+            position: absolute;
+            bottom: -10%; right: -10%;
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(255,41,255,0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 10%) scale(1.1); }
+            100% { transform: translate(-5%, -5%) scale(0.95); }
         }
         
-        .header-bg { 
-            background: var(--bg-glass);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border-bottom: 1px solid var(--border-glass); 
+        /* APPLE GLASSMORPHISM */
+        .apple-glass {
+            background: var(--apple-glass);
+            backdrop-filter: blur(35px) saturate(200%);
+            -webkit-backdrop-filter: blur(35px) saturate(200%);
+            border: 1px solid var(--apple-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
+        .chat-header {
+            background: rgba(10, 5, 20, 0.5);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-bottom: 1px solid var(--apple-border);
+        }
+
+        /* BUBBLES */
         .bot-msg { 
-            background: var(--bot-bubble);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             color: var(--text-main); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 24px;
         }
         
         .user-msg { 
-            background: var(--user-bubble); 
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glass);
-            color: var(--text-main); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #BF5AF2 0%, #6E00B3 100%);
+            color: #ffffff; 
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(191, 90, 242, 0.3);
         }
 
         ::-webkit-scrollbar { width: 0px; background: transparent; }
-        .chat-container { height: calc(100vh - 80px); scroll-behavior: smooth; padding-bottom: 120px !important; }
-        .message { animation: springUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        @keyframes springUp { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
-        .typing-indicator { display: flex; gap: 4px; padding: 14px 18px; align-items: center; width: fit-content; }
-        .dot { width: 6px; height: 6px; background-color: var(--neon-purple); border-radius: 50%; animation: iosBounce 1.4s infinite ease-in-out both; }
-        .dot:nth-child(1) { animation-delay: -0.32s; } .dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes iosBounce { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-4px); opacity: 1; } }
+        .chat-container { height: calc(100vh - 85px); scroll-behavior: smooth; padding-bottom: 130px !important; }
         
-        .input-dock { background: linear-gradient(to top, var(--bg-main) 60%, transparent); }
+        /* ANIMATIONS */
+        .message { animation: springUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards; transform-origin: bottom; }
+        @keyframes springUp { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        .typing-indicator { display: flex; gap: 5px; padding: 16px 20px; align-items: center; width: fit-content; }
+        .dot { width: 6px; height: 6px; background-color: var(--text-muted); border-radius: 50%; animation: iosBounce 1.4s infinite ease-in-out both; }
+        .dot:nth-child(1) { animation-delay: -0.32s; } .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes iosBounce { 0%, 80%, 100% { transform: translateY(0); opacity: 0.3; } 40% { transform: translateY(-5px); opacity: 1; } }
+        
+        /* INPUT DOCK */
+        .input-dock { background: linear-gradient(to top, var(--bg-main) 40%, transparent); }
         .pill-input-wrapper {
-            background: var(--bg-glass-lighter);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--border-glass);
-            box-shadow: 0 8px 32px rgba(79,0,140,0.35);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--apple-border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
+        /* PILL BUTTONS */
         .pill-btn { 
-            background: var(--bg-glass-lighter); 
-            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(20px);
             color: var(--text-main); 
-            border: 1px solid var(--border-glass); 
+            border: 1px solid var(--apple-border); 
             border-radius: 9999px; 
-            padding: 12px 24px; 
-            font-weight: 600; 
-            font-size: 0.95rem; 
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            padding: 14px 28px; 
+            font-weight: 500; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2); 
             cursor: pointer;
         }
         .pill-btn:hover { 
             background: var(--neon-purple); 
             color: #ffffff; 
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 25px rgba(191, 90, 242, 0.5);
-            transform: scale(1.02); 
+            border-color: transparent;
+            box-shadow: 0 10px 30px rgba(191, 90, 242, 0.5);
+            transform: scale(1.03) translateY(-2px); 
         }
         
+        /* ICONS */
         .action-icon {
-            background: var(--bg-glass-lighter);
-            border: 1px solid var(--border-glass);
-            color: var(--text-main);
+            color: var(--text-muted);
             transition: all 0.3s ease;
         }
         .action-icon:hover {
-            background: var(--neon-purple);
-            border-color: var(--neon-purple);
-            color: #ffffff;
-            box-shadow: 0 0 20px rgba(191, 90, 242, 0.6);
+            color: var(--text-main);
             transform: scale(1.1);
         }
 
-        .send-btn-ios { background-color: var(--neon-purple); box-shadow: 0 0 15px rgba(191, 90, 242, 0.5); transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .send-btn-ios:hover:not(:disabled) { transform: scale(1.08); background-color: #D57FF5; box-shadow: 0 0 25px rgba(191, 90, 242, 0.9); }
-        .send-btn-ios:disabled { background-color: var(--bg-glass); box-shadow: none; border: 1px solid var(--border-glass); color: var(--text-muted); }
+        .send-btn-ios { 
+            background-color: var(--neon-purple); 
+            box-shadow: 0 4px 15px rgba(191, 90, 242, 0.4); 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2); 
+        }
+        .send-btn-ios:hover:not(:disabled) { 
+            transform: scale(1.1); 
+            background-color: #D57FF5; 
+            box-shadow: 0 8px 25px rgba(191, 90, 242, 0.6); 
+        }
+        .send-btn-ios:disabled { 
+            background-color: rgba(255,255,255,0.1); 
+            box-shadow: none; 
+            color: rgba(255,255,255,0.3); 
+        }
         
-        .live-indicator { width: 8px; height: 8px; background-color: #32D74B; border-radius: 50%; display: inline-block; animation: pulseGreen 2s infinite; }
-        .live-indicator.red { background-color: #FF453A; animation: pulseRed 2s infinite; }
-        .live-indicator.orange { background-color: #FF9F0A; animation: pulseOrange 2s infinite; }
-        @keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(50, 215, 75, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(50, 215, 75, 0); } 100% { box-shadow: 0 0 0 0 rgba(50, 215, 75, 0); } }
-        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(255, 69, 58, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 69, 58, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 69, 58, 0); } }
-        @keyframes pulseOrange { 0% { box-shadow: 0 0 0 0 rgba(255, 159, 10, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 159, 10, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 159, 10, 0); } }
-
+        /* TIMER */
         .timer-badge {
-            background: rgba(255, 69, 58, 0.15);
-            border: 1px solid rgba(255, 69, 58, 0.4);
+            background: rgba(255, 69, 58, 0.1);
+            border: 1px solid rgba(255, 69, 58, 0.3);
             color: #FF453A;
             padding: 4px 12px;
             border-radius: 99px;
-            font-weight: bold;
+            font-weight: 500;
             font-size: 0.85rem;
             display: none;
             align-items: center;
             gap: 6px;
+            backdrop-filter: blur(10px);
         }
     </style>
 </head>
 <body class="flex flex-col h-screen" onload="initApp()">
 
-    <!-- SECURE LOGIN OVERLAY (Name Only) -->
-    <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#070012]/85 backdrop-blur-3xl transition-opacity duration-700">
-        <div class="glass-panel rounded-3xl p-10 max-w-sm w-full mx-4 flex flex-col gap-6 items-center text-center">
-            <div class="h-20 w-24 bg-white/10 rounded-2xl flex items-center justify-center overflow-hidden border border-white/20 mb-2 p-3 shadow-inner">
-                <img src="image_9004c3.jpg" alt="STC Quiz Logo" class="h-full object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert');">
-            </div>
+    <!-- Ambient Glowing Background -->
+    <div class="ambient-bg">
+        <div class="orb-1"></div>
+        <div class="orb-2"></div>
+    </div>
+
+    <!-- SECURE LOGIN OVERLAY (Ultra Minimal) -->
+    <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-1000 p-4">
+        <div class="apple-glass rounded-[32px] p-10 max-w-sm w-full flex flex-col gap-8 items-center text-center">
             
-            <div>
-                <h2 class="text-2xl font-bold mb-1 tracking-wide" style="color: var(--neon-purple); text-shadow: 0 0 15px rgba(191,90,242,0.5);">STC Portal</h2>
-                <p class="text-sm opacity-80" style="color: var(--text-muted);">أدخل اسمك للبدء / Enter your name</p>
+            <div class="flex flex-col items-center gap-2">
+                <div class="h-16 w-16 bg-white rounded-[20px] flex items-center justify-center overflow-hidden shadow-xl mb-2">
+                    <img src="image_9004c3.jpg" alt="Logo" class="h-10 object-contain">
+                </div>
+                <h2 class="text-2xl font-light tracking-wide text-white">STC Portal</h2>
+                <p class="text-xs font-light tracking-widest text-[#BF5AF2] uppercase">Restricted Access</p>
             </div>
             
             <div class="w-full flex flex-col gap-3">
-                <input type="text" id="login-user" class="w-full rounded-xl px-5 py-4 focus:outline-none transition text-center bg-black/40 border border-[#BF5AF2]/30 text-white placeholder-[#E9D5FF]/50 focus:border-[#BF5AF2] focus:shadow-[0_0_15px_rgba(191,90,242,0.3)] font-bold text-lg" placeholder="Your Name" onkeypress="if(event.key === 'Enter') attemptLogin()">
+                <input type="text" id="login-user" class="w-full rounded-[20px] px-6 py-4 focus:outline-none transition text-center bg-black/20 border border-white/10 text-white placeholder-white/30 focus:border-[#BF5AF2] focus:bg-black/40 font-medium text-lg" placeholder="أدخل اسمك / Your Name" onkeypress="if(event.key === 'Enter') attemptLogin()">
             </div>
             
             <p id="login-error" class="text-[#FF453A] text-xs hidden font-medium tracking-wide">
                 الرجاء إدخال اسمك / Please enter your name.
             </p>
             
-            <button onclick="attemptLogin()" class="w-full bg-[#BF5AF2] hover:bg-[#D57FF5] text-white py-4 rounded-xl font-bold text-md transition-all active:scale-95 mt-2 shadow-[0_0_20px_rgba(191,90,242,0.4)]">
+            <button onclick="attemptLogin()" class="w-full bg-white text-black hover:bg-[#BF5AF2] hover:text-white py-4 rounded-[20px] font-bold text-md transition-all duration-300 active:scale-95 shadow-lg hover:shadow-[0_10px_30px_rgba(191,90,242,0.4)]">
                 Start Session
             </button>
         </div>
@@ -182,46 +213,37 @@
     <!-- MAIN APP WRAPPER -->
     <div id="main-app" class="flex flex-col h-screen opacity-0 transition-opacity duration-1000 pointer-events-none relative">
         
-        <!-- HEADER -->
-        <header class="header-bg p-4 flex justify-between items-center absolute top-0 w-full z-40">
+        <!-- HEADER (Glass Island) -->
+        <header class="chat-header p-3 sm:px-6 flex justify-between items-center absolute top-0 w-full z-40">
             <div class="flex items-center gap-3">
-                <div id="logo-container" class="h-10 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden px-2 border border-[#BF5AF2]/30">
-                    <img src="image_9004c3.jpg" alt="Logo" class="h-6 object-contain" 
-                         onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/0/00/Stc_logo.svg'; this.classList.add('filter','brightness-0','invert');">
+                <div class="h-10 w-10 bg-white rounded-[12px] flex items-center justify-center overflow-hidden">
+                    <img src="image_9004c3.jpg" alt="Logo" class="h-6 object-contain">
                 </div>
                 <div class="flex flex-col">
-                    <h1 class="text-lg font-bold tracking-wide" style="color: var(--text-main); text-shadow: 0 0 10px rgba(191,90,242,0.3);">STC Assistant</h1>
-                    <div class="flex items-center gap-2">
-                        <p class="text-[10px] uppercase tracking-wider" style="color: var(--neon-purple);" id="mode-subtitle">General AI</p>
+                    <h1 class="text-md font-medium tracking-wide text-white">STC Assistant</h1>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <p class="text-[10px] uppercase tracking-widest opacity-60" id="mode-subtitle">Call Center</p>
                         <div id="quiz-timer" class="timer-badge"><i class="fa-regular fa-clock"></i> <span id="time-display">15:00</span></div>
                     </div>
                 </div>
             </div>
-            <div class="flex gap-2 items-center">
-                <button onclick="toggleLanguage()" id="lang-btn" class="action-icon w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold" title="Change Language">
-                    EN
-                </button>
-                <button onclick="handleNavigation('home')" class="action-icon w-9 h-9 rounded-full flex items-center justify-center" title="Home">
-                    <i class="fa-solid fa-layer-group text-sm"></i>
-                </button>
-                <button onclick="handleNavigation('admin')" class="action-icon w-9 h-9 rounded-full flex items-center justify-center" title="Dashboard">
-                    <i class="fa-solid fa-chart-simple text-sm"></i>
-                </button>
-                <button onclick="handleNavigation('quiz')" class="action-icon w-9 h-9 rounded-full flex items-center justify-center" title="Test Me" id="quiz-btn">
-                    <i class="fa-solid fa-graduation-cap text-sm"></i>
-                </button>
+            <div class="flex gap-4 items-center">
+                <button onclick="toggleLanguage()" id="lang-btn" class="action-icon text-xs font-bold tracking-widest uppercase" title="Change Language">EN</button>
+                <button onclick="handleNavigation('home')" class="action-icon" title="Home"><i class="fa-solid fa-layer-group"></i></button>
+                <button onclick="handleNavigation('admin')" class="action-icon" title="Dashboard"><i class="fa-solid fa-chart-simple"></i></button>
+                <button onclick="handleNavigation('quiz')" class="action-icon" title="Test Me" id="quiz-btn"><i class="fa-solid fa-graduation-cap"></i></button>
             </div>
         </header>
 
         <!-- CHAT AREA -->
-        <main class="flex-grow flex justify-center relative w-full pt-24">
+        <main class="flex-grow flex justify-center relative w-full pt-20">
             <div class="w-full max-w-4xl flex flex-col relative h-full">
-                <div id="chat-box" class="chat-container p-4 sm:p-6 flex flex-col gap-4 overflow-y-auto w-full"></div>
+                <div id="chat-box" class="chat-container p-4 sm:p-6 flex flex-col gap-5 overflow-y-auto w-full"></div>
                 
                 <!-- FLOATING DOCKED INPUT -->
-                <div class="absolute bottom-0 w-full p-4 input-dock z-40 pb-6">
-                    <div class="pill-input-wrapper rounded-full flex items-center p-1.5 gap-2 max-w-3xl mx-auto">
-                        <input type="text" id="user-input" class="flex-grow bg-transparent border-none text-white px-5 py-2 focus:outline-none placeholder-[#E9D5FF]/40 text-md font-medium" placeholder="اكتب سؤالك هنا..." disabled>
+                <div class="absolute bottom-0 w-full p-4 sm:px-6 input-dock z-40 pb-8">
+                    <div class="pill-input-wrapper rounded-full flex items-center p-1.5 gap-2 w-full mx-auto">
+                        <input type="text" id="user-input" class="flex-grow bg-transparent border-none text-white px-5 py-3 focus:outline-none placeholder-white/30 text-md font-medium" placeholder="اسألني أي شيء..." disabled>
                         <button onclick="handleSend()" id="send-btn" class="send-btn-ios w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0" disabled>
                             <i class="fa-solid fa-arrow-up"></i>
                         </button>
@@ -230,48 +252,47 @@
             </div>
         </main>
 
-        <!-- LIVE ADMIN DASHBOARD -->
-        <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4 bg-[#070012]/85 backdrop-blur-3xl">
-            <div class="glass-panel rounded-3xl p-8 max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl">
-                <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                    <h2 class="text-xl font-bold" style="color: var(--neon-purple); text-shadow: 0 0 15px rgba(191,90,242,0.5);">
-                        Admin Terminal <span class="live-indicator orange ml-2" id="db-indicator" title="Local Mode"></span>
-                    </h2>
-                    <button onclick="toggleAdmin()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#BF5AF2] hover:text-white transition border border-white/10"><i class="fa-solid fa-xmark text-sm"></i></button>
+        <!-- LIVE ADMIN DASHBOARD (Apple UI) -->
+        <div id="admin-modal" class="absolute inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-3xl">
+            <div class="apple-glass rounded-[32px] p-8 max-w-5xl w-full max-h-[90vh] flex flex-col">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-2xl font-light text-white tracking-wide">Admin Terminal</h2>
+                        <p class="text-xs text-[#BF5AF2] uppercase tracking-widest mt-1">Local Session Activity</p>
+                    </div>
+                    <button onclick="toggleAdmin()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"><i class="fa-solid fa-xmark"></i></button>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-4 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
-                        <p class="text-[10px] text-[#E9D5FF] uppercase tracking-widest mb-1">Total Queries</p>
-                        <p class="text-2xl font-light text-white" id="stat-total">0</p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-black/20 border border-white/5 p-5 rounded-[24px]">
+                        <p class="text-[10px] text-white/50 uppercase tracking-widest mb-2">Queries</p>
+                        <p class="text-3xl font-light text-white" id="stat-total">0</p>
                     </div>
-                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-4 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
-                        <p class="text-[10px] text-[#E9D5FF] uppercase tracking-widest mb-1">Total Quiz Attempts</p>
-                        <p class="text-2xl font-light text-[#32D74B]" id="stat-attempts" style="text-shadow: 0 0 10px rgba(50,215,75,0.4);">0</p>
+                    <div class="bg-black/20 border border-white/5 p-5 rounded-[24px]">
+                        <p class="text-[10px] text-white/50 uppercase tracking-widest mb-2">Attempts</p>
+                        <p class="text-3xl font-light text-[#32D74B]" id="stat-attempts">0</p>
                     </div>
-                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-4 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
-                        <p class="text-[10px] text-[#E9D5FF] uppercase tracking-widest mb-1">Average Score</p>
-                        <p class="text-2xl font-light text-[#FFD60A]" id="stat-avg" style="text-shadow: 0 0 10px rgba(255,214,10,0.4);">0%</p>
+                    <div class="bg-black/20 border border-white/5 p-5 rounded-[24px]">
+                        <p class="text-[10px] text-white/50 uppercase tracking-widest mb-2">Avg Score</p>
+                        <p class="text-3xl font-light text-[#FFD60A]" id="stat-avg">0%</p>
                     </div>
-                    <div class="bg-black/30 border border-[#BF5AF2]/20 p-4 rounded-2xl text-center shadow-[inset_0_0_20px_rgba(191,90,242,0.05)]">
-                        <p class="text-[10px] text-[#E9D5FF] uppercase tracking-widest mb-1">Violations / Misses</p>
-                        <p class="text-2xl font-light text-[#FF453A]" id="stat-failed" style="text-shadow: 0 0 10px rgba(255,69,58,0.4);">0</p>
+                    <div class="bg-black/20 border border-white/5 p-5 rounded-[24px]">
+                        <p class="text-[10px] text-white/50 uppercase tracking-widest mb-2">Violations</p>
+                        <p class="text-3xl font-light text-[#FF453A]" id="stat-failed">0</p>
                     </div>
                 </div>
 
-                <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+                <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-6 overflow-hidden">
                     <div class="flex flex-col overflow-hidden">
-                        <h3 class="text-xs font-bold text-[#E9D5FF] uppercase tracking-widest mb-3 pl-1"><i class="fa-solid fa-graduation-cap"></i> Quiz History</h3>
-                        <div class="bg-black/30 border border-[#BF5AF2]/20 rounded-2xl p-2 flex flex-col gap-2 overflow-y-auto flex-grow h-48 scroll-smooth" id="attempt-log">
+                        <h3 class="text-xs font-medium text-white/60 uppercase tracking-widest mb-3 pl-1">Quiz History</h3>
+                        <div class="bg-black/20 border border-white/5 rounded-[24px] p-2 flex flex-col gap-2 overflow-y-auto flex-grow h-48" id="attempt-log">
                             <p class="opacity-40 italic font-light text-center mt-10 text-sm text-white">No attempts recorded yet.</p>
                         </div>
                     </div>
                     <div class="flex flex-col overflow-hidden">
-                        <div class="flex justify-between items-center mb-3 pl-1">
-                            <h3 class="text-xs font-bold text-[#FF453A] uppercase tracking-widest"><i class="fa-solid fa-bug"></i> Security Log</h3>
-                        </div>
-                        <ul id="error-log" class="bg-[#FF453A]/10 border border-[#FF453A]/20 rounded-2xl p-4 text-sm text-gray-300 flex flex-col gap-3 overflow-y-auto flex-grow h-48 scroll-smooth">
-                            <li class="opacity-40 italic font-light text-center mt-8 text-[#FF453A]">System stable.</li>
+                        <h3 class="text-xs font-medium text-[#FF453A] uppercase tracking-widest mb-3 pl-1">Security Log</h3>
+                        <ul id="error-log" class="bg-[#FF453A]/10 border border-[#FF453A]/20 rounded-[24px] p-5 text-sm text-gray-300 flex flex-col gap-3 overflow-y-auto flex-grow h-48">
+                            <li class="opacity-60 font-light text-center mt-8 text-[#FF453A]">System stable.</li>
                         </ul>
                     </div>
                 </div>
@@ -284,7 +305,6 @@
         let currentUserName = "";
         let botKnowledge = []; 
         let currentLang = 'ar';
-        let isDarkMode = true;
         
         let isQuizMode = false;
         let currentQuizItem = null;
@@ -308,19 +328,17 @@
             ar: {
                 placeholder: "اكتب سؤالك، أو 'اختبار' للتدريب...",
                 send: "إرسال",
-                notFound: "عذراً يا بطل، ما لقيت إجابة دقيقة في قاعدة بياناتي. ياليت توضح سؤالك أكثر أو تصيغه بطريقة ثانية عشان أقدر أساعدك! 💜",
+                notFound: "عذراً يا بطل، ما لقيت إجابة دقيقة في قاعدة بياناتي. ياليت توضح سؤالك أكثر أو تصيغه بطريقة ثانية! 💜",
                 multipleFound: "لقد وجدت أكثر من سؤال متعلق ببحثك. الرجاء اختيار السؤال الذي تقصده:",
-                anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--neon-purple);'>هل أستطيع مساعدتك بأي شيء آخر؟ 😊</span>",
-                quizStart: "🎓 <strong style='color: var(--neon-purple);'>بدأ الاختبار!</strong> أمامك 15 دقيقة و 25 سؤال.<br><br>إليك السؤال الأول:",
+                anythingElse: "<br><br><span class='text-[12px] opacity-50 mt-2 block font-light'>هل أستطيع مساعدتك بأي شيء آخر؟</span>",
+                quizStart: "<strong class='text-[#BF5AF2]'>بدأ الاختبار!</strong> أمامك 15 دقيقة و 25 سؤال.<br><br>إليك السؤال الأول:",
                 quizEnd: "تم إنهاء الاختبار. عدنا إلى وضع المساعد العادي! 🚀",
                 useOptions: "يرجى اختيار إحدى الإجابات من الخيارات أعلاه للتقدم في الاختبار.",
-                cheatWarn: "⚠️ <strong>تحذير!</strong> يا بطل، الخروج أو تحديث الصفحة أو الضغط على زر الرجوع أثناء الاختبار ممنوع. إذا سويتها مرة ثانية بتسقط تلقائياً! 👀",
-                cheatFail: "❌ <strong>تم إلغاء الاختبار!</strong> لقد قمت بمخالفة القوانين وتم تسجيل رسوبك.",
-                excellent: "🌟 <strong>ممتاز! (Passed)</strong> إبداع يا بطل، نتيجة ترفع الراس!",
-                good: "👍 <strong>جيد! (Passed)</strong> وحش، مبروك النجاح!",
-                fail: "💔 <strong>رسوب (Failed)</strong> معوض خير يا بطل، حاول مرة ثانية وركز أكثر!",
-                yesReply: "حيّاك الله يا بطل 😎✨ يلا نبدأ، قطّ سؤالك وأنا بالخدمة 💜",
-                noReply: "نورتنا يا الغالي 🌟💜 إذا عندك أي استفسار ثاني لا تتردد، إحنا بالخدمة دائمًا 👌",
+                cheatWarn: "⚠️ <strong class='text-[#FF453A]'>تحذير!</strong> يا بطل، الخروج أو تحديث الصفحة أو الضغط على زر الرجوع أثناء الاختبار ممنوع. إذا سويتها مرة ثانية بتسقط تلقائياً! 👀",
+                cheatFail: "❌ <strong class='text-[#FF453A]'>تم إلغاء الاختبار!</strong> لقد قمت بمخالفة القوانين وتم تسجيل رسوبك.",
+                excellent: "🌟 <strong class='text-[#32D74B]'>ممتاز! (Passed)</strong> إبداع يا بطل، نتيجة ترفع الراس!",
+                good: "👍 <strong class='text-[#32D74B]'>جيد! (Passed)</strong> وحش، مبروك النجاح!",
+                fail: "💔 <strong class='text-[#FF453A]'>رسوب (Failed)</strong> معوض خير يا بطل، حاول مرة ثانية وركز أكثر!",
                 feedbackPrompt: "هل استمتعت بالاختبار واستفدت منه؟ (نعم / لا)"
             },
             en: {
@@ -328,17 +346,15 @@
                 send: "Send",
                 notFound: "Sorry hero, I couldn't find an exact match in my database. Could you clarify your question? 💜",
                 multipleFound: "I found multiple questions related to your search. Please choose one:",
-                anythingElse: "<br><br><span class='text-sm opacity-80' style='color: var(--neon-purple);'>Is there anything else I can help you with? 😊</span>",
-                quizStart: "🎓 <strong style='color: var(--neon-purple);'>Quiz Started!</strong> You have 15 mins and 25 questions.<br><br>Here is your first question:",
+                anythingElse: "<br><br><span class='text-[12px] opacity-50 mt-2 block font-light'>Is there anything else I can help you with?</span>",
+                quizStart: "<strong class='text-[#BF5AF2]'>Quiz Started!</strong> You have 15 mins and 25 questions.<br><br>Here is your first question:",
                 quizEnd: "Quiz ended. Back to normal assistant mode! 🚀",
                 useOptions: "Please select an answer from the multiple choice options above.",
-                cheatWarn: "⚠️ <strong>Warning!</strong> Leaving, refreshing the page, or clicking back during a quiz is not allowed. Do it again and you will fail! 👀",
-                cheatFail: "❌ <strong>Quiz Terminated!</strong> You violated the rules and have failed the attempt.",
-                excellent: "🌟 <strong>Excellent! (Passed)</strong> Amazing job hero, a score to be proud of!",
-                good: "👍 <strong>Good! (Passed)</strong> Great work, congratulations on passing!",
-                fail: "💔 <strong>Failed!</strong> Better luck next time, review the materials and try again!",
-                yesReply: "Welcome hero 😎✨ Let's start, drop your question and I'm at your service 💜",
-                noReply: "Always a pleasure 🌟💜 If you have any other inquiries don't hesitate, we are always here for you 👌",
+                cheatWarn: "⚠️ <strong class='text-[#FF453A]'>Warning!</strong> Leaving, refreshing the page, or clicking back during a quiz is not allowed. Do it again and you will fail! 👀",
+                cheatFail: "❌ <strong class='text-[#FF453A]'>Quiz Terminated!</strong> You violated the rules and have failed the attempt.",
+                excellent: "🌟 <strong class='text-[#32D74B]'>Excellent! (Passed)</strong> Amazing job hero, a score to be proud of!",
+                good: "👍 <strong class='text-[#32D74B]'>Good! (Passed)</strong> Great work, congratulations on passing!",
+                fail: "💔 <strong class='text-[#FF453A]'>Failed!</strong> Better luck next time, review the materials and try again!",
                 feedbackPrompt: "Did you find this test helpful? (Yes / No)"
             }
         };
@@ -348,6 +364,16 @@
                 name: 'mixed_thanks_yes',
                 words: ['thank you yes', 'yes thank you', 'نعم شكرا', 'شكرا نعم', 'اي شكرا', 'ok thanks', 'اوكي شكرا'],
                 reply: 'العفو يا بطل! 💜 يلا دامك جاهز ومتحمس، خلنا نكمل.. قط سؤالك أو اكتب (اختبار) نكسر الدنيا! 🔥'
+            },
+            {
+                name: 'feedback_yes',
+                words: ['نعم استمتعت', 'اي والله', 'yes helpful', 'yes it was', 'absolutely', 'نعم'],
+                reply: 'الحمدلله! 💜 هذا هو هدفنا يا بطل. خلنا نستمر بالتفوق! 🚀'
+            },
+            {
+                name: 'feedback_no',
+                words: ['لا لم استمتع', 'لا', 'no', 'not helpful', 'bad test'],
+                reply: 'ولا يهمك يا غالي، نتعلم ونحسن النظام عشان يكون بأفضل صورة لك المرة الجاية! 💜'
             },
             {
                 name: 'love',
@@ -391,8 +417,8 @@
             }
         ];
 
-        // --- KNOWLEDGE BASE ---
-        const originalKnowledge = [
+        // --- EXCLUSIVE CALL CENTER 102 KNOWLEDGE BASE ---
+        const botKnowledge = [
             {q: "How many days the Prepaid line will stay on Grace? / كم يوم يبقى الخط في Grace؟", a: "30 days / 30 يوم", options: ["60 days / 60 يوم", "30 days / 30 يوم", "20 days / 20 يوم", "45 days / 45 يوم"]},
             {q: "What is internet capacity in 25 KD voice package? / ما هي سعة الانترنت في باقة ال 25 الصوتية؟", a: "100 GB / 100 GB", options: ["10 GB / 10 GB", "25 GB / 25 GB", "50 GB / 50 GB", "100 GB / 100 GB"]},
             {q: "How much does a temporary suspension service cost for a month (summer suspension)? / كم هي تكلفة خدمة الايقاف المؤقت لمدة شهر؟", a: "None of the mentioned / ليس أي مما سبق", options: ["15 KD / 15 KD", "20 KD / 20 KD", "25 KD / 25 KD", "None of the mentioned / ليس أي مما سبق"]},
@@ -497,20 +523,7 @@
             {q: "What are the allowed months to transfer the line from prepaid to postpaid? / ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "Three months / ثلاث أشهر", options: ["One month / شهر", "Two months / إثنان شهر", "Three months / ثلاث أشهر", "None of the mentioned / ليس مما سبق"]}
         ];
 
-        const telesalesKnowledge = [
-            {q: "قواعد الحصول ع جهاز اضافي زييد / Telesales Rule 1", a: "كل ماسبق / All of the above"},
-            {q: "الاجهزه التي تكون متوافقه مع ال ESIM هي / ESIM compatible devices", a: "Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20 / Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20"},
-            {q: "في نظام BSS اجمالي الوقت المنقضي هو ل / BSS system total elapsed time is for", a: "رقم الخط / Line number"},
-            {q: "عدد مرات استخدام اسم العميل / Number of times customer name used", a: "ثلاث مرات واكثر / Thrice or more"},
-            {q: "كيف يستطيع الموظف مشاهدة تاريخ المعاملات / How to check transaction history", a: "Requests (سجل الطلبات) / Requests"},
-            {q: "في تكلفة عقد الانهاء خانة نظره عامه تعني / Termination liability cost means", a: "جميع ماسبق (النظرة العامة) / All of the mentioned"},
-            {q: "كم مش راوتر يمكن للعميل الحصول عليه في عرض بيتنا 5 جي / How many mesh routers in Baity 5G", a: "مش راوتر 3 / 3 Mesh routers"},
-            {q: "مدة الانتظار المسموحه / Allowed waiting time", a: "لايتعدى 30 ثانيه قابله للتجديد / Max 30 seconds renewable"}
-        ];
-
-        const allKnowledge = [...originalKnowledge, ...telesalesKnowledge];
-
-        // --- BROWSER ANTI-CHEAT ---
+        // --- BROWSER ANTI-CHEAT (POPSTATE) ---
         window.addEventListener('popstate', function(event) {
             if (isQuizMode) {
                 if (cheatWarnings === 0) {
@@ -525,10 +538,7 @@
 
         // --- CORE FUNCTIONS ---
         function initApp() {
-            const btn = document.getElementById('theme-btn');
-            btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
             document.getElementById('login-user').focus();
-            
             if(sessionStorage.getItem('quizActive') === 'true') {
                 sessionStorage.removeItem('quizActive');
                 logError("User refreshed the page during an active quiz.");
@@ -548,7 +558,7 @@
                     overlay.style.display = 'none';
                     const mainApp = document.getElementById('main-app');
                     mainApp.classList.remove('opacity-0', 'pointer-events-none');
-                    showFlowSelection();
+                    startCallCenterFlow();
                 }, 700);
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
@@ -559,81 +569,28 @@
             currentLang = currentLang === 'ar' ? 'en' : 'ar';
             document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
             document.documentElement.lang = currentLang;
-            
             document.getElementById('lang-btn').innerText = currentLang === 'ar' ? 'EN' : 'AR';
             document.getElementById('user-input').placeholder = uiText[currentLang].placeholder;
-            document.getElementById('send-text').innerText = uiText[currentLang].send;
             
             if(!isQuizMode) {
-                printBotMessage(uiText[currentLang].greeting, false);
+                document.getElementById('mode-subtitle').innerText = currentLang === 'ar' ? "مسار: Call Center" : "Flow: Call Center";
             }
         }
 
-        function showFlowSelection() {
+        function startCallCenterFlow() {
             isQuizMode = false;
-            botKnowledge = []; 
-            const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML = ''; 
+            botKnowledge = originalKnowledge; 
             
             document.getElementById('user-input').disabled = false;
             document.getElementById('send-btn').disabled = false;
             document.getElementById('quiz-btn').disabled = false;
-            document.getElementById('mode-subtitle').innerText = currentLang === 'ar' ? "المساعد الذكي العام" : "General AI";
+            document.getElementById('mode-subtitle').innerText = currentLang === 'ar' ? "مسار: Call Center" : "Flow: Call Center";
             
             let greeting = currentLang === 'ar' 
-                ? `يا هلا وغلا بـ <strong>${currentUserName}</strong>! نورتنا يا بطل 💜<br><br>اختار القسم اللي تبيه وخلنا نبدع، أو تقدر تسألني مباشرة:`
-                : `Welcome, <strong>${currentUserName}</strong>! Great to have you here 💜<br><br>Choose your flow or ask me anything directly:`;
+                ? `يا هلا وغلا بـ <strong class="text-[#BF5AF2]">${currentUserName}</strong>! نورتنا يا بطل 💜<br><br>هذا مسار الـ <strong>Call Center</strong>. اسألني أي سؤال أو اضغط على 🎓 عشان نبدأ الاختبار! 🔥`
+                : `Welcome, <strong class="text-[#BF5AF2]">${currentUserName}</strong>! Great to have you here 💜<br><br>This is the <strong>Call Center</strong> flow. Ask me anything or click 🎓 to start your test! 🔥`;
                 
             printBotMessage(greeting, false);
-
-            const optionsHtml = `
-                <div class="flex flex-wrap gap-3 mt-4 justify-center sm:justify-start">
-                    <button onclick="selectFlow('E-Channels')" class="pill-btn">🌐 E-Channels</button>
-                    <button onclick="selectFlow('Call Center')" class="pill-btn">📞 Call Center</button>
-                    <button onclick="selectFlow('Resolutions')" class="pill-btn">🛠️ Resolutions</button>
-                    <button onclick="selectFlow('Telesales')" class="pill-btn">🛒 Telesales</button>
-                    <button onclick="selectFlow('Fiber')" class="pill-btn">⚡ Fiber</button>
-                </div>
-            `;
-            printBotMessage(optionsHtml, false);
-        }
-
-        function selectFlow(flowName) {
-            addUserMessage(flowName);
-            const typingDiv = showThinking();
-            
-            if (flowName === 'Fiber') {
-                setTimeout(() => {
-                    typingDiv.remove();
-                    printBotMessage(uiText[currentLang].comingSoon, false);
-                }, 800);
-                return; 
-            }
-
-            if (flowName === 'Telesales') botKnowledge = telesalesKnowledge;
-            else botKnowledge = originalKnowledge; 
-            
-            document.getElementById('mode-subtitle').innerText = (currentLang === 'ar' ? "مسار: " : "Flow: ") + flowName;
-            
-            let followUp = currentLang === 'ar'
-                ? `🔥 كفو يا ${currentUserName}!<br><br>اسأل أي سؤال بخاطرك بخصوص هذا المسار أو اكتب <strong>(اختبار)</strong> وخلّنا نبلش تدريب.<br><br>جاهز تجيب Full Marks؟`
-                : `🔥 Awesome, ${currentUserName}!<br><br>Ask me anything regarding this flow or type <strong>(test)</strong> to start your quiz.<br><br>Ready for full marks?`;
-            
-            setTimeout(() => {
-                typingDiv.remove();
-                printBotMessage(followUp, false);
-            }, 800);
-        }
-
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            document.body.classList.toggle('light-mode');
-            const btn = document.getElementById('theme-btn');
-            if(isDarkMode) {
-                btn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-            }
         }
 
         function handleNavigation(target) {
@@ -647,8 +604,10 @@
                     return;
                 }
             }
-            
-            if (target === 'home') showFlowSelection();
+            if (target === 'home') {
+                document.getElementById('chat-box').innerHTML = '';
+                startCallCenterFlow();
+            }
             if (target === 'admin') toggleAdmin();
             if (target === 'quiz') toggleQuizMode();
         }
@@ -661,7 +620,9 @@
         function addUserMessage(text) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
-            msgDiv.className = `message user-msg p-4 rounded-3xl self-end max-w-[90%] sm:max-w-[80%] shadow-md leading-relaxed text-[1rem] ${currentLang === 'ar' ? 'rounded-tr-sm' : 'rounded-tl-sm'}`;
+            msgDiv.className = `message user-msg p-4 px-6 self-end max-w-[90%] sm:max-w-[80%] text-[1rem] leading-relaxed font-medium`;
+            msgDiv.style.borderBottomRightRadius = currentLang === 'ar' ? '4px' : '24px';
+            msgDiv.style.borderBottomLeftRadius = currentLang === 'ar' ? '24px' : '4px';
             msgDiv.innerText = text;
             chatBox.appendChild(msgDiv);
             scrollToBottom();
@@ -671,7 +632,9 @@
             const chatBox = document.getElementById('chat-box');
             const typingDiv = document.createElement('div');
             typingDiv.id = "thinking-indicator";
-            typingDiv.className = `message bot-msg p-4 rounded-3xl shadow-md typing-indicator self-start ${currentLang === 'ar' ? 'rounded-tl-sm' : 'rounded-tr-sm'}`;
+            typingDiv.className = `message bot-msg p-4 px-6 typing-indicator self-start`;
+            typingDiv.style.borderBottomRightRadius = currentLang === 'ar' ? '24px' : '4px';
+            typingDiv.style.borderBottomLeftRadius = currentLang === 'ar' ? '4px' : '24px';
             typingDiv.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
             chatBox.appendChild(typingDiv);
             scrollToBottom();
@@ -681,7 +644,9 @@
         function printBotMessage(htmlContent, appendHelp = true) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
-            msgDiv.className = `message bot-msg p-5 rounded-3xl self-start max-w-[95%] sm:max-w-[85%] text-[1rem] leading-relaxed w-full shadow-md ${currentLang === 'ar' ? 'rounded-tl-sm' : 'rounded-tr-sm'}`;
+            msgDiv.className = `message bot-msg p-5 sm:px-6 self-start max-w-[95%] sm:max-w-[85%] text-[1rem] leading-relaxed w-full font-light tracking-wide`;
+            msgDiv.style.borderBottomRightRadius = currentLang === 'ar' ? '24px' : '4px';
+            msgDiv.style.borderBottomLeftRadius = currentLang === 'ar' ? '4px' : '24px';
             msgDiv.innerHTML = htmlContent + (appendHelp ? uiText[currentLang].anythingElse : "");
             chatBox.appendChild(msgDiv);
             scrollToBottom();
@@ -689,19 +654,17 @@
 
         // --- QUIZ ENGINE ---
         function toggleQuizMode() {
-            let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
-            if(activePool.length === 0) return; 
+            if(botKnowledge.length === 0) return; 
             
             isQuizMode = !isQuizMode;
             document.getElementById('chat-box').innerHTML = ''; 
             
             if(isQuizMode) {
                 history.pushState({quiz: true}, document.title, '#quiz');
-                
                 document.getElementById('mode-subtitle').innerText = currentLang === 'ar' ? "وضع الاختبار 🎓" : "Quiz Mode 🎓";
                 document.getElementById('mode-subtitle').style.color = "var(--neon-purple)";
                 
-                let shuffled = [...activePool].sort(() => 0.5 - Math.random());
+                let shuffled = [...botKnowledge].sort(() => 0.5 - Math.random());
                 quizQuestionsPool = shuffled.slice(0, 25);
                 
                 quizScore = 0; 
@@ -742,7 +705,7 @@
         function failQuizByCheat(reason = "") {
             endQuizCleanup();
             logError(`User failed quiz automatically: ${reason || "Cheat warning triggered."}`);
-            analytics.attemptsHistory.unshift({ name: currentUserName, score: quizScore, status: 'Failed (Cheated/Timeout)', date: new Date().toLocaleTimeString() });
+            analytics.attemptsHistory.unshift({ name: currentUserName, score: quizScore, status: 'Failed (Cheated)', date: new Date().toLocaleTimeString() });
             printBotMessage(uiText[currentLang].cheatFail, false);
         }
 
@@ -751,7 +714,7 @@
             sessionStorage.removeItem('quizActive');
             clearInterval(quizTimerInterval);
             document.getElementById('quiz-timer').style.display = 'none';
-            document.getElementById('mode-subtitle').innerText = botKnowledge.length > 0 ? (currentLang === 'ar' ? "مسار فرعي" : "Sub-Flow") : (currentLang === 'ar' ? "المساعد الذكي العام" : "General AI");
+            document.getElementById('mode-subtitle').innerText = currentLang === 'ar' ? "مسار: Call Center" : "Flow: Call Center";
             document.getElementById('mode-subtitle').style.color = "";
             
             if(window.location.hash === '#quiz') {
@@ -766,23 +729,7 @@
             }
 
             currentQuizItem = quizQuestionsPool[quizAttempts];
-            let choices = [];
-            
-            if (currentQuizItem.options && currentQuizItem.options.length > 0) {
-                choices = [...currentQuizItem.options];
-            } else {
-                choices = [currentQuizItem.a];
-                let questionWords = l(currentQuizItem.q).split(' ').filter(w => w.length > 4);
-                let similarItems = allKnowledge.filter(item => l(item.a) !== l(currentQuizItem.a));
-                let attempts = 0;
-                while(choices.length < 4 && attempts < 100) {
-                    let rIdx = Math.floor(Math.random() * similarItems.length);
-                    let wAns = similarItems[rIdx].a;
-                    if(!choices.includes(wAns) && l(wAns).length > 1) { choices.push(wAns); }
-                    attempts++;
-                }
-                choices.sort(() => Math.random() - 0.5); 
-            }
+            let choices = [...currentQuizItem.options];
             
             let quizHtml = `<div class="text-[1.1rem] font-bold opacity-90 mb-5 text-white tracking-wide leading-relaxed">${quizAttempts + 1}. ${l(currentQuizItem.q)}</div>`;
             quizHtml += `<div class="flex flex-col gap-3 w-full">`;
@@ -806,13 +753,14 @@
                 
                 if(isCorrect) {
                     quizScore++;
+                    printBotMessage(`✅ <strong>إجابة صحيحة!</strong> 👏<br><br><span class="text-sm font-bold text-[#32D74B]">النتيجة: ${quizScore}/${quizAttempts + 1}</span>`, false);
                 } else {
                     let msg = currentLang === 'ar' ? "الجواب الصحيح هو:" : "Correct answer was:";
-                    printBotMessage(`❌ <span class="font-bold text-[1rem] p-2 bg-[#BF5AF2]/20 rounded block mt-2">${msg} <br> ${l(currentQuizItem.a)}</span>`, false);
+                    printBotMessage(`❌ <strong>إجابة خاطئة.</strong><br><br><span class="font-bold text-[1rem] p-3 bg-[#BF5AF2]/20 border border-[#BF5AF2]/40 rounded-xl block mt-2 shadow-[0_0_15px_rgba(191,90,242,0.2)]">${msg} <br><br> ${l(currentQuizItem.a)}</span><br><span class="text-sm font-bold opacity-80 mt-2 block">النتيجة: ${quizScore}/${quizAttempts + 1}</span>`, false);
                 }
                 
                 quizAttempts++;
-                setTimeout(() => { askNextMCQ(); }, 1500);
+                setTimeout(() => { askNextMCQ(); }, 2500);
             }, 800);
         }
 
@@ -826,8 +774,8 @@
             else { resultMsg = uiText[currentLang].fail; statusLog = "Failed"; }
             
             let scoreStr = `${quizScore} / ${quizAttempts} (${Math.round(percentage)}%)`;
-            resultMsg += `<br><br><div class="text-xl font-bold mt-2 bg-black/40 p-3 rounded-xl border border-white/10 text-center">${scoreStr}</div>`;
-            resultMsg += `<br><br><span class="text-sm font-bold opacity-90" style="color: var(--neon-purple);">${uiText[currentLang].feedbackPrompt}</span>`;
+            resultMsg += `<br><br><div class="text-2xl font-bold mt-2 bg-black/40 p-4 rounded-[20px] border border-white/10 text-center shadow-inner tracking-widest">${scoreStr}</div>`;
+            resultMsg += `<br><br><span class="text-sm font-bold opacity-90 block mt-2" style="color: var(--neon-purple);">${uiText[currentLang].feedbackPrompt}</span>`;
             
             analytics.attemptsHistory.unshift({ name: currentUserName, score: percentage, status: statusLog, date: new Date().toLocaleTimeString() });
             
@@ -835,17 +783,15 @@
             printBotMessage(resultMsg, false);
         }
 
-        // --- SEARCH ENGINE & BOT ---
-        window.forceAnswer = function(index, useAllPool = false) {
-            let activePool = useAllPool ? allKnowledge : botKnowledge;
-            const item = activePool[index];
+        window.forceAnswer = function(index) {
+            const item = botKnowledge[index];
             addUserMessage(l(item.q));
             logAnalytics(l(item.q), true);
             
             const typingDiv = showThinking();
             setTimeout(() => {
                 typingDiv.remove();
-                printBotMessage(`<div class="opacity-60 text-sm mb-3 pb-3 border-b border-white/10 font-light" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.q)}</div><strong class="text-white text-[1rem] leading-relaxed block" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.a)}</strong>`, true);
+                printBotMessage(`<div class="opacity-60 text-sm mb-3 pb-3 border-b border-white/10 font-light" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.q)}</div><strong class="text-white text-[1.05rem] leading-relaxed block" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.a)}</strong>`, true);
             }, 600);
         };
 
@@ -860,29 +806,15 @@
                 }
             }
 
-            const yesWords = ['yes', 'yeah', 'yep', 'y', 'sure', 'of course', 'نعم', 'اي', 'إي', 'أكيد', 'اكيد', 'يلا', 'جاهز', 'يب', 'اي نعم', 'اكيد جاهز'];
-            const noWords = ['no', 'nope', 'n', 'لا', 'كلا', 'سلامتك', 'مو الحين'];
             const quizWords = ['test', 'quiz', 'اختبار', 'كويز', 'امتحان', 'تست', 'جربني', 'اختبرني'];
-
             if (quizWords.some(w => query.includes(w))) {
-                setTimeout(() => { typingDiv.remove(); handleNavigation('quiz'); }, 800);
+                setTimeout(() => {
+                    typingDiv.remove();
+                    if (!isQuizMode) toggleQuizMode();
+                    else printBotMessage(uiText[currentLang].useOptions, false);
+                }, 800);
                 return;
             }
-
-            if (yesWords.includes(query)) {
-                setTimeout(() => { typingDiv.remove(); printBotMessage(uiText[currentLang].yesReply, false); }, 800);
-                return;
-            }
-            if (noWords.includes(query)) {
-                setTimeout(() => { typingDiv.remove(); printBotMessage(uiText[currentLang].noReply, false); }, 800);
-                return;
-            }
-
-            if (query.includes('e-channels') || query.includes('قنوات')) { setTimeout(() => { typingDiv.remove(); selectFlow('E-Channels'); }, 800); return; }
-            if (query.includes('call center') || query.includes('كول سنتر') || query.includes('اتصال')) { setTimeout(() => { typingDiv.remove(); selectFlow('Call Center'); }, 800); return; }
-            if (query.includes('resolutions') || query.includes('حلول')) { setTimeout(() => { typingDiv.remove(); selectFlow('Resolutions'); }, 800); return; }
-            if (query.includes('telesales') || query.includes('مبيعات')) { setTimeout(() => { typingDiv.remove(); selectFlow('Telesales'); }, 800); return; }
-            if (query.includes('fiber') || query.includes('فايبر')) { setTimeout(() => { typingDiv.remove(); selectFlow('Fiber'); }, 800); return; }
 
             if (query.includes("زيد") || query.includes("zeed")) query += " زييد";
 
@@ -890,18 +822,16 @@
                 typingDiv.remove();
                 let queryWords = query.split(" ").filter(w => w.length > 2);
                 if(queryWords.length === 0) queryWords = [query]; 
-
-                let activePool = botKnowledge.length > 0 ? botKnowledge : allKnowledge;
-                let matches = [];
                 
-                for (let i = 0; i < activePool.length; i++) {
+                let matches = [];
+                for (let i = 0; i < botKnowledge.length; i++) {
                     let score = 0;
-                    let qTextLocalized = l(activePool[i].q).toLowerCase();
-                    let qTextFull = activePool[i].q.toLowerCase(); 
+                    let qTextLocalized = l(botKnowledge[i].q).toLowerCase();
+                    let qTextFull = botKnowledge[i].q.toLowerCase(); 
                     for (let word of queryWords) {
                         if (qTextLocalized.includes(word) || qTextFull.includes(word)) score += 1;
                     }
-                    if (score > 0) matches.push({ index: i, score: score, item: activePool[i] });
+                    if (score > 0) matches.push({ index: i, score: score, item: botKnowledge[i] });
                 }
 
                 matches.sort((a, b) => b.score - a.score);
@@ -913,14 +843,14 @@
                 else if (matches.length === 1 || matches[0].score > matches[1]?.score + 1) {
                     logAnalytics(query, true);
                     let item = matches[0].item;
-                    printBotMessage(`<div class="opacity-60 text-sm mb-3 pb-3 border-b border-white/10 font-light" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.q)}</div><strong class="text-white text-[1rem] leading-relaxed block" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.a)}</strong>`, true);
+                    printBotMessage(`<div class="opacity-60 text-sm mb-3 pb-3 border-b border-white/10 font-light" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.q)}</div><strong class="text-white text-[1.05rem] leading-relaxed block" ${currentLang==='en'?'dir="ltr" text-align="left"':''}>${l(item.a)}</strong>`, true);
                 } 
                 else {
                     logAnalytics(query, true);
                     let topMatches = matches.slice(0, 4); 
                     let optionsHtml = `<p class="mb-4 font-bold text-[#BF5AF2]">${uiText[currentLang].multipleFound}</p><div class="flex flex-col gap-3">`;
                     for (let match of topMatches) {
-                        optionsHtml += `<button onclick="forceAnswer(${match.index}, ${botKnowledge.length === 0})" class="pill-btn w-full text-right p-4 rounded-2xl text-[0.95rem] cursor-pointer" ${currentLang==='en'?'dir="ltr" style="text-align:left;"':''}>${l(match.item.q)}</button>`;
+                        optionsHtml += `<button onclick="forceAnswer(${match.index})" class="pill-btn w-full text-right p-4 rounded-2xl text-[0.95rem] cursor-pointer" ${currentLang==='en'?'dir="ltr" style="text-align:left;"':''}>${l(match.item.q)}</button>`;
                     }
                     optionsHtml += `</div>`;
                     printBotMessage(optionsHtml, false);
@@ -949,7 +879,6 @@
             if (e.key === 'Enter' && !document.getElementById('send-btn').disabled) handleSend();
         });
 
-        // --- DASHBOARD UPDATER ---
         function toggleAdmin() {
             if(isQuizMode) {
                 handleNavigation('admin'); 
@@ -989,9 +918,9 @@
                 if(analytics.attemptsHistory.length > 0) {
                     attemptLog.innerHTML = analytics.attemptsHistory.map(a => {
                         let color = a.score >= 80 ? 'text-[#32D74B]' : 'text-[#FF453A]';
-                        return `<div class="p-3 bg-black/40 rounded-xl border border-white/10 flex justify-between items-center mb-2">
-                            <div><p class="font-bold text-white">${a.name}</p><p class="text-xs text-gray-400">${a.date} | ${a.status}</p></div>
-                            <div class="text-xl font-bold ${color}">${Math.round(a.score)}%</div>
+                        return `<div class="p-4 bg-black/40 rounded-[20px] border border-white/10 flex justify-between items-center mb-2 shadow-inner">
+                            <div><p class="font-bold text-white tracking-wide">${a.name}</p><p class="text-xs text-gray-400 mt-1">${a.date} | ${a.status}</p></div>
+                            <div class="text-2xl font-light ${color}">${Math.round(a.score)}%</div>
                         </div>`;
                     }).join('');
                 }
