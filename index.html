@@ -3,90 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>stc Assist - MubarakAI</title>
+    <title>Zbibo Quiz Assistance</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
         
         :root {
-            --stc-purple: #4F008C;
+            --bg-main: #0a0a0a;
+            --bg-chat: #141414;
             --neon-purple: #8A2BE2;
-            --bg-page: #f5f5f7;
-            --bg-dark-page: #0d0d0d;
-            --bg-chat-container: #1a1a1a;
-            --bot-msg-bg: #2a2a2a;
-            --user-msg-bg: #4F008C;
+            --dark-purple: #4F008C;
             --text-light: #ffffff;
-            --text-dark: #1a1a1a;
         }
 
         body { 
             font-family: 'Tajawal', sans-serif; 
-            background-color: var(--bg-dark-page); 
+            background-color: var(--bg-main); 
             color: var(--text-light); 
             margin: 0; padding: 0; height: 100vh; overflow: hidden; 
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- LOGIN SCREEN (Matches IMG_1134) --- */
+        /* --- LOGIN SCREEN --- */
         #login-screen {
-            background-color: #f5f5f7;
             position: fixed; inset: 0; z-index: 50;
+            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px);
             display: flex; justify-content: center; align-items: center;
             transition: opacity 0.5s ease;
         }
         .login-card {
-            width: 400px; max-width: 90%;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-            display: flex; flex-col;
-        }
-        .login-header {
-            background: linear-gradient(135deg, #4F008C, #8A2BE2);
-            padding: 30px 20px;
-            color: white;
-            position: relative;
-        }
-        .login-logo-area {
-            display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
-        }
-        .stc-logo-box {
-            background: white; color: var(--stc-purple);
-            font-weight: bold; font-size: 14px;
-            padding: 4px 8px; border-radius: 6px;
-        }
-        .login-body {
-            padding: 30px 20px;
-            color: var(--text-dark);
+            width: 380px; max-width: 90%;
+            background: #1a1a1a; border: 1px solid #333;
+            border-radius: 16px; padding: 40px 30px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.2);
+            text-align: center;
         }
         .login-input {
-            width: 100%; background: #f8f9fa; border: 1px solid #e5e5ea;
-            border-radius: 8px; padding: 12px 15px; font-size: 14px;
-            outline: none; transition: border 0.3s;
+            width: 100%; background: #0d0d0d; border: 1px solid #444; color: white;
+            border-radius: 8px; padding: 14px; font-size: 16px; text-align: center;
+            outline: none; transition: all 0.3s; margin-top: 20px;
         }
-        .login-input:focus { border-color: var(--neon-purple); }
+        .login-input:focus { border-color: var(--neon-purple); box-shadow: 0 0 10px rgba(138,43,226,0.3); }
         .login-btn {
-            width: 100%; background: #7C24A8; color: white;
-            border: none; border-radius: 8px; padding: 14px;
+            width: 100%; background: var(--neon-purple); color: white;
+            border: none; border-radius: 8px; padding: 14px; margin-top: 20px;
             font-weight: bold; font-size: 16px; cursor: pointer;
-            margin-top: 10px; transition: background 0.3s;
+            transition: all 0.3s;
         }
-        .login-btn:hover { background: #5c1880; }
+        .login-btn:hover { background: #9b4de0; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(138,43,226,0.4); }
 
-        /* --- MAIN CHAT SCREEN (Matches IMG_1135) --- */
+        /* --- MAIN APP --- */
         #main-app {
             width: 100%; max-width: 1000px; height: 90vh;
-            background: var(--bg-chat-container);
+            background: var(--bg-chat);
             border-radius: 16px; border: 1px solid #2a2a2a;
             display: flex; flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
         }
         
-        .chat-header-bar {
+        .chat-header {
             padding: 15px 20px; border-bottom: 1px solid #2a2a2a;
             display: flex; justify-content: space-between; align-items: center;
         }
@@ -95,7 +72,7 @@
             flex-grow: 1; overflow-y: auto; padding: 20px;
             display: flex; flex-direction: column; gap: 15px;
         }
-        .chat-messages::-webkit-scrollbar { width: 5px; }
+        .chat-messages::-webkit-scrollbar { width: 6px; }
         .chat-messages::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
 
         .msg-bubble {
@@ -104,40 +81,44 @@
         }
         @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .msg-bot { background: var(--bot-msg-bg); color: #e0e0e0; align-self: flex-start; border-bottom-right-radius: 4px; }
-        .msg-user { background: var(--user-msg-bg); color: white; align-self: flex-end; border-bottom-left-radius: 4px; }
+        .msg-bot { background: #222; color: #eee; align-self: flex-start; border: 1px solid #333; }
+        .msg-user { background: var(--dark-purple); color: white; align-self: flex-end; }
 
         .flow-grid {
             display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
-            background: #222; border: 1px solid #333; border-radius: 12px; padding: 20px;
+            background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 20px;
             margin: 10px auto; max-width: 80%;
         }
         .flow-pill {
-            background: #1a1a1a; color: #ccc; border: 1px solid #444;
-            border-radius: 99px; padding: 8px 16px; font-size: 13px;
+            background: #0d0d0d; color: #ccc; border: 1px solid #444;
+            border-radius: 99px; padding: 10px 20px; font-size: 14px;
             display: flex; align-items: center; gap: 8px; cursor: pointer;
             transition: all 0.2s;
         }
-        .flow-pill:hover { background: #333; color: white; border-color: var(--neon-purple); }
+        .flow-pill:hover { background: #222; color: white; border-color: var(--neon-purple); box-shadow: 0 0 10px rgba(138,43,226,0.2); }
 
         .input-bar {
             padding: 15px 20px; border-top: 1px solid #2a2a2a;
-            display: flex; gap: 10px; background: #1f1f1f; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;
+            display: flex; gap: 10px; background: #1a1a1a; border-radius: 0 0 16px 16px;
         }
         .chat-input {
-            flex-grow: 1; background: #121212; border: 1px solid #333; color: white;
-            border-radius: 8px; padding: 12px 15px; outline: none; transition: border 0.3s;
+            flex-grow: 1; background: #0d0d0d; border: 1px solid #333; color: white;
+            border-radius: 8px; padding: 14px 20px; outline: none; transition: border 0.3s;
         }
         .chat-input:focus { border-color: var(--neon-purple); }
         .send-btn {
-            background: #8A2BE2; color: white; width: 48px; height: 48px;
+            background: var(--neon-purple); color: white; width: 52px; height: 52px;
             border-radius: 8px; border: none; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; font-size: 18px;
-            transition: transform 0.2s;
+            display: flex; justify-content: center; align-items: center; font-size: 20px;
+            transition: all 0.2s;
         }
-        .send-btn:hover { transform: scale(1.05); }
-        
-        .timer-box { font-weight: bold; color: #FF453A; font-family: monospace; font-size: 16px; }
+        .send-btn:hover:not(:disabled) { transform: scale(1.05); background: #9b4de0; }
+        .send-btn:disabled { background: #333; cursor: not-allowed; color: #666; }
+
+        .typing-indicator { display: flex; gap: 4px; padding: 14px 18px; align-items: center; width: fit-content; }
+        .dot { width: 6px; height: 6px; background-color: var(--neon-purple); border-radius: 50%; animation: iosBounce 1.4s infinite ease-in-out both; }
+        .dot:nth-child(1) { animation-delay: -0.32s; } .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes iosBounce { 0%, 80%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-4px); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -145,44 +126,29 @@
     <!-- LOGIN SCREEN -->
     <div id="login-screen">
         <div class="login-card">
-            <div class="login-header">
-                <div class="login-logo-area">
-                    <div class="stc-logo-box">stc</div>
-                    <div>
-                        <div class="font-bold text-lg">MubarakAI</div>
-                        <div class="text-xs opacity-70">stc Kuwait</div>
-                    </div>
-                </div>
-                <h2 class="text-2xl font-bold mb-1">stc Assist</h2>
-                <p class="text-sm opacity-80 font-light">Enter your name to continue</p>
-            </div>
-            <div class="login-body">
-                <div class="mb-4 text-left" dir="ltr">
-                    <label class="block text-sm font-bold text-gray-600 mb-2">Employee Name / الاسم</label>
-                    <input type="text" id="login-name" class="login-input" placeholder="e.g. Ahmed..." onkeypress="if(event.key === 'Enter') handleLogin()">
-                </div>
-                <p id="login-error" class="text-red-500 text-xs hidden mb-2 font-bold">الرجاء إدخال اسمك / Please enter a name.</p>
-                <button onclick="handleLogin()" class="login-btn">Sign In</button>
-                <div class="text-center text-[10px] text-gray-400 mt-5">
-                    Built by <strong>MubarakAI</strong> - Mubarak AlOwais
-                </div>
-            </div>
+            <h2 class="text-3xl font-bold text-white mb-2" style="text-shadow: 0 0 15px rgba(138,43,226,0.6);">Zbibo Quiz</h2>
+            <p class="text-sm text-gray-400">Assistance Portal</p>
+            
+            <input type="text" id="login-name" class="login-input" placeholder="أدخل اسمك / Your Name" onkeypress="if(event.key === 'Enter') handleLogin()">
+            <p id="login-error" class="text-red-500 text-xs hidden mt-2">الرجاء إدخال اسمك / Please enter your name.</p>
+            
+            <button onclick="handleLogin()" class="login-btn">Start Session</button>
         </div>
     </div>
 
     <!-- MAIN CHAT APP -->
     <div id="main-app">
-        <div class="chat-header-bar">
+        <div class="chat-header">
             <div class="flex items-center gap-3">
-                <div class="bg-gray-800 p-2 rounded-lg text-neon-purple"><i class="fa-solid fa-robot"></i></div>
+                <div class="bg-gray-800 p-2 rounded-lg text-[#8A2BE2]"><i class="fa-solid fa-robot"></i></div>
                 <div>
-                    <h1 class="font-bold text-md">مساعد stc الذكي</h1>
-                    <p class="text-xs text-gray-400" id="current-flow-text">عام / General</p>
+                    <h1 class="font-bold text-md tracking-wide">Zbibo Quiz Assistance</h1>
+                    <p class="text-xs text-[#8A2BE2]" id="current-flow-text">عام / General</p>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <div id="timer-display" class="timer-box hidden">15:00</div>
-                <button onclick="toggleLang()" id="lang-toggle" class="text-xs font-bold text-gray-400 hover:text-white transition">EN</button>
+            <div class="flex items-center gap-4">
+                <span id="quiz-timer" class="hidden text-red-500 font-bold font-mono">15:00</span>
+                <button onclick="showMenu()" class="text-gray-400 hover:text-white transition" title="Home"><i class="fa-solid fa-house"></i></button>
             </div>
         </div>
 
@@ -190,16 +156,15 @@
 
         <div class="input-bar">
             <input type="text" id="chat-input" class="chat-input" placeholder="اكتب سؤالك هنا..." disabled>
-            <button onclick="handleInput()" id="send-btn" class="send-btn" disabled><i class="fa-solid fa-paper-plane"></i></button>
+            <button onclick="handleInput()" id="send-btn" class="send-btn" disabled><i class="fa-solid fa-paper-plane rtl:-scale-x-100"></i></button>
         </div>
     </div>
 
     <script>
-        // --- DATA ---
+        // --- DATA & STATE ---
         let currentLang = 'ar';
         let userName = "";
         let isQuizMode = false;
-        let activeKnowledge = [];
         
         let quizScore = 0;
         let quizAttempts = 0;
@@ -208,6 +173,7 @@
         let quizTimer;
         let timeLeft = 900;
 
+        // --- 102 ORIGINAL KNOWLEDGE BASE ---
         const originalKnowledge = [
             {q: "How many days the Prepaid line will stay on Grace? / كم يوم يبقى الخط في Grace؟", a: "30 days / 30 يوم", options: ["60 days / 60 يوم", "30 days / 30 يوم", "20 days / 20 يوم", "45 days / 45 يوم"]},
             {q: "What is internet capacity in 25 KD voice package? / ما هي سعة الانترنت في باقة ال 25 الصوتية؟", a: "100 GB / 100 GB", options: ["10 GB / 10 GB", "25 GB / 25 GB", "50 GB / 50 GB", "100 GB / 100 GB"]},
@@ -312,32 +278,8 @@
             {q: "What is the Auto Port-In option? (BSS system) / ما هو خيار Auto Port-In (BSS system)؟", a: "An option that allows the number to be transfer immediately for approval from the company it is being transferred. / خيار يتيح تنفيذ عملية نقل الرقم فوراً دون انتظار موافقة الشركة المحول منها", options: ["An option to cancel the line service permanently / خيار يُستخدم لإلغاء خدمة الخط بشكل نهائي", "An option that allows the number to be transfer immediately for approval from the company it is being transferred. / خيار يتيح تنفيذ عملية نقل الرقم فوراً دون انتظار موافقة الشركة المحول منها", "An option dedicated to change the internet plan only / خيار مخصص لتغيير باقة الإنترنت فقط"]},
             {q: "What are the allowed months to transfer the line from prepaid to postpaid? / ماهي عدد الأشهر المسموحة للتحويل الخط من الدفع المسبق إلى الدفع الأجل؟", a: "Three months / ثلاث أشهر", options: ["One month / شهر", "Two months / إثنان شهر", "Three months / ثلاث أشهر", "None of the mentioned / ليس مما سبق"]}
         ];
-        
-        const telesalesKnowledge = [
-            {q: "قواعد الحصول ع جهاز اضافي زييد / Telesales Rule 1", a: "كل ماسبق / All of the above"},
-            {q: "الاجهزه التي تكون متوافقه مع ال ESIM هي / ESIM compatible devices", a: "Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20 / Samsung S20 / GALAXY Z Fold 5 / Galaxy Note 20"},
-            {q: "في نظام BSS اجمالي الوقت المنقضي هو ل / BSS system total elapsed time is for", a: "رقم الخط / Line number"},
-            {q: "عدد مرات استخدام اسم العميل / Number of times customer name used", a: "ثلاث مرات واكثر / Thrice or more"},
-            {q: "كيف يستطيع الموظف مشاهدة تاريخ المعاملات / How to check transaction history", a: "Requests (سجل الطلبات) / Requests"},
-            {q: "في تكلفة عقد الانهاء خانة نظره عامه تعني / Termination liability cost means", a: "جميع ماسبق (النظرة العامة) / All of the mentioned"},
-            {q: "كم مش راوتر يمكن للعميل الحصول عليه في عرض بيتنا 5 جي / How many mesh routers in Baity 5G", a: "مش راوتر 3 / 3 Mesh routers"},
-            {q: "مدة الانتظار المسموحه / Allowed waiting time", a: "لايتعدى 30 ثانيه قابله للتجديد / Max 30 seconds renewable"}
-        ];
 
-        // --- ANTI CHEAT ---
-        window.addEventListener('popstate', function(event) {
-            if (isQuizMode) {
-                if (cheatWarnings === 0) {
-                    cheatWarnings++;
-                    history.pushState({quiz: true}, document.title, '#quiz');
-                    printBotMessage(uiText[currentLang].cheatWarn, false);
-                } else {
-                    failQuiz("استخدام زر الرجوع / Used Back Button");
-                }
-            }
-        });
-
-        // --- APP LOGIC ---
+        // --- CORE FUNCTIONS ---
         function handleLogin() {
             const name = document.getElementById('login-name').value.trim();
             if(!name) {
@@ -345,7 +287,6 @@
                 return;
             }
             userName = name;
-            sessionStorage.setItem('stcUser', name);
             
             document.getElementById('login-screen').style.opacity = '0';
             setTimeout(() => {
@@ -361,7 +302,7 @@
             document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
             document.documentElement.lang = currentLang;
             document.getElementById('lang-toggle').innerText = currentLang === 'ar' ? 'EN' : 'AR';
-            document.getElementById('chat-input').placeholder = uiText[currentLang].placeholder;
+            document.getElementById('chat-input').placeholder = currentLang === 'ar' ? 'اكتب سؤالك هنا...' : 'Type your question here...';
             
             if(!isQuizMode) {
                 document.getElementById('current-flow-text').innerText = currentLang === 'ar' ? 'عام / General' : 'General AI';
@@ -370,7 +311,6 @@
 
         function showMenu() {
             isQuizMode = false;
-            activeKnowledge = [];
             const chatBox = document.getElementById('chat-box');
             chatBox.innerHTML = '';
             
@@ -378,18 +318,16 @@
             document.getElementById('send-btn').disabled = false;
             
             let greeting = currentLang === 'ar' 
-                ? `يا هلا وغلا بـ <span class="font-bold text-[#BF5AF2]">${userName}</span>! نورتنا يا بطل 💜<br><br>اختار القسم اللي تبيه وخلنا نبدع:`
-                : `Welcome, <span class="font-bold text-[#BF5AF2]">${userName}</span>! Great to have you here 💜<br><br>Choose your flow:`;
+                ? `يا هلا وغلا بـ <span class="font-bold text-[#8A2BE2]">${userName}</span>! نورتنا يا بطل 💜<br><br>اختار من القائمة عشان نبدع:`
+                : `Welcome, <span class="font-bold text-[#8A2BE2]">${userName}</span>! Great to have you here 💜<br><br>Choose from the menu:`;
             
             printBotMessage(greeting, false);
 
             const menu = `
                 <div class="flow-grid">
-                    <button onclick="setFlow('Call Center')" class="flow-pill"><i class="fa-solid fa-headset text-[#BF5AF2]"></i> Call Center</button>
-                    <button onclick="setFlow('Telesales')" class="flow-pill"><i class="fa-solid fa-cart-shopping text-[#BF5AF2]"></i> Telesales</button>
-                    <button onclick="setFlow('Fiber')" class="flow-pill"><i class="fa-solid fa-wifi text-[#BF5AF2]"></i> Fiber</button>
-                    <button onclick="setFlow('E-Channels')" class="flow-pill"><i class="fa-solid fa-globe text-[#BF5AF2]"></i> E-Channels</button>
-                    <button onclick="setFlow('Resolutions')" class="flow-pill"><i class="fa-solid fa-wrench text-[#BF5AF2]"></i> Resolutions</button>
+                    <button onclick="setFlow('Call Center')" class="flow-pill"><i class="fa-solid fa-headset text-[#8A2BE2]"></i> Call Center</button>
+                    <button onclick="startQuiz()" class="flow-pill"><i class="fa-solid fa-graduation-cap text-[#8A2BE2]"></i> ${currentLang === 'ar' ? 'اختبار / Quiz' : 'Start Quiz'}</button>
+                    <button onclick="toggleLang()" class="flow-pill"><i class="fa-solid fa-language text-[#8A2BE2]"></i> Language / اللغة</button>
                 </div>
             `;
             printBotMessage(menu, false);
@@ -401,23 +339,25 @@
             
             setTimeout(() => {
                 typing.remove();
-                if(flow === 'Fiber' || flow === 'E-Channels' || flow === 'Resolutions') {
-                    printBotMessage(currentLang === 'ar' ? "🚧 قريباً... هذا المسار سيكون متاحاً قريباً! 🚀" : "🚧 Coming soon! 🚀", false);
-                    return;
-                }
-                
-                activeKnowledge = flow === 'Call Center' ? originalKnowledge : telesalesKnowledge;
                 document.getElementById('current-flow-text').innerText = flow;
                 
                 let followUp = currentLang === 'ar'
-                    ? `كفو! مسار <strong>${flow}</strong> جاهز. اسألني أي سؤال أو اضغط على (اختبار) للتدريب! 🔥`
-                    : `Awesome! <strong>${flow}</strong> loaded. Ask a question or type (test)! 🔥`;
+                    ? `كفو! مسار <strong>Call Center</strong> جاهز. اسألني أي سؤال أو اضغط على (اختبار) للتدريب! 🔥`
+                    : `Awesome! <strong>Call Center</strong> loaded. Ask a question or type (test)! 🔥`;
                     
                 printBotMessage(followUp, false);
             }, 800);
         }
 
-        // --- SEARCH ENGINE ---
+        // --- SEARCH ENGINE BILINGUAL LOGIC ---
+        function getLocalizedText(text, isArabicQuery) {
+            if (!text) return "";
+            let parts = text.split(" / ");
+            if (parts.length === 1) return parts[0].trim();
+            // If query is Arabic, return Arabic part (index 1), else English part (index 0)
+            return isArabicQuery ? (parts[1] ? parts[1].trim() : parts[0].trim()) : parts[0].trim();
+        }
+
         function handleInput() {
             const input = document.getElementById('chat-input');
             const text = input.value.trim();
@@ -427,41 +367,33 @@
             input.value = "";
 
             if(isQuizMode) {
-                printBotMessage(uiText[currentLang].useOptions, false);
+                printBotMessage(currentLang === 'ar' ? 'يرجى اختيار إحدى الإجابات من الخيارات أعلاه.' : 'Please select an option above.', false);
                 return;
             }
 
             const typing = showThinking();
             let query = text.toLowerCase();
 
-            // Chitchat Interceptor
-            for(let cat of chitChatCategories) {
-                if(cat.words.some(w => query.includes(w))) {
-                    setTimeout(() => { typing.remove(); printBotMessage(cat.reply, false); }, 800);
-                    return;
-                }
-            }
+            // Detect Language of User Input
+            const isArabicQuery = /[\u0600-\u06FF]/.test(query);
 
-            // Commands
             if(['test', 'quiz', 'اختبار'].some(w => query.includes(w))) {
                 setTimeout(() => { typing.remove(); startQuiz(); }, 800);
                 return;
             }
 
-            // Search
             setTimeout(() => {
                 typing.remove();
-                let pool = activeKnowledge.length > 0 ? activeKnowledge : [...originalKnowledge, ...telesalesKnowledge];
+                let pool = originalKnowledge;
                 let words = query.split(" ").filter(w => w.length > 2);
                 if(words.length === 0) words = [query];
 
                 let matches = [];
                 for(let i=0; i<pool.length; i++) {
                     let score = 0;
-                    let qTextLoc = l(pool[i].q).toLowerCase();
                     let qTextFull = pool[i].q.toLowerCase();
                     for(let w of words) {
-                        if(qTextLoc.includes(w) || qTextFull.includes(w)) score++;
+                        if(qTextFull.includes(w)) score++;
                     }
                     if(score > 0) matches.push({item: pool[i], score: score});
                 }
@@ -469,18 +401,23 @@
                 matches.sort((a,b) => b.score - a.score);
 
                 if(matches.length === 0) {
-                    printBotMessage(uiText[currentLang].notFound, false);
+                    printBotMessage(currentLang === 'ar' ? 'عذراً، ما لقيت إجابة دقيقة. ياليت توضح سؤالك!' : 'Sorry, no exact match found. Please clarify!', false);
                 } else if(matches.length === 1 || matches[0].score > (matches[1]?.score || 0) + 1) {
-                    let ans = `<div class="opacity-60 text-xs mb-2 pb-2 border-b border-[#333]">${l(matches[0].item.q)}</div>`;
-                    ans += `<strong>${l(matches[0].item.a)}</strong>`;
+                    let locQ = getLocalizedText(matches[0].item.q, isArabicQuery);
+                    let locA = getLocalizedText(matches[0].item.a, isArabicQuery);
+                    
+                    let ans = `<div class="opacity-60 text-xs mb-2 pb-2 border-b border-[#333]" dir="${isArabicQuery?'rtl':'ltr'}">${locQ}</div>`;
+                    ans += `<strong dir="${isArabicQuery?'rtl':'ltr'}">${locA}</strong>`;
                     printBotMessage(ans, true);
                 } else {
                     let top = matches.slice(0, 4);
-                    let html = `<p class="mb-3 text-[#BF5AF2] font-bold">${uiText[currentLang].multipleFound}</p><div class="flex flex-col gap-2">`;
+                    let title = currentLang === 'ar' ? 'لقد وجدت أكثر من سؤال، اختر:' : 'Multiple matches found. Select one:';
+                    let html = `<p class="mb-3 text-[#8A2BE2] font-bold">${title}</p><div class="flex flex-col gap-2">`;
+                    
                     top.forEach((m, idx) => {
-                        let safeQ = l(m.item.q).replace(/'/g, "\\'");
-                        let safeA = l(m.item.a).replace(/'/g, "\\'");
-                        html += `<button onclick="forceAns('${safeQ}', '${safeA}')" class="flow-pill w-full text-right bg-[#121212]">${l(m.item.q)}</button>`;
+                        let locQ = getLocalizedText(m.item.q, isArabicQuery).replace(/'/g, "\\'");
+                        let locA = getLocalizedText(m.item.a, isArabicQuery).replace(/'/g, "\\'");
+                        html += `<button onclick="forceAns('${locQ}', '${locA}', ${isArabicQuery})" class="flow-pill w-full text-right bg-[#1a1a1a]" dir="${isArabicQuery?'rtl':'ltr'}">${locQ}</button>`;
                     });
                     html += `</div>`;
                     printBotMessage(html, false);
@@ -488,12 +425,12 @@
             }, 800);
         }
 
-        window.forceAns = function(q, a) {
+        window.forceAns = function(q, a, isAr) {
             addUserMessage(q);
             const typing = showThinking();
             setTimeout(() => {
                 typing.remove();
-                printBotMessage(`<div class="opacity-60 text-xs mb-2 pb-2 border-b border-[#333]">${q}</div><strong>${a}</strong>`, true);
+                printBotMessage(`<div class="opacity-60 text-xs mb-2 pb-2 border-b border-[#333]" dir="${isAr?'rtl':'ltr'}">${q}</div><strong dir="${isAr?'rtl':'ltr'}">${a}</strong>`, true);
             }, 600);
         }
 
@@ -506,29 +443,23 @@
 
         // --- QUIZ ENGINE ---
         function startQuiz() {
-            let pool = activeKnowledge.length > 0 ? activeKnowledge : originalKnowledge;
-            if(pool.length === 0) return;
-
             isQuizMode = true;
             document.getElementById('chat-box').innerHTML = '';
             document.getElementById('current-flow-text').innerText = currentLang === 'ar' ? 'وضع الاختبار 🎓' : 'Quiz Mode 🎓';
-            document.getElementById('current-flow-text').style.color = 'var(--neon-purple)';
             
-            history.pushState({quiz: true}, document.title, '#quiz');
-
-            let shuffled = [...pool].sort(() => 0.5 - Math.random());
+            let shuffled = [...originalKnowledge].sort(() => 0.5 - Math.random());
             quizPool = shuffled.slice(0, 25);
             quizScore = 0; quizAttempts = 0; cheatWarnings = 0;
 
             timeLeft = 900;
-            document.getElementById('timer-display').style.display = 'block';
+            document.getElementById('timer-display').classList.remove('hidden');
             updateTimer();
             quizTimer = setInterval(() => {
                 timeLeft--; updateTimer();
                 if(timeLeft <= 0) failQuiz("Time out");
             }, 1000);
 
-            printBotMessage(uiText[currentLang].quizStart, false);
+            printBotMessage(currentLang === 'ar' ? "<strong class='text-[#8A2BE2]'>بدأ الاختبار!</strong> 15 دقيقة و 25 سؤال." : "<strong class='text-[#8A2BE2]'>Quiz Started!</strong> 15 mins, 25 questions.", false);
             askQuestion();
         }
 
@@ -540,57 +471,45 @@
 
         function failQuiz(reason) {
             endQuizState();
-            printBotMessage(uiText[currentLang].cheatFail, false);
+            printBotMessage(currentLang === 'ar' ? "❌ <strong>تم إلغاء الاختبار!</strong>" : "❌ <strong>Quiz Terminated!</strong>", false);
         }
 
         function endQuizState() {
             isQuizMode = false;
             clearInterval(quizTimer);
-            document.getElementById('timer-display').style.display = 'none';
-            document.getElementById('current-flow-text').innerText = activeKnowledge === originalKnowledge ? "Call Center" : "General AI";
-            document.getElementById('current-flow-text').style.color = '';
-            if(window.location.hash === '#quiz') history.replaceState(null, document.title, window.location.pathname);
+            document.getElementById('timer-display').classList.add('hidden');
+            document.getElementById('current-flow-text').innerText = "Call Center";
         }
 
         function askQuestion() {
             if(quizAttempts >= quizPool.length) { finishQuiz(); return; }
 
             let item = quizPool[quizAttempts];
-            let choices = item.options ? [...item.options] : [item.a];
+            let choices = [...item.options];
 
-            if(!item.options) {
-                let pool = activeKnowledge.length > 0 ? activeKnowledge : originalKnowledge;
-                let similar = pool.filter(i => l(i.a) !== l(item.a));
-                let attempts = 0;
-                while(choices.length < 4 && attempts < 100) {
-                    let rand = similar[Math.floor(Math.random() * similar.length)].a;
-                    if(!choices.includes(rand)) choices.push(rand);
-                    attempts++;
-                }
-                choices.sort(() => Math.random() - 0.5);
-            }
-
-            let html = `<div class="font-bold mb-4">${quizAttempts + 1}. ${l(item.q)}</div><div class="flex flex-col gap-2">`;
+            let html = `<div class="font-bold mb-4" dir="${currentLang==='en'?'ltr':'rtl'}">${quizAttempts + 1}. ${getLocalizedText(item.q, currentLang === 'ar')}</div><div class="flex flex-col gap-2">`;
+            
             for(let c of choices) {
                 let safeC = c.replace(/'/g, "\\'");
                 let isCorrect = (c === item.a);
-                html += `<button onclick="handleOption('${safeC}', ${isCorrect})" class="flow-pill w-full text-right ${currentLang==='en'?'text-left':''}" style="justify-content: ${currentLang==='en'?'flex-start':'flex-start'}; border-radius: 8px;">${l(c)}</button>`;
+                html += `<button onclick="handleOption('${safeC}', ${isCorrect})" class="flow-pill w-full text-right ${currentLang==='en'?'text-left':''}" style="justify-content: ${currentLang==='en'?'flex-start':'flex-start'}; border-radius: 8px;" dir="${currentLang==='en'?'ltr':'rtl'}">${getLocalizedText(c, currentLang === 'ar')}</button>`;
             }
             html += `</div>`;
             setTimeout(() => { printBotMessage(html, false); }, 600);
         }
 
         window.handleOption = function(selected, isCorrect) {
-            addUserMessage(l(selected));
+            addUserMessage(getLocalizedText(selected, currentLang === 'ar'));
             const typing = showThinking();
+            
             setTimeout(() => {
                 typing.remove();
                 if(isCorrect) {
                     quizScore++;
-                    printBotMessage(`✅ <strong>إجابة صحيحة!</strong> 👏<br><span class="text-xs text-[#32D74B]">${quizScore}/${quizAttempts+1}</span>`, false);
+                    printBotMessage(`✅ <strong>${currentLang==='ar'?'إجابة صحيحة!':'Correct!'}</strong> 👏<br><span class="text-xs text-[#32D74B]">${quizScore}/${quizAttempts+1}</span>`, false);
                 } else {
                     let msg = currentLang === 'ar' ? 'الجواب الصحيح:' : 'Correct Answer:';
-                    printBotMessage(`❌ <strong>إجابة خاطئة.</strong><br><br><span class="bg-[#1f1f1f] p-2 rounded block">${msg}<br>${l(quizPool[quizAttempts].a)}</span><br><span class="text-xs opacity-70">${quizScore}/${quizAttempts+1}</span>`, false);
+                    printBotMessage(`❌ <strong>${currentLang==='ar'?'إجابة خاطئة.':'Incorrect.'}</strong><br><br><span class="bg-[#1a1a1a] p-2 rounded block border border-[#333]">${msg}<br>${getLocalizedText(quizPool[quizAttempts].a, currentLang==='ar')}</span><br><span class="text-xs opacity-70">${quizScore}/${quizAttempts+1}</span>`, false);
                 }
                 quizAttempts++;
                 setTimeout(() => { askQuestion(); }, 2000);
@@ -600,11 +519,11 @@
         function finishQuiz() {
             let pct = (quizScore / quizAttempts) * 100;
             let msg = "";
-            if (pct >= 96) msg = uiText[currentLang].excellent;
-            else if (pct >= 80) msg = uiText[currentLang].good;
-            else msg = uiText[currentLang].fail;
+            if (pct >= 96) msg = currentLang === 'ar' ? "🌟 <strong>ممتاز!</strong>" : "🌟 <strong>Excellent!</strong>";
+            else if (pct >= 80) msg = currentLang === 'ar' ? "👍 <strong>جيد!</strong>" : "👍 <strong>Good!</strong>";
+            else msg = currentLang === 'ar' ? "💔 <strong>رسوب</strong>" : "💔 <strong>Failed</strong>";
 
-            let finalHtml = `${msg}<br><br><div class="bg-[#121212] border border-[#333] p-4 text-center text-xl font-bold rounded-xl">${quizScore} / ${quizAttempts} (${Math.round(pct)}%)</div><br><span class="text-xs text-[#BF5AF2]">${uiText[currentLang].feedbackPrompt}</span>`;
+            let finalHtml = `${msg}<br><br><div class="bg-[#1a1a1a] border border-[#333] p-4 text-center text-xl font-bold rounded-xl">${quizScore} / ${quizAttempts} (${Math.round(pct)}%)</div>`;
             
             endQuizState();
             printBotMessage(finalHtml, false);
@@ -631,9 +550,10 @@
         }
         function printBotMessage(html, appendHelp) {
             const box = document.getElementById('chat-box');
+            let helpTxt = currentLang === 'ar' ? "<br><br><span class='text-[11px] opacity-50 block'>هل أستطيع مساعدتك بأي شيء آخر؟</span>" : "<br><br><span class='text-[11px] opacity-50 block'>Anything else I can help with?</span>";
             box.innerHTML += `<div class="msg-bubble msg-bot flex gap-3">
-                <div class="shrink-0 pt-1 text-[#BF5AF2]"><i class="fa-solid fa-robot"></i></div>
-                <div class="w-full">${html} ${appendHelp ? uiText[currentLang].anythingElse : ''}</div>
+                <div class="shrink-0 pt-1 text-[#8A2BE2]"><i class="fa-solid fa-robot"></i></div>
+                <div class="w-full">${html} ${appendHelp ? helpTxt : ''}</div>
             </div>`;
             scrollToBottom();
         }
